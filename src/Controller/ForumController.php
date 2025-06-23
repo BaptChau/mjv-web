@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use App\Exception\Enum\ForumExceptionEnum;
-use App\Exception\ForumException;
+use App\Entity\ForumPost;
+use App\Form\ForumPostForm;
 use App\Repository\ForumPostRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ForumController extends AbstractController
@@ -18,11 +19,22 @@ final class ForumController extends AbstractController
     public function index(ForumPostRepository $forumPostRepository): Response
     {
         $posts = $forumPostRepository->findAll();
+        $newPost = new ForumPost();
+        dump($posts);
+        $postForm = $this->createForm(
+            type: ForumPostForm::class,
+            data:  $newPost,
+            options: [
+                'action' => $this->generateUrl('app_forum_add_post', ['postId' => 0]),
+                'method' => Request::METHOD_POST,
+            ]
+        );
 
         return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
                 'posts' => $posts,
+                'form' => $postForm,
             ]
         );
     }
@@ -42,5 +54,26 @@ final class ForumController extends AbstractController
                 'post' => $post
             ]
             );
+    }
+
+    #[Route(path: '/post/{postId}/', name: 'app_forum_add_post', methods:Request::METHOD_POST)]
+    public function postNewPost(?int $postId, Request $request, EntityManagerInterface $em): Response
+    {   
+        $sanitizedPostId = $postId === 0 ? null : $postId;
+
+        $post = new ForumPost();
+        $form = $this->createForm(ForumPostForm::class, $post);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post = $form->getData();
+            $post->setFlag(false);
+            if ($sanitizedPostId != null) {
+                $post->setParentId($sanitizedPostId);
+            }
+                $em->persist($post);
+                $em->flush();
+        }
+        return $this->redirectToRoute(route: 'app_forum');
     }
 }
