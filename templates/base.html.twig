@@ -12,8 +12,9 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
-    MJ VAUBECOURT
+    <body class="flex flex-col h-screen justify-between">
+        {% include 'components/navbar.html.twig' %}
         {% block body %}{% endblock %}
+        {% include 'components/footer.html.twig' %}
     </body>
 </html>
