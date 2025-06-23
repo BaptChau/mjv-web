@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class MainController extends AbstractController
 {
     #[Route('/', name: 'app_main')]
-    public function index(): JsonResponse
+    public function index(): Response
     {
-        return $this->json([
+        return $this->render(view: 'base.html.twig', parameters:[
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/MainController.php',
         ]);
