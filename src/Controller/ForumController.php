@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ForumPost;
 use App\Form\ForumPostForm;
 use App\Repository\ForumPostRepository;
+use App\Service\ForumService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ForumController extends AbstractController
 {
     #[Route('/forum', name: 'app_forum', methods: Request::METHOD_GET)]
-    public function index(ForumPostRepository $forumPostRepository): Response
+    public function index(ForumPostRepository $forumPostRepository, ForumService $forumService): Response
     {
         $posts = $forumPostRepository->findAll();
         $newPost = new ForumPost();
@@ -29,11 +30,11 @@ final class ForumController extends AbstractController
                 'method' => Request::METHOD_POST,
             ]
         );
-
+        
         return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
-                'posts' => $posts,
+                'posts' => $forumService->generatePostArray(),
                 'form' => $postForm,
             ]
         );
@@ -49,7 +50,7 @@ final class ForumController extends AbstractController
             );
         }
         return $this->render(
-            view: 'forum/details.html.twig',
+            view: 'forum/single.html.twig',
             parameters: [
                 'post' => $post
             ]
