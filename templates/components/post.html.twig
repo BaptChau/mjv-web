@@ -3,6 +3,9 @@
     <div>
       <div>{{post.post.author}}</div>
       <div class="text-xs uppercase font-semibold opacity-60">{{post.post.title}}</div>
+      <div class="text-xs text-gray-500">
+        {{ post.children_count }} réponse{{ post.children_count == 1 ? '' : 's' }}
+      </div>
     </div>
     <p class="list-col-wrap text-xs">
       {{post.post.body}}

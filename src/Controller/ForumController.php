@@ -21,7 +21,7 @@ final class ForumController extends AbstractController
     {
         $posts = $forumPostRepository->findAll();
         $newPost = new ForumPost();
-        dump($posts);
+        
         $postForm = $this->createForm(
             type: ForumPostForm::class,
             data:  $newPost,
@@ -41,7 +41,7 @@ final class ForumController extends AbstractController
     }
 
     #[Route('/forum/post/{id}', name:'app_forum_details', methods: Request::METHOD_GET)]
-    public function getPostById(int $id, ForumPostRepository $forumPostRepository): Response
+    public function getPostById(int $id, ForumPostRepository $forumPostRepository, ForumService $forumService, Request $request): Response
     {
         $post = $forumPostRepository->findOneById($id);
         if ($post == null) {
@@ -49,10 +49,25 @@ final class ForumController extends AbstractController
                 view: 'forum/error.html.twig',
             );
         }
+
+        $answers = $forumPostRepository->findBy(['parentId' => $id]);
+
+        $answer = new ForumPost();
+        $answerForm = $this->createForm(
+            type: ForumPostForm::class,
+            data: $answer,
+            options: [
+                'action' => $this->generateUrl('app_forum_add_post', ['postId' => $id]),
+                'method' => Request::METHOD_POST,
+            ]
+        );
+
         return $this->render(
             view: 'forum/single.html.twig',
             parameters: [
-                'post' => $post
+                'post' => $post,
+                'answers' => $answers, // Pass answers to Twig
+                'answer_form' => $answerForm->createView(),
             ]
             );
     }
@@ -76,5 +91,27 @@ final class ForumController extends AbstractController
                 $em->flush();
         }
         return $this->redirectToRoute(route: 'app_forum');
+    }
+
+    #[Route(path: '/answer/{postId}', name: 'app_forum_answer', methods:[Request::METHOD_GET])]
+    public function getAnswerForm(int $postId, ForumService $forumService): Response
+    {
+        $answer = new ForumPost();
+
+            $postForm = $this->createForm(
+            type: ForumPostForm::class,
+            data:  $answer,
+            options: [
+                'action' => $this->generateUrl('app_forum_add_post', ['postId' => $postId]),
+                'method' => Request::METHOD_POST,
+            ]
+        );
+                return $this->render(
+            view: 'forum/index.html.twig',
+            parameters: [
+                'posts' => $forumService->generatePostArray(),
+                'form' => $postForm,
+            ]
+        );
     }
 }

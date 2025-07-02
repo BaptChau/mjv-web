@@ -18,13 +18,16 @@ class ForumService
         if ($id !== null) {
             $posts = $this->forumPostRepository->findOneById($id);
         } else {
-            $posts = $this->forumPostRepository->findAll();
+            $mainPosts = $this->forumPostRepository->findBy(['parentId' => null]);
+            $posts = $mainPosts;
         }
         
         foreach ($posts as $post) {
+            $childrenCount = $this->forumPostRepository->countChildren($post->getId());
             $data[$post->getId()] = [
                 'post' => $post,
-                'href' => $this->router->generate('app_forum_details', ['id' => $post->getId()])
+                'href' => $this->router->generate('app_forum_details', ['id' => $post->getId()]),
+                'children_count' => $childrenCount,
             ];
         }
 
