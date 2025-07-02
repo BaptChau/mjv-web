@@ -1,0 +1,20 @@
+<div class="overflow-x-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Événement</th>
+                <th>Lieu</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.date|date('d/m/Y H:i') }}</td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.location }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

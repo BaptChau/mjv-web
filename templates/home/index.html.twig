@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <section class="mb-12">
+        <h1 class="text-4xl font-bold mb-6">Dernières actualités</h1>
+        {% include 'components/news_list.html.twig' with {'articles': last_news} %}
+    </section>
+
+    <section class="mb-12">
+        <h1 class="text-4xl font-bold mb-6">Derniers posts du forum</h1>
+        {% include 'components/forum_list.html.twig' with {'posts': last_posts} %}
+    </section>
+{% endblock %}

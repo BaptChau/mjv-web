@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.name }}{% endblock %}
+
+{% block body %}
+    <div class="hero bg-base-200 rounded-lg p-8 mb-8">
+        <div class="hero-content text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">{{ team.name }}</h1>
+                <p class="py-6">{{ team.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-3xl font-bold mb-4">Joueurs</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for player in team.players %}
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h3 class="card-title">{{ player.name }}</h3>
+                    <p>Poste: {{ player.position }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

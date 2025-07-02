@@ -1,19 +1,18 @@
-<div class="navbar bg-base-100 shadow-sm">
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl">MJ Vaubécourt</a>
-  </div>
-  <div class="flex-none">
-    <ul class="menu menu-horizontal px-1">
-      <li><a href="/forum">Forum</a></li>
-      <li>
-        <details>
-          <summary>Parent</summary>
-          <ul class="bg-base-100 rounded-t-none p-2">
-            <li><a>Link 1</a></li>
-            <li><a>Link 2</a></li>
-          </ul>
-        </details>
-      </li>
-    </ul>
-  </div>
-</div>
+<header>
+    <nav class="navbar bg-base-100">
+        <div class="navbar-start">
+            <a href="{{ path('home') }}" class="btn btn-ghost text-xl">MonSite</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="{{ path('news_index') }}">Actualités</a></li>
+                <li><a href="{{ path('forum_index') }}">Forum</a></li>
+                <li><a href="{{ path('calendar_index') }}">Calendrier</a></li>
+                <li><a href="{{ path('team_show', {'id': 1}) }}">Équipes</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="#" class="btn">Connexion</a>
+        </div>
+    </nav>
+</header>
