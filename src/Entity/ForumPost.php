@@ -26,7 +26,7 @@ class ForumPost
     #[ORM\Column(length: 255)]
     private ?string $author = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
     private ?bool $flag = null;
 
     public function getId(): ?int
@@ -51,7 +51,7 @@ class ForumPost
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 

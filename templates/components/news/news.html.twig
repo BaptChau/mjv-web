@@ -1,0 +1,16 @@
+<div class="max-w-3xl mx-auto bg-base-100 shadow-lg rounded-lg overflow-hidden mt-10 border border-base-200">
+    {% if news.imgPath %}
+        <img src="{{ news.imgPath }}" alt="News Image" class="w-full h-64 object-cover">
+    {% endif %}
+    <div class="px-8 py-6">
+        <h1 class="text-3xl font-serif font-bold text-base-content mb-2">{{ news.title }}</h1>
+        <p class="text-sm text-base-content/70 mb-4">
+            By <span class="font-semibold">{{ news.author }}</span>
+            | {{ news.createdAt|date('F d, Y') }}
+        </p>
+        <p class="text-lg text-base-content leading-relaxed font-serif mb-4">
+            {{ news.content|u.truncate(250, '...') }}
+        </p>
+        <a href="{{ path('app_news_details', {id: news.id}) }}" class="inline-block mt-4 text-primary font-semibold hover:underline">Read more &rarr;</a>
+    </div>
+</div>

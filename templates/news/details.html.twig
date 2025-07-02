@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ news.post.title }}{% endblock %}
+
+{% block body %}
+<section class="bg-base-100 py-10">
+  <!-- Hero Section Full Width -->
+  <div class="w-full bg-base-100 shadow-lg rounded-none overflow-hidden mb-8 border-b border-base-200">
+    <div class="max-w-6xl mx-auto">
+      {% if news.post.imgPath is defined and news.post.imgPath %}
+        <img src="{{ news.post.imgPath }}" alt="Image de l'actualité" class="w-full h-96 object-cover rounded-xl">
+      {% endif %}
+      <div class="px-8 py-10">
+        <h1 class="text-4xl font-bold font-serif text-base-content mb-4">{{ news.post.title }}</h1>
+        <p class="text-sm text-base-content/70 mb-6">
+          Par <span class="font-semibold">{{ news.post.author }}</span>
+          {% if news.post.createdAt is defined %}
+            | {{ news.post.createdAt|date('d F Y') }}
+          {% endif %}
+        </p>
+        <div class="text-lg text-base-content leading-relaxed font-serif mb-4">
+          {{ news.post.content|nl2br }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-3xl mx-auto px-4">
+    {# Comments Section #}
+    <div class="bg-base-100 rounded-lg shadow p-6 border border-base-200">
+      <h2 class="text-2xl font-semibold mb-4 text-base-content">Commentaires</h2>
+      {% if news.comments is defined and news.comments|length > 0 %}
+        <ul class="space-y-4">
+          {% for comment in news.comments %}
+            <li class="border-b border-base-200 pb-3">
+              <div class="text-sm text-base-content mb-1">
+                <span class="font-semibold">{{ comment.author }}</span>
+                {% if comment.createdAt is defined %}
+                  <span class="text-xs text-base-content/50">| {{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                {% endif %}
+              </div>
+              <div class="text-base text-base-content">{{ comment.content }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-base-content/60">Aucun commentaire pour cette actualité.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
