@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+{% block title %}Index{% endblock %}
+{% block body %}
+<div class="hero bg-base-200 min-h-screen">
+  <div class="hero-content flex-col lg:flex-row">
+    <img
+      src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+      class="max-w-sm rounded-lg shadow-2xl"
+    />
+    <div>
+      <h1 class="text-5xl font-bold">{{post.title}} par {{post.author}}</h1>
+      <p class="py-6">
+        {{post.body}}
+      </p>
+      <a class="btn btn-primary" href="#" onclick="document.getElementById('answer-form').style.display='block';return false;">Répondre</a>
+      <div id="answer-form" style="display:none;">
+          {{ form_start(answer_form) }}
+          {{ form_widget(answer_form) }}
+          {{ form_end(answer_form) }}
+      </div>
+
+      {% if answers is not empty %}
+        <div class="mt-8">
+          <h2 class="text-2xl font-bold mb-4">Réponses</h2>
+          <ul>
+            {% for answer in answers %}
+              <li class="mb-4 p-4 bg-base-100 rounded shadow">
+                <div class="font-semibold">{{ answer.author }}</div>
+                <div class="text-xs opacity-60 mb-2">{{ answer.title }}</div>
+                <div>{{ answer.body }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

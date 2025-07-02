@@ -37,4 +37,14 @@ class ForumPostRepository extends ServiceEntityRepository
                ->getQuery()
                ->getOneOrNullResult();
     }
+    
+    public function countChildren(int $parentId): int
+    {
+        return $this->createQueryBuilder('f')
+            ->select('count(f.id)')
+            ->where('f.parentId = :parentId')
+            ->setParameter('parentId', $parentId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

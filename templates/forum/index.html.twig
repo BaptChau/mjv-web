@@ -1,12 +1,16 @@
 {% extends "base.html.twig" %}
 
 {% block title %}Index{% endblock %}
-{% block head %}
-    {{ parent() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
-{% endblock %}
 {% block body %}
-index forum
+<div>index forum</div>
+<ul class="list bg-base-100 rounded-box shadow-md">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Dernières publications du forum</li>
+
+    {% for post in posts %}
+        {% include 'components/post.html.twig' with {post: post} %}
+    {% endfor %}
+</ul>
+<div>
+{{form(form)}}
+</div>
 {% endblock %}
