@@ -18,7 +18,7 @@ class ForumService
         if ($id !== null) {
             $posts = $this->forumPostRepository->findOneById($id);
         } else {
-            $mainPosts = $this->forumPostRepository->findBy(['parentId' => null]);
+            $mainPosts = $this->forumPostRepository->findAll();
             $posts = $mainPosts;
         }
         

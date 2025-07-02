@@ -52,21 +52,20 @@ final class ForumController extends AbstractController
         $answers = $forumPostRepository->findBy(['parentId' => $id]);
 
         $answer = new ForumPost();
-        $answer->setParentId($id);
         $answerForm = $this->createForm(
             type: ForumPostForm::class,
             data: $answer,
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $id]),
                 'method' => Request::METHOD_POST,
-                'parent' => true,
             ]
         );
+
         return $this->render(
             view: 'forum/single.html.twig',
             parameters: [
                 'post' => $post,
-                'answers' => $answers,
+                'answers' => $answers, // Pass answers to Twig
                 'answer_form' => $answerForm->createView(),
             ]
             );
@@ -78,9 +77,7 @@ final class ForumController extends AbstractController
         $sanitizedPostId = $postId === 0 ? null : $postId;
 
         $post = new ForumPost();
-        $form = $this->createForm(ForumPostForm::class, $post, [
-            'parent' => $sanitizedPostId !== null,
-        ]);
+        $form = $this->createForm(ForumPostForm::class, $post);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -92,8 +89,7 @@ final class ForumController extends AbstractController
                 $em->persist($post);
                 $em->flush();
         }
-        $route = $sanitizedPostId !== null ? 'app_forum_details' : 'app_forum';
-        return $this->redirectToRoute(route: $route, parameters: $sanitizedPostId !== null ? ['id' => $sanitizedPostId] : []);
+        return $this->redirectToRoute(route: 'app_forum');
     }
 
     #[Route(path: '/answer/{postId}', name: 'app_forum_answer', methods:[Request::METHOD_GET])]
@@ -107,7 +103,6 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $postId]),
                 'method' => Request::METHOD_POST,
-                'parent' => true, 
             ]
         );
                 return $this->render(

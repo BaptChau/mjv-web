@@ -1,0 +1,102 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Actualités{% endblock %}
+
+{% block body %}
+<div class="max-w-12xl mx-auto w-full px-2 py-8">
+  <h1 class="text-3xl font-bold text-center mb-8 text-base-content">Dernières actualités</h1>
+
+  {% if lastNews is defined and lastNews|length > 0 %}
+    <div class="carousel w-full mb-12 relative py-5">
+      <div class="absolute inset-0 z-0 backdrop-blur-md bg-gray-800/60 dark:bg-gray-900/70"></div>
+      {% for news in lastNews %}
+        <div id="slide-{{ loop.index }}" class="carousel-item relative w-full z-10 pb-5">
+          <div class="w-full">
+            {% include 'components/news/news.html.twig' with {news: news} %}
+          </div>
+          <div class="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2">
+            <a href="#slide-{{ loop.index0 == 0 ? lastNews|length : loop.index0 }}" class="btn btn-circle btn-sm">❮</a>
+            <a href="#slide-{{ loop.index == lastNews|length ? 1 : loop.index + 1 }}" class="btn btn-circle btn-sm">❯</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <h2 class="text-3xl font-bold text-center mb-8 text-base-content">Toutes les actualités</h2>
+
+  <div class="flex justify-end mb-6">
+    <div class="shadow-md rounded-lg bg-base-100 px-2 py-1 w-full max-w-xs sm:w-auto">
+      <form method="get" class="flex items-center gap-1 w-full">
+        <label for="perPage" class="sr-only">Éléments par page</label>
+        <select name="perPage" id="perPage"
+          class="block py-1 px-0 w-full text-xs text-base-content bg-transparent border-0 border-b-2 border-base-200 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+          onchange="this.form.submit()">
+          <option value="5" {{ perPage == 5 ? 'selected' : '' }}>5 
+            <span class="text-base-content/70 text-xs">/page</span>
+          </option>
+          <option value="10" {{ perPage == 10 ? 'selected' : '' }}>10 
+            <span class="text-base-content/70 text-xs">/page</span>
+          </option>
+          <option value="20" {{ perPage == 20 ? 'selected' : '' }}>20 
+            <span class="text-base-content/70 text-xs">/page</span>
+          </option>
+        </select>
+        <input type="hidden" name="page" value="1" />
+      </form>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+    {% for news in newsList %}
+      <div class="flex flex-col h-full">
+        <div class="flex-1 flex flex-col">
+          {% include 'components/news/news.html.twig' with {news: news} %}
+        </div>
+      </div>
+    {% else %}
+      <div class="col-span-full text-center text-base-content/60">Aucune actualité pour le moment.</div>
+    {% endfor %}
+  </div>
+
+  {% if maxPage > 1 %}
+    <nav aria-label="Page navigation" class="flex justify-center mt-8">
+      <ul class="inline-flex -space-x-px text-base h-10">
+        {# Previous button #}
+        <li>
+          <a href="?page={{ page > 1 ? page-1 : 1 }}&perPage={{ perPage }}"
+             class="flex items-center justify-center px-4 h-10 ms-0 leading-tight border border-e-0 rounded-s-lg
+                    {{ page == 1 ? 'text-base-content/40 bg-base-200 cursor-not-allowed' : 'text-base-content bg-base-100 hover:bg-base-200 hover:text-base-content' }}"
+             {% if page == 1 %}aria-disabled="true" tabindex="-1"{% endif %}>
+            Précédent
+          </a>
+        </li>
+        {# Page numbers #}
+        {% set start = page > 2 ? page-2 : 1 %}
+        {% set end = (page + 2 < maxPage) ? page+2 : maxPage %}
+        {% for i in start..end %}
+          <li>
+            <a href="?page={{ i }}&perPage={{ perPage }}"
+               class="flex items-center justify-center px-4 h-10 leading-tight border
+                      {{ i == page
+                        ? 'text-primary border-primary bg-primary/10 font-bold'
+                        : 'text-base-content bg-base-100 hover:bg-base-200 hover:text-base-content border-base-200'
+                      }}">
+              {{ i }}
+            </a>
+          </li>
+        {% endfor %}
+        {# Next button #}
+        <li>
+          <a href="?page={{ page < maxPage ? page+1 : maxPage }}&perPage={{ perPage }}"
+             class="flex items-center justify-center px-4 h-10 leading-tight border rounded-e-lg
+                    {{ page == maxPage ? 'text-base-content/40 bg-base-200 cursor-not-allowed' : 'text-base-content bg-base-100 hover:bg-base-200 hover:text-base-content' }}"
+             {% if page == maxPage %}aria-disabled="true" tabindex="-1"{% endif %}>
+            Suivant
+          </a>
+        </li>
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

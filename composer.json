@@ -27,6 +27,7 @@
         "twig/string-extra": "^3.21"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.1",
         "symfony/debug-bundle": "7.3.*",
         "symfony/maker-bundle": "^1.63",
         "symfony/stopwatch": "7.3.*",
