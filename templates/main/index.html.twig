@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<section class="max-w-2xl mx-auto px-4 2xl:px-0 py-12">
+  <h2 class="text-xl font-semibold mb-4">Dernières publications</h2>
+  <ul class="space-y-4">
+    {% for post in lastPosts %}
+      <li class="p-4 border rounded-lg bg-base-100">
+        <a href="{{ path('app_forum_details', {id: post.id}) }}" class="text-lg font-bold hover:underline">{{ post.title }}</a>
+        <div class="text-sm text-gray-500 mb-1">
+          par {{ post.author }}{% if post.createdAt is defined %}, {{ post.createdAt|date('d/m/Y H:i') }}{% endif %}
+        </div>
+        <div class="text-base-content">{{ post.body|u.truncate(120, '...') }}</div>
+      </li>
+    {% else %}
+      <li>Aucune publication récente.</li>
+    {% endfor %}
+  </ul>
+  <div class="mt-8 text-center">
+    <a href="{{ path('app_forum') }}" class="btn btn-primary">Voir le forum</a>
+  </div>
+</section>
+{% endblock %}

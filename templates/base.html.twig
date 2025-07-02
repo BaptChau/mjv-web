@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="halloween">
+<html data-theme="light" lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -7,13 +7,14 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-
+<script src="//unpkg.com/alpinejs" defer></script>
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body class="flex flex-col h-screen justify-between">
+    <body class="flex flex-col min-h-screen overflow-x-hidden">
         {% include 'components/navbar.html.twig' %}
+        {% include 'components/breadcrumbs.html.twig' %}
         {% block body %}{% endblock %}
         {% include 'components/footer.html.twig' %}
     </body>

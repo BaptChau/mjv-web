@@ -8,8 +8,6 @@ use App\Repository\ForumPostRepository;
 use App\Service\ForumService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,6 +26,7 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => 0]),
                 'method' => Request::METHOD_POST,
+                'parent' => false,
             ]
         );
         
@@ -53,20 +52,21 @@ final class ForumController extends AbstractController
         $answers = $forumPostRepository->findBy(['parentId' => $id]);
 
         $answer = new ForumPost();
+        $answer->setParentId($id);
         $answerForm = $this->createForm(
             type: ForumPostForm::class,
             data: $answer,
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $id]),
                 'method' => Request::METHOD_POST,
+                'parent' => true,
             ]
         );
-
         return $this->render(
             view: 'forum/single.html.twig',
             parameters: [
                 'post' => $post,
-                'answers' => $answers, // Pass answers to Twig
+                'answers' => $answers,
                 'answer_form' => $answerForm->createView(),
             ]
             );
@@ -78,7 +78,9 @@ final class ForumController extends AbstractController
         $sanitizedPostId = $postId === 0 ? null : $postId;
 
         $post = new ForumPost();
-        $form = $this->createForm(ForumPostForm::class, $post);
+        $form = $this->createForm(ForumPostForm::class, $post, [
+            'parent' => $sanitizedPostId !== null,
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,7 +92,8 @@ final class ForumController extends AbstractController
                 $em->persist($post);
                 $em->flush();
         }
-        return $this->redirectToRoute(route: 'app_forum');
+        $route = $sanitizedPostId !== null ? 'app_forum_details' : 'app_forum';
+        return $this->redirectToRoute(route: $route, parameters: $sanitizedPostId !== null ? ['id' => $sanitizedPostId] : []);
     }
 
     #[Route(path: '/answer/{postId}', name: 'app_forum_answer', methods:[Request::METHOD_GET])]
@@ -104,6 +107,7 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $postId]),
                 'method' => Request::METHOD_POST,
+                'parent' => true, 
             ]
         );
                 return $this->render(

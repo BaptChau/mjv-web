@@ -1,19 +1,87 @@
-<div class="navbar bg-base-100 shadow-sm">
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl">MJ Vaubécourt</a>
-  </div>
-  <div class="flex-none">
-    <ul class="menu menu-horizontal px-1">
-      <li><a href="/forum">Forum</a></li>
-      <li>
-        <details>
-          <summary>Parent</summary>
-          <ul class="bg-base-100 rounded-t-none p-2">
-            <li><a>Link 1</a></li>
-            <li><a>Link 2</a></li>
+<nav class="bg-base-100 border-b border-base-200">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/" class="flex items-center space-x-3">
+      <span class="self-center text-2xl font-semibold whitespace-nowrap">MJ Vaubécourt</span>
+    </a>
+    <button id="menu-toggle" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-main" aria-expanded="false">
+      <span class="sr-only">Open main menu</span>
+      <svg class="w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 17 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+      </svg>
+    </button>
+    <div class="hidden w-full lg:block lg:w-auto" id="navbar-main">
+      <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-base-200 rounded-lg bg-base-100 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-base-100">
+        <li>
+          <a href="/forum"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_forum' %}text-primary font-semibold{% endif %}">
+            Forum
+          </a>
+        </li>
+        <li>
+          <a href="/calendrier"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_calendrier' %}text-primary font-semibold{% endif %}">
+            Calendrier
+          </a>
+        </li>
+        <li>
+          <a href="/actualites"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_actualites' %}text-primary font-semibold{% endif %}">
+            Actualités
+          </a>
+        </li>
+        <li class="relative group">
+          <button type="button" class="flex items-center w-full py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+            {% if app.request.attributes.get('_route') starts with 'app_equipes' %}text-primary font-semibold{% endif %}">
+            Équipes
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <ul class="absolute left-0 z-10 hidden group-hover:block lg:group-hover:block bg-base-100 border border-base-200 rounded shadow mt-1 min-w-[140px]">
+            <li><a href="/equipes/equipe1" class="block px-4 py-2 hover:bg-base-200">Équipe 1</a></li>
+            <li><a href="/equipes/equipe2" class="block px-4 py-2 hover:bg-base-200">Équipe 2</a></li>
           </ul>
-        </details>
-      </li>
-    </ul>
+        </li>
+        <li>
+          <a href="/contact"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_contact' %}text-primary font-semibold{% endif %}">
+            Contact
+          </a>
+        </li>
+        <!-- Theme selector in navbar -->
+        <div class="dropdown dropdown-end ml-4">
+          <label tabindex="0" class="btn btn-ghost btn-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.95l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M4.05 4.05l-.71-.71"/>
+            </svg>
+          </label>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36">
+            <li><a onclick="document.documentElement.setAttribute('data-theme', 'light')">Clair</a></li>
+            <li><a onclick="document.documentElement.setAttribute('data-theme', 'dark')">Sombre</a></li>
+            <li><a onclick="document.documentElement.setAttribute('data-theme', 'halloween')">MJV</a></li>
+          </ul>
+        </div>
+      </ul>
+    </div>
   </div>
-</div>
+</nav>
+<script>
+  // Hamburger menu toggle for mobile
+  document.getElementById('menu-toggle').onclick = function() {
+    var menu = document.getElementById('navbar-main');
+    menu.classList.toggle('hidden');
+  };
+
+  // Dropdown for mobile (show/hide on click)
+  document.querySelectorAll('li.group > button').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var dropdown = btn.nextElementSibling;
+      dropdown.classList.toggle('hidden');
+    });
+  });
+</script>

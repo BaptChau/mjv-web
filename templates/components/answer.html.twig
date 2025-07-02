@@ -1,0 +1,20 @@
+<li class="py-4" style="margin-left: {{ level * 32 }}px;">
+  <div class="flex items-start gap-2.5">
+    {# Uncomment and adapt the src if you have user avatars #}
+    {# <img class="w-8 h-8 rounded-full" src="{{ answer.avatar|default('/default-avatar.png') }}" alt="{{ answer.author }}"> #}
+    <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+      <div class="flex items-center space-x-2 rtl:space-x-reverse">
+        <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ answer.author }}</span>
+      </div>
+      <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{{ answer.body }}</p>
+    </div>
+  </div>
+
+  {% if answer.children is defined and answer.children|length > 0 %}
+    <ul>
+      {% for child in answer.children %}
+        {% include 'components/answer.html.twig' with {answer: child, level: level + 1} %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>

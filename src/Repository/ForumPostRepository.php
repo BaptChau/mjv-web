@@ -25,6 +25,7 @@ class ForumPostRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('f')
                     ->orderBy('f.id', 'DESC')
+                    ->where('f.parentId IS NULL')
                     ->getQuery()
                     ->getResult();
     }
