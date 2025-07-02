@@ -12,8 +12,11 @@ class ForumPostForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        dump($options);
+        if (empty($options['parent']) || $options['parent'] === false) {
+            $builder->add('title');
+        }
         $builder
-            ->add('title')
             ->add('body')
             ->add('author')
             ->add('save', SubmitType::class);
@@ -23,6 +26,7 @@ class ForumPostForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ForumPost::class,
+            'parent' => false, // custom option
         ]);
     }
 }

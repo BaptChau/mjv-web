@@ -1,0 +1,62 @@
+<li class="py-4" style="margin-left: {{ level * 32 }}px;">
+  <div class="flex items-start gap-2.5">
+    {# Uncomment and adapt the src if you have user avatars #}
+    {# <img class="w-8 h-8 rounded-full" src="{{ answer.avatar|default('/default-avatar.png') }}" alt="{{ answer.author }}"> #}
+    <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+      <div class="flex items-center space-x-2 rtl:space-x-reverse">
+        <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ answer.author }}</span>
+        {% if answer.createdAt is defined %}
+          <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ answer.createdAt|date('H:i') }}</span>
+        {% endif %}
+      </div>
+      <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{{ answer.body }}</p>
+      {% if answer.title is not null %}
+        <span class="text-xs uppercase font-semibold opacity-60">{{ answer.title }}</span>
+      {% endif %}
+    </div>
+    <button 
+      class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
+      onclick="document.getElementById('answer-form-{{ answer.id }}').style.display='block';return false;"
+      type="button"
+      title="Répondre"
+    >
+      <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 9l-6 6 6 6M20 4v7a4 4 0 0 1-4 4H5"/>
+      </svg>
+    </button>
+  </div>
+  <div id="answer-form-{{ answer.id }}" class="mt-2" style="display:none;">
+    {% if answer_forms is defined and answer_forms[answer.id] is defined %}
+      <div class="bg-base-100 rounded-xl shadow p-6 max-w-xl mx-auto">
+        <h2 class="text-xl font-semibold mb-4 text-center">Répondre</h2>
+        {{ form_start(answer_forms[answer.id], {'attr': {'class': 'space-y-4'}}) }}
+          <div>
+            {{ form_label(answer_forms[answer.id].title, 'Titre', {'label_attr': {'class': 'block mb-1 font-medium'}}) }}
+            {{ form_widget(answer_forms[answer.id].title, {'attr': {'class': 'input input-bordered w-full'}}) }}
+            {{ form_errors(answer_forms[answer.id].title) }}
+          </div>
+          <div>
+            {{ form_label(answer_forms[answer.id].body, 'Message', {'label_attr': {'class': 'block mb-1 font-medium'}}) }}
+            {{ form_widget(answer_forms[answer.id].body, {'attr': {'class': 'textarea textarea-bordered w-full min-h-[100px]'}}) }}
+            {{ form_errors(answer_forms[answer.id].body) }}
+          </div>
+          <div>
+            {{ form_label(answer_forms[answer.id].author, 'Auteur', {'label_attr': {'class': 'block mb-1 font-medium'}}) }}
+            {{ form_widget(answer_forms[answer.id].author, {'attr': {'class': 'input input-bordered w-full'}}) }}
+            {{ form_errors(answer_forms[answer.id].author) }}
+          </div>
+          <div class="text-center pt-2">
+            {{ form_widget(answer_forms[answer.id].save, {'label': 'Publier', 'attr': {'class': 'btn btn-primary'}}) }}
+          </div>
+        {{ form_end(answer_forms[answer.id]) }}
+      </div>
+    {% endif %}
+  </div>
+  {% if answer.children is defined and answer.children|length > 0 %}
+    <ul>
+      {% for child in answer.children %}
+        {% include 'components/answer.html.twig' with {answer: child, level: level + 1, answer_forms: answer_forms} %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>

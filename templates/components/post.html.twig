@@ -1,21 +1,17 @@
-<a href="{{post.href}}">
-  <li class="list-row" id="post-{{post.post.id}}">
-    <div>
-      <div>{{post.post.author}}</div>
-      <div class="text-xs uppercase font-semibold opacity-60">{{post.post.title}}</div>
-      <div class="text-xs text-gray-500">
-        {{ post.children_count }} réponse{{ post.children_count == 1 ? '' : 's' }}
+<a href="{{ post.href }}" class="block">
+  <div class="flex items-start gap-2.5">
+    <div class="flex flex-col w-full max-w-full leading-1.5 p-4 bg-base-100 rounded-e-xl rounded-es-xl">
+      <div class="flex items-center space-x-2">
+        <span class="text-sm font-semibold text-base-content">{{ post.post.author }}</span>
+        <span class="text-xs uppercase font-semibold opacity-60">{{ post.post.title }}</span>
+        <span class="text-xs text-gray-500">{{ post.children_count }} réponse{{ post.children_count == 1 ? '' : 's' }}</span>
       </div>
+      <p class="text-sm font-normal py-2.5 text-base-content">{{ post.post.body }}</p>
     </div>
-    <p class="list-col-wrap text-xs">
-      {{post.post.body}}
-    </p>
-    <button class="btn btn-square btn-ghost">
-      <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M10 9l-6 6 6 6"/><path d="M20 4v7a4 4 0 0 1-4 4H5"/></g></svg>
+    <button class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-base-100 rounded-lg hover:bg-base-200 focus:ring-4 focus:outline-none focus:ring-base-200" type="button" title="Répondre">
+      <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 9l-6 6 6 6M20 4v7a4 4 0 0 1-4 4H5"/>
+      </svg>
     </button>
-    <button class="btn btn-square btn-ghost">
-      <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
-    </button>
-  </li>
+  </div>
 </a>

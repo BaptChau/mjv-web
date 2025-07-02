@@ -8,8 +8,6 @@ use App\Repository\ForumPostRepository;
 use App\Service\ForumService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,9 +26,10 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => 0]),
                 'method' => Request::METHOD_POST,
+                'parent' => false,
             ]
         );
-        
+        dump($postForm);
         return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
@@ -59,6 +58,7 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $id]),
                 'method' => Request::METHOD_POST,
+                'parent' => true, // Indicate that this is an answer
             ]
         );
 
@@ -78,7 +78,9 @@ final class ForumController extends AbstractController
         $sanitizedPostId = $postId === 0 ? null : $postId;
 
         $post = new ForumPost();
-        $form = $this->createForm(ForumPostForm::class, $post);
+        $form = $this->createForm(ForumPostForm::class, $post, [
+            'parent' => $sanitizedPostId !== null,
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -104,6 +106,7 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $postId]),
                 'method' => Request::METHOD_POST,
+                'parent' => true, 
             ]
         );
                 return $this->render(

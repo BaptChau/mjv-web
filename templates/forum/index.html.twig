@@ -1,16 +1,39 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Index{% endblock %}
-{% block body %}
-<div>index forum</div>
-<ul class="list bg-base-100 rounded-box shadow-md">
-      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Dernières publications du forum</li>
+{% block title %}Forum{% endblock %}
 
+{% block body %}
+<div class="max-w-2xl mx-auto w-full px-2 py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold text-center w-full">Dernières publications du forum</h1>
+    <button 
+      class="btn btn-primary ml-4 w-auto"
+      onclick="document.getElementById('post-modal').showModal()"
+      type="button"
+    >
+      Nouvelle publication
+    </button>
+  </div>
+  <ul class="space-y-4 mb-8">
     {% for post in posts %}
+      <li class="bg-base-100 rounded-xl shadow p-4">
         {% include 'components/post.html.twig' with {post: post} %}
+      </li>
+    {% else %}
+      <li class="text-center text-gray-500">Aucune publication pour le moment.</li>
     {% endfor %}
-</ul>
-<div>
-{{form(form)}}
+  </ul>
 </div>
+
+<dialog id="post-modal" class="modal">
+  <div class="modal-box max-w-xl">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('post-modal').close()" type="button">✕</button>
+    </form>
+    {% include 'forum/form.html.twig' with {form: form} %}
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
 {% endblock %}

@@ -1,0 +1,25 @@
+<div class="bg-base-100 rounded-xl shadow p-6 max-w-xl mx-auto">
+  <h2 class="text-xl font-semibold mb-4 text-center">{{ title|default('Nouvelle publication') }}</h2>
+  {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+    {% if form.title is defined %}
+      <div>
+        {{ form_label(form.title, 'Titre', {'label_attr': {'class': 'block mb-1 font-medium'}}) }}
+        {{ form_widget(form.title, {'attr': {'class': 'input input-bordered w-full'}}) }}
+        {{ form_errors(form.title) }}
+      </div>
+    {% endif %}
+    <div>
+      {{ form_label(form.body, 'Message', {'label_attr': {'class': 'block mb-1 font-medium'}}) }}
+      {{ form_widget(form.body, {'attr': {'class': 'textarea textarea-bordered w-full min-h-[100px]'}}) }}
+      {{ form_errors(form.body) }}
+    </div>
+    <div>
+      {{ form_label(form.author, 'Auteur', {'label_attr': {'class': 'block mb-1 font-medium'}}) }}
+      {{ form_widget(form.author, {'attr': {'class': 'input input-bordered w-full'}}) }}
+      {{ form_errors(form.author) }}
+    </div>
+    <div class="text-center pt-2">
+      {{ form_widget(form.save, {'label': 'Publier', 'attr': {'class': 'btn btn-primary'}}) }}
+    </div>
+  {{ form_end(form) }}
+</div>

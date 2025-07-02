@@ -12,16 +12,29 @@
     <div class="hidden w-full lg:block lg:w-auto" id="navbar-main">
       <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-base-200 rounded-lg bg-base-100 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-base-100">
         <li>
-          <a href="/forum" class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent">Forum</a>
+          <a href="/forum"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_forum' %}text-primary font-semibold{% endif %}">
+            Forum
+          </a>
         </li>
         <li>
-          <a href="/calendrier" class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent">Calendrier</a>
+          <a href="/calendrier"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_calendrier' %}text-primary font-semibold{% endif %}">
+            Calendrier
+          </a>
         </li>
         <li>
-          <a href="/actualites" class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent">Actualités</a>
+          <a href="/actualites"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_actualites' %}text-primary font-semibold{% endif %}">
+            Actualités
+          </a>
         </li>
         <li class="relative group">
-          <button type="button" class="flex items-center w-full py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent">
+          <button type="button" class="flex items-center w-full py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+            {% if app.request.attributes.get('_route') starts with 'app_equipes' %}text-primary font-semibold{% endif %}">
             Équipes
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
@@ -33,8 +46,25 @@
           </ul>
         </li>
         <li>
-          <a href="/contact" class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent">Contact</a>
+          <a href="/contact"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if app.request.attributes.get('_route') starts with 'app_contact' %}text-primary font-semibold{% endif %}">
+            Contact
+          </a>
         </li>
+        <!-- Theme selector in navbar -->
+        <div class="dropdown dropdown-end ml-4">
+          <label tabindex="0" class="btn btn-ghost btn-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.95l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M4.05 4.05l-.71-.71"/>
+            </svg>
+          </label>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36">
+            <li><a onclick="document.documentElement.setAttribute('data-theme', 'light')">Clair</a></li>
+            <li><a onclick="document.documentElement.setAttribute('data-theme', 'dark')">Sombre</a></li>
+            <li><a onclick="document.documentElement.setAttribute('data-theme', 'halloween')">MJV</a></li>
+          </ul>
+        </div>
       </ul>
     </div>
   </div>
