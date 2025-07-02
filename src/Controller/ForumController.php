@@ -52,21 +52,21 @@ final class ForumController extends AbstractController
         $answers = $forumPostRepository->findBy(['parentId' => $id]);
 
         $answer = new ForumPost();
+        $answer->setParentId($id);
         $answerForm = $this->createForm(
             type: ForumPostForm::class,
             data: $answer,
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $id]),
                 'method' => Request::METHOD_POST,
-                'parent' => true, // Indicate that this is an answer
+                'parent' => true,
             ]
         );
-
         return $this->render(
             view: 'forum/single.html.twig',
             parameters: [
                 'post' => $post,
-                'answers' => $answers, // Pass answers to Twig
+                'answers' => $answers,
                 'answer_form' => $answerForm->createView(),
             ]
             );
@@ -92,7 +92,8 @@ final class ForumController extends AbstractController
                 $em->persist($post);
                 $em->flush();
         }
-        return $this->redirectToRoute(route: 'app_forum');
+        $route = $sanitizedPostId !== null ? 'app_forum_details' : 'app_forum';
+        return $this->redirectToRoute(route: $route, parameters: $sanitizedPostId !== null ? ['id' => $sanitizedPostId] : []);
     }
 
     #[Route(path: '/answer/{postId}', name: 'app_forum_answer', methods:[Request::METHOD_GET])]

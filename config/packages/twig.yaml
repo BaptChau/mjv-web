@@ -2,6 +2,7 @@ twig:
     file_name_pattern: '*.twig'
     globals:
         breadcrumbs: '@App\Service\BreadcrumbsService'
+    debug: true
 
 when@test:
     twig:
