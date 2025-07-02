@@ -1,0 +1,61 @@
+name: PHP Quality with Docker
+
+on:
+  push:
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - 'Dockerfile'
+      - 'compose.yaml'
+  pull_request:
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - 'Dockerfile'
+      - 'compose.yaml'
+
+jobs:
+  php-quality:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: app
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: '!ChangeMe!'
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd="pg_isready -U app -d app"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build app Docker image
+        run: docker build --pull -t mjv-web-app .
+
+      - name: Run PHPStan in Docker
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            mjv-web-app \
+            sh -c "composer install && vendor/bin/phpstan analyse -l 5 src/ --no-progress --memory-limit=1G"
+
+      - name: Run PHP_CodeSniffer in Docker
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            mjv-web-app \
+            sh -c "vendor/bin/phpcs --standard=PSR12 src/ || true"
+
+      - name: Run PHP-CS-Fixer in Docker
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            mjv-web-app \
+            sh -c "vendor/bin/php-cs-fixer fix --dry-run --diff src/ || true"
