@@ -35,9 +35,6 @@
             "migrations/.gitignore"
         ]
     },
-    "knplabs/knp-menu-bundle": {
-        "version": "v3.6.0"
-    },
     "symfony/console": {
         "version": "7.3",
         "recipe": {
@@ -218,5 +215,8 @@
             "package.json",
             "webpack.config.js"
         ]
+    },
+    "twig/extra-bundle": {
+        "version": "v3.21.0"
     }
 }

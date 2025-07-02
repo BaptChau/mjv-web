@@ -22,7 +22,9 @@
         "symfony/ux-turbo": "^2.26",
         "symfony/validator": "7.3.*",
         "symfony/webpack-encore-bundle": "^2.2",
-        "symfony/yaml": "7.3.*"
+        "symfony/yaml": "7.3.*",
+        "twig/extra-bundle": "^3.21",
+        "twig/string-extra": "^3.21"
     },
     "require-dev": {
         "symfony/debug-bundle": "7.3.*",

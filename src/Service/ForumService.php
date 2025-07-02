@@ -34,4 +34,11 @@ class ForumService
         return $data;
     }
 
+    public function getLastNPosts(int $n): array
+    {
+        $posts = $this->forumPostRepository->findAll();
+        $lastPosts = array_slice($posts, 0, $n);
+        return $lastPosts;
+    }
+
 }
