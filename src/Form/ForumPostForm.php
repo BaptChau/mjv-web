@@ -12,7 +12,7 @@ class ForumPostForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        dump($options);
+        
         if (empty($options['parent']) || $options['parent'] === false) {
             $builder->add('title');
         }

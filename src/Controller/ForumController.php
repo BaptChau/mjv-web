@@ -29,7 +29,7 @@ final class ForumController extends AbstractController
                 'parent' => false,
             ]
         );
-        dump($postForm);
+        
         return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
