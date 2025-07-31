@@ -5,9 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # Ajoute ceci pour cibler une architecture ARM64 compatible avec M1/M2/M3/M4
-      platforms:
-        - linux/arm64
     container_name: mjv-web-app
     environment:
       APP_ENV: dev
@@ -27,7 +24,6 @@ services:
 
   node:
     image: node:20-alpine
-    platform: linux/arm64
     container_name: mjv-web-node
     working_dir: /app
     volumes:
@@ -36,7 +32,6 @@ services:
 
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
-    platform: linux/arm64
     container_name: mjv-web-db
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-app}
