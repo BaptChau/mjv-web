@@ -12,3 +12,5 @@ stop:
 
 migrate:
 	docker compose exec app php bin/console doctrine:migrations:migrate --no-interaction
+shell:
+	docker compose exec app sh
