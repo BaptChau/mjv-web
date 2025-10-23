@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+<div class="container mx-auto max-w-3xl py-6">
+  <div class="mb-4">
+    <h2 class="text-2xl lg:text-3xl font-semibold">Contactez-nous</h2>
+    <p class="text-sm text-base-content/70 mt-2">Une question, un projet ou un retour ? Écrivez-nous — réponse rapide.</p>
+  </div>
+
+  {% for message in app.flashes('success') %}
+    <div class="alert alert-success shadow-sm my-2 p-2 text-sm">
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current h-4 w-4" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span class="ml-2">{{ message }}</span>
+      </div>
+    </div>
+  {% endfor %}
+
+  {% for message in app.flashes('error') %}
+    <div class="alert alert-error shadow-sm my-2 p-2 text-sm">
+      <div><span>{{ message }}</span></div>
+    </div>
+  {% endfor %}
+
+  <div class="compact w-full bg-base-100 mt-4">
+    <div class="p-3">
+      {{ form_start(form, {'attr': {'class': 'w-full'}}) }}
+
+        <div class="form-control mb-2">
+          {{ form_label(form.name, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
+          {{ form_widget(form.name, {'attr': {'class': 'input input-bordered input-sm w-full', 'placeholder': 'Votre nom'}}) }}
+          {{ form_errors(form.name) }}
+        </div>
+
+        <div class="form-control mb-2">
+          {{ form_label(form.email, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
+          {{ form_widget(form.email, {'attr': {'class': 'input input-bordered input-sm w-full', 'placeholder': 'Votre email'}}) }}
+          {{ form_errors(form.email) }}
+        </div>
+
+        <div class="form-control mb-2">
+          {{ form_label(form.message, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
+          {{ form_widget(form.message, {'attr': {'class': 'textarea textarea-bordered textarea-sm w-full h-24', 'placeholder': 'Votre message'}}) }}
+          {{ form_errors(form.message) }}
+        </div>
+
+        <div class="form-control mt-3">
+          {{ form_widget(form.send, {'attr': {'class': 'btn btn-primary w-full'}}) }}
+        </div>
+
+      {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+{% endblock %}
