@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Repository\ForumPostRepository;
+use App\Service\NewsService;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 

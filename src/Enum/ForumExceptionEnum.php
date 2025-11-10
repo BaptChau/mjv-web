@@ -1,6 +1,5 @@
 <?php
-namespace App\Exception\Enum;
-
+namespace App\Enum;
 enum ForumExceptionEnum: int
 {
     case POST_NOT_FOUND = 1000;

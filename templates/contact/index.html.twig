@@ -31,9 +31,9 @@
       {{ form_start(form, {'attr': {'class': 'w-full'}}) }}
 
         <div class="form-control mb-2">
-          {{ form_label(form.name, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
-          {{ form_widget(form.name, {'attr': {'class': 'input input-bordered input-sm w-full', 'placeholder': 'Votre nom'}}) }}
-          {{ form_errors(form.name) }}
+          {{ form_label(form.identity, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
+          {{ form_widget(form.identity, {'attr': {'class': 'input input-bordered input-sm w-full', 'placeholder': 'Votre nom'}}) }}
+          {{ form_errors(form.identity) }}
         </div>
 
         <div class="form-control mb-2">
@@ -43,9 +43,9 @@
         </div>
 
         <div class="form-control mb-2">
-          {{ form_label(form.message, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
-          {{ form_widget(form.message, {'attr': {'class': 'textarea textarea-bordered textarea-sm w-full h-24', 'placeholder': 'Votre message'}}) }}
-          {{ form_errors(form.message) }}
+          {{ form_label(form.content, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
+          {{ form_widget(form.content, {'attr': {'class': 'textarea textarea-bordered textarea-sm w-full h-24', 'placeholder': 'Votre message'}}) }}
+          {{ form_errors(form.content) }}
         </div>
 
         <div class="form-control mt-3">

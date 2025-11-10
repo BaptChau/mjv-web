@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Équipes{% endblock %}
+
+{% block body %}
+<div class="container mx-auto max-w-3xl py-6">
+  <div class="mb-4">
+    <h1 class="text-2xl lg:text-3xl font-semibold">Nos équipes</h1>
+    <p class="text-sm text-base-content/70 mt-2">Retrouvez les équipes par catégorie.</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {% for team in teams %}
+      <a href="{{ path('app_team_details', {'slug': team.slug ?: team.category}) }}" class="card compact bg-base-100 shadow hover:shadow-md transition">
+        <div class="card-body p-3 flex gap-3 items-center">
+          {% if team.photoPath is defined and team.photoPath %}
+            <img src="{{ team.photoPath }}" alt="{{ team.label }}" class="w-20 h-16 object-cover rounded"/>
+          {% else %}
+            <div class="w-20 h-16 bg-base-200 rounded flex items-center justify-center text-sm">No image</div>
+          {% endif %}
+
+          <div>
+            <h3 class="font-medium">{{ team.label }}</h3>
+            <p class="text-xs text-base-content/70">Coach: {{ team.coach }}</p>
+            {% if team.secondCoach %}
+              <p class="text-xs text-base-content/60">Adjoint: {{ team.secondCoach }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+    {% else %}
+      <div class="text-sm text-base-content/70">Aucune équipe pour l'instant.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

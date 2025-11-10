@@ -16,27 +16,13 @@ class ForumPostRepository extends ServiceEntityRepository
         parent::__construct($registry, ForumPost::class);
     }
 
-    /**
-     * Get all post ordered by id desc
-     * 
-     * @return array<ForumPost>
-     */
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('f')
-                    ->orderBy('f.id', 'DESC')
-                    ->where('f.parentId IS NULL')
-                    ->getQuery()
-                    ->getResult();
-    }
-
     public function findOneById(int $id): ?ForumPost
     {
-            return $this->createQueryBuilder('f')
-               ->andWhere('f.id = :val')
-               ->setParameter('val', $id)
-               ->getQuery()
-               ->getOneOrNullResult();
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
     
     public function countChildren(int $parentId): int
@@ -47,5 +33,30 @@ class ForumPostRepository extends ServiceEntityRepository
             ->setParameter('parentId', $parentId)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @return array<ForumPost>
+     */
+    public function findRootPosts(): array
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.parentId IS NULL')
+            ->orderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return array<ForumPost>
+     */
+    public function findLatestRootPosts(int $limit): array
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.parentId IS NULL')
+            ->orderBy('f.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 }
