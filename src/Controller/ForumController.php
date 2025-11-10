@@ -14,10 +14,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ForumController extends AbstractController
 {
-    #[Route('/forum', name: 'app_forum', methods: Request::METHOD_GET)]
-    public function index(ForumPostRepository $forumPostRepository, ForumService $forumService): Response
+    #[Route('/forum', name: 'app_forum', methods: [Request::METHOD_GET])]
+    public function index(ForumService $forumService): Response
     {
-        $posts = $forumPostRepository->findAll();
         $newPost = new ForumPost();
         
         $postForm = $this->createForm(
@@ -34,12 +33,12 @@ final class ForumController extends AbstractController
             view: 'forum/index.html.twig',
             parameters: [
                 'posts' => $forumService->generatePostArray(),
-                'form' => $postForm,
+                'form' => $postForm->createView(),
             ]
         );
     }
 
-    #[Route('/forum/post/{id}', name:'app_forum_details', methods: Request::METHOD_GET)]
+    #[Route('/forum/post/{id}', name:'app_forum_details', methods: [Request::METHOD_GET])]
     public function getPostById(int $id, ForumPostRepository $forumPostRepository, ForumService $forumService, Request $request): Response
     {
         $post = $forumPostRepository->findOneById($id);
@@ -58,6 +57,7 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $id]),
                 'method' => Request::METHOD_POST,
+                'parent' => true,
             ]
         );
 
@@ -71,7 +71,13 @@ final class ForumController extends AbstractController
             );
     }
 
-    #[Route(path: '/post/{postId}/', name: 'app_forum_add_post', methods:Request::METHOD_POST)]
+    #[Route(
+        path: '/forum/post/{postId}',
+        name: 'app_forum_add_post',
+        requirements: ['postId' => '\d+'],
+        defaults: ['postId' => 0],
+        methods:[Request::METHOD_POST]
+    )]
     public function postNewPost(?int $postId, Request $request, EntityManagerInterface $em): Response
     {   
         $sanitizedPostId = $postId === 0 ? null : $postId;
@@ -89,6 +95,9 @@ final class ForumController extends AbstractController
                 $em->persist($post);
                 $em->flush();
         }
+        if ($sanitizedPostId !== null) {
+            return $this->redirectToRoute('app_forum_details', ['id' => $sanitizedPostId]);
+        }
         return $this->redirectToRoute(route: 'app_forum');
     }
 
@@ -103,13 +112,14 @@ final class ForumController extends AbstractController
             options: [
                 'action' => $this->generateUrl('app_forum_add_post', ['postId' => $postId]),
                 'method' => Request::METHOD_POST,
+                'parent' => true,
             ]
         );
                 return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
                 'posts' => $forumService->generatePostArray(),
-                'form' => $postForm,
+                'form' => $postForm->createView(),
             ]
         );
     }

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.label }}{% endblock %}
+
+{% block body %}
+<div class="container mx-auto max-w-3xl py-6">
+  <a href="{{ path('app_team_index') }}" class="link link-primary text-sm mb-4 inline-block">← Retour aux équipes</a>
+
+  <div class="card lg:card-side bg-base-100 shadow">
+    {% if team.photoPath %}
+      <figure class="w-full lg:w-1/3"><img src="{{ team.photoPath }}" alt="{{ team.label }}" class="object-cover w-full h-48 lg:h-full"/></figure>
+    {% endif %}
+
+    <div class="card-body">
+      <h1 class="card-title">{{ team.label }}</h1>
+
+      <div class="flex flex-wrap gap-2 items-center">
+        {% if team.category is defined and team.category is not empty %}
+          <span class="badge badge-outline">Catégorie: {{ team.category }}</span>
+        {% endif %}
+
+        {% if team.gender is defined %}
+          {% if team.gender is null %}
+            <span class="badge badge-info">Non applicable</span>
+          {% else %}
+            <span class="badge badge-success">{{ team.gender ? 'Masculin' : 'Féminin' }}</span>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <p class="text-sm text-base-content/70 mt-3">Coach: <strong>{{ team.coach }}</strong>
+        {% if team.secondCoach %} — Adjoint: <strong>{{ team.secondCoach }}</strong>{% endif %}
+      </p>
+
+      {% if team.description is defined and team.description %}
+        <div class="mt-4 prose text-sm">{{ team.description|raw }}</div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

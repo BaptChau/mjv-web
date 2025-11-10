@@ -12,8 +12,7 @@ class NewsService {
     }
 
     public function getLastNNews(int $n): array {
-        $posts = $this->newsRepository->findBy([], ['createdAt' => 'DESC'], $n);
-        return $posts;
+        return $this->newsRepository->findLatest($n);
     }
 
     public function getNewsById(int $id): ?array {
@@ -28,8 +27,18 @@ class NewsService {
         ];
     }
 
-    public function getAllNews(): array {
-        $posts = $this->newsRepository->findBy([], ['id' => 'DESC']);
-        return $posts;
+    public function getPaginatedNews(int $page, int $perPage): array
+    {
+        $page = max(1, $page);
+        $perPage = max(1, $perPage);
+
+        $items = $this->newsRepository->findPaginated($page, $perPage);
+        $total = $this->newsRepository->countAll();
+
+        return [
+            'items' => $items,
+            'total' => $total,
+            'maxPage' => max(1, (int) ceil($total / $perPage)),
+        ];
     }
 }

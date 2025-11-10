@@ -16,17 +16,15 @@ final class NewsController extends AbstractController
         $page = max(1, (int) $request->query->get('page', 1));
         $perPage = in_array((int)$request->query->get('perPage', 10), [5, 10, 20]) ? (int)$request->query->get('perPage', 10) : 10;
 
-        $allNews = $newsService->getAllNews();
-        $total = count($allNews);
-        $newsList = array_slice($allNews, ($page - 1) * $perPage, $perPage);
+        $pagination = $newsService->getPaginatedNews($page, $perPage);
 
         return $this->render('news/index.html.twig', [
-            'newsList' => $newsList,
+            'newsList' => $pagination['items'],
             'lastNews' => $newsService->getLastNNews(5),
             'page' => $page,
             'perPage' => $perPage,
-            'total' => $total,
-            'maxPage' => ceil($total / $perPage),
+            'total' => $pagination['total'],
+            'maxPage' => $pagination['maxPage'],
         ]);
     }
 

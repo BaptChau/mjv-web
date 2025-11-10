@@ -11,17 +11,20 @@ class ForumService
     {
     }
 
-    public function generatePostArray(?int $id = null):array
+    public function generatePostArray(?int $id = null): array
     {
-        $data = [];
+        $posts = [];
 
         if ($id !== null) {
-            $posts = $this->forumPostRepository->findOneById($id);
+            $post = $this->forumPostRepository->findOneById($id);
+            if ($post !== null) {
+                $posts = [$post];
+            }
         } else {
-            $mainPosts = $this->forumPostRepository->findAll();
-            $posts = $mainPosts;
+            $posts = $this->forumPostRepository->findRootPosts();
         }
-        
+
+        $data = [];
         foreach ($posts as $post) {
             $childrenCount = $this->forumPostRepository->countChildren($post->getId());
             $data[$post->getId()] = [
@@ -36,9 +39,7 @@ class ForumService
 
     public function getLastNPosts(int $n): array
     {
-        $posts = $this->forumPostRepository->findAll();
-        $lastPosts = array_slice($posts, 0, $n);
-        return $lastPosts;
+        return $this->forumPostRepository->findLatestRootPosts($n);
     }
 
 }

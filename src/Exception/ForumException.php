@@ -1,7 +1,7 @@
 <?php
 namespace App\Exception;
 
-use App\Exception\Enum\ForumExceptionEnum;
+use App\Enum\ForumExceptionEnum;
 use Exception;
 
 final class ForumException extends Exception
