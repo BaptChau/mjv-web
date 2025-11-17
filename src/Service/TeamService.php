@@ -13,20 +13,33 @@ class TeamService
     }
 
     /**
-     * Return an array of ['team' => Team, 'categoryLabel' => string]
-     *
-     * @return array<int, array{team: Team, categoryLabel: string}>
+     * @return array<int, array{categoryLabel: string, slug: string, teams: Team[]}>
      */
     public function getAllWithCategoryLabel(): array
     {
         $teams = $this->teamRepository->findAll();
+        $grouped = [];
 
-        return array_map(function (Team $team) {
-            return [
-                'team' => $team,
-                'categoryLabel' => $this->getCategoryLabel($team->getCategory()),
-            ];
-        }, $teams);
+        foreach ($teams as $team) {
+            $category = $team->getCategory();
+            if ($category === null) {
+                continue;
+            }
+
+            if (!isset($grouped[$category])) {
+                $grouped[$category] = [
+                    'categoryLabel' => $this->getCategoryLabel($category),
+                    'slug' => $this->getCategorySlug($category),
+                    'teams' => [],
+                ];
+            }
+
+            $grouped[$category]['teams'][] = $team;
+        }
+
+        ksort($grouped);
+
+        return array_values($grouped);
     }
 
     public function getAll(): array
@@ -36,22 +49,25 @@ class TeamService
 
     public function findBySlug(string $slug): ?Team
     {
-        // first try by slug field if present on entity
-        $team = $this->teamRepository->findOneBy(['slug' => $slug]);
-        if ($team) {
-            return $team;
+        $teams = $this->findAllByCategorySlug($slug);
+
+        return $teams[0] ?? null;
+    }
+
+    /**
+     * @return Team[]
+     */
+    public function findAllByCategorySlug(string $slug): array
+    {
+        $enum = CategoryEnum::fromSlug($slug);
+        if ($enum === null) {
+            return [];
         }
 
-        // fallback: try to resolve category from CategoryEnum label
-        if (method_exists(CategoryEnum::class, 'fromLabel')) {
-            $enum = CategoryEnum::fromLabel($slug);
-            $value = $enum?->value ?? null;
-            if ($value !== null) {
-                return $this->teamRepository->findOneBy(['category' => $value]);
-            }
-        }
-
-        return null;
+        return $this->teamRepository->findBy(
+            ['category' => $enum->value],
+            ['gender' => 'DESC', 'label' => 'ASC']
+        );
     }
 
     /**
@@ -91,5 +107,91 @@ class TeamService
 
         // fallback: string cast
         return (string) $category;
+    }
+
+    public function getCategorySlug(mixed $category): string
+    {
+        // If already an enum case
+        if ($category instanceof CategoryEnum) {
+            if (method_exists(CategoryEnum::class, 'getSlug')) {
+                return CategoryEnum::getSlug($category);
+            }
+            return strtolower($category->name);
+        }
+
+        if (method_exists(CategoryEnum::class, 'tryFrom')) {
+            $enum = CategoryEnum::tryFrom($category);
+            if ($enum) {
+                if (method_exists(CategoryEnum::class, 'getSlug')) {
+                    return CategoryEnum::getSlug($enum);
+                }
+                return strtolower($enum->name);
+            }
+        }
+
+        if (method_exists(CategoryEnum::class, 'fromLabel')) {
+            $enum = CategoryEnum::fromLabel((string) $category);
+            if ($enum) {
+                if (method_exists(CategoryEnum::class, 'getSlug')) {
+                    return CategoryEnum::getSlug($enum);
+                }
+                return strtolower($enum->name);
+            }
+        }
+
+        return strtolower((string) $category);
+    }
+
+    public function getCategoryFromSlug(string $slug): ?CategoryEnum
+    {
+        return CategoryEnum::fromSlug($slug);
+    }
+
+    public function findOne(int $id): ?Team
+    {
+        return $this->teamRepository->find($id);
+    }
+
+    public function ensureTeamMatchesSlug(Team $team, string $slug): bool
+    {
+        $category = $team->getCategory();
+        return $this->getCategorySlug($category) === $slug;
+    }
+
+    /**
+     * @return array{youth: array<int, array{label: string, slug: string}>, adult: array<int, array{label: string, slug: string}>}
+     */
+    public function getMenuGroups(): array
+    {
+        $teams = $this->teamRepository->findAll();
+        $seen = [];
+        $groups = [
+            'youth' => [],
+            'adult' => [],
+        ];
+
+        foreach ($teams as $team) {
+            $category = $team->getCategory();
+            if ($category === null || isset($seen[$category])) {
+                continue;
+            }
+
+            $seen[$category] = true;
+            $entry = [
+                'label' => $this->getCategoryLabel($category),
+                'slug' => $this->getCategorySlug($category),
+            ];
+
+            if (in_array($category, [CategoryEnum::SENIORS->value, CategoryEnum::LOISIRS->value], true)) {
+                $groups['adult'][] = $entry;
+            } else {
+                $groups['youth'][] = $entry;
+            }
+        }
+
+        usort($groups['youth'], fn ($a, $b) => $a['label'] <=> $b['label']);
+        usort($groups['adult'], fn ($a, $b) => $a['label'] <=> $b['label']);
+
+        return $groups;
     }
 }
