@@ -28,6 +28,12 @@ enum CategoryEnum: int
         };
     }
 
+    public static function getSlug(CategoryEnum $category): string
+    {
+        $label = self::getLabel($category);
+        return strtolower(str_replace(' ', '-', $label));
+    }
+
     public static function fromLabel(string $label): ?CategoryEnum
     {
         return match(strtolower($label)) {
@@ -42,5 +48,11 @@ enum CategoryEnum: int
             'loisirs' => CategoryEnum::LOISIRS,
             default => null,
         };
+    }
+
+    public static function fromSlug(string $slug): ?CategoryEnum
+    {
+        $normalized = str_replace('-', ' ', $slug);
+        return self::fromLabel($normalized);
     }
 }

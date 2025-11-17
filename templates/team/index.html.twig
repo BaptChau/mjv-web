@@ -10,20 +10,26 @@
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {% for team in teams %}
-      <a href="{{ path('app_team_details', {'slug': team.slug ?: team.category}) }}" class="card compact bg-base-100 shadow hover:shadow-md transition">
+    {% for entry in teams %}
+      {% set primaryTeam = entry.teams|first %}
+      <a href="{{ path('app_team_details', {'slug': entry.slug}) }}" class="card compact bg-base-100 shadow hover:shadow-md transition">
         <div class="card-body p-3 flex gap-3 items-center">
-          {% if team.photoPath is defined and team.photoPath %}
-            <img src="{{ team.photoPath }}" alt="{{ team.label }}" class="w-20 h-16 object-cover rounded"/>
+          {% if primaryTeam is defined and primaryTeam.photoPath %}
+            <img src="{{ primaryTeam.photoPath }}" alt="{{ entry.categoryLabel }}" class="w-20 h-16 object-cover rounded"/>
           {% else %}
             <div class="w-20 h-16 bg-base-200 rounded flex items-center justify-center text-sm">No image</div>
           {% endif %}
 
-          <div>
-            <h3 class="font-medium">{{ team.label }}</h3>
-            <p class="text-xs text-base-content/70">Coach: {{ team.coach }}</p>
-            {% if team.secondCoach %}
-              <p class="text-xs text-base-content/60">Adjoint: {{ team.secondCoach }}</p>
+          <div class="flex-1">
+            <h3 class="font-medium">{{ entry.categoryLabel }}</h3>
+            {% set summaries = [] %}
+            {% for team in entry.teams %}
+              {% set label = team.gender is null ? 'Mixte' : (team.gender ? 'Masculin' : 'Féminin') %}
+              {% set summaries = summaries|merge([label ~ ' · ' ~ team.label]) %}
+            {% endfor %}
+            <p class="text-xs text-base-content/60 mb-1">Compositions: {{ summaries|join(', ') }}</p>
+            {% if primaryTeam %}
+              <p class="text-xs text-base-content/70">Coach principal: {{ primaryTeam.coach }}</p>
             {% endif %}
           </div>
         </div>

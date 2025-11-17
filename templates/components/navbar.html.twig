@@ -1,4 +1,5 @@
 {% set currentRoute = app.request.attributes.get('_route') %}
+{% set teamGroups = teamService.getMenuGroups() %}
 <nav class="bg-base-100 border-b border-base-200">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="{{ path('app_main') }}" class="flex items-center space-x-3">
@@ -33,12 +34,53 @@
             Actualités
           </a>
         </li>
-        <li>
-          <a href="{{ path('app_team_index') }}"
-             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+        <li id="teams-dropdown" class="dropdown dropdown-bottom lg:dropdown-hover">
+          <button id="teams-toggle" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false"
+             class="flex items-center w-full py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent gap-1
              {% if currentRoute starts with 'app_team' %}text-primary font-semibold{% endif %}">
             Équipes
-          </a>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div id="teams-menu"
+               class="dropdown-content z-20 bg-base-100 border border-base-200 rounded-box shadow mt-1 w-56 p-3 space-y-2">
+            {% if teamGroups.youth is not empty %}
+              <p class="text-xs uppercase font-semibold text-base-content/60">Jeunes</p>
+              <ul class="space-y-1">
+                {% for entry in teamGroups.youth %}
+                  <li>
+                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-1 rounded hover:bg-base-200">
+                      {{ entry.label }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if teamGroups.youth is not empty and teamGroups.adult is not empty %}
+              <div class="border-t border-base-200 my-1"></div>
+            {% endif %}
+
+            {% if teamGroups.adult is not empty %}
+              <p class="text-xs uppercase font-semibold text-base-content/60">Adultes</p>
+              <ul class="space-y-1">
+                {% for entry in teamGroups.adult %}
+                  <li>
+                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-1 rounded hover:bg-base-200">
+                      {{ entry.label }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <div class="border-t border-base-200 pt-2">
+              <a href="{{ path('app_team_index') }}" class="block text-sm text-primary font-semibold hover:underline">
+                Toutes les équipes
+              </a>
+            </div>
+          </div>
         </li>
         <li>
           <a href="{{ path('app_contact') }}"
@@ -68,4 +110,31 @@
   document.getElementById('menu-toggle').addEventListener('click', function () {
     document.getElementById('navbar-main').classList.toggle('hidden');
   });
+
+  (function () {
+    const dropdown = document.getElementById('teams-dropdown');
+    const toggle = document.getElementById('teams-toggle');
+    if (!dropdown || !toggle) {
+      return;
+    }
+
+    toggle.addEventListener('click', function (event) {
+      if (window.innerWidth >= 1024) {
+        return; // rely on hover on desktop
+      }
+      event.preventDefault();
+      dropdown.classList.toggle('dropdown-open');
+      const expanded = dropdown.classList.contains('dropdown-open') ? 'true' : 'false';
+      toggle.setAttribute('aria-expanded', expanded);
+    });
+    document.addEventListener('click', function (event) {
+      if (window.innerWidth >= 1024) {
+        return;
+      }
+      if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove('dropdown-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
 </script>
