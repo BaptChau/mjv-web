@@ -1,47 +1,92 @@
 {% extends "base.html.twig" %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block body %}
-<section class="bg-base-100 py-8 antialiased dark:bg-gray-900 md:py-16">
-  <div class="mx-auto max-w-2xl px-4 2xl:px-0">
-    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-4 mb-8">
-      <h1 class="shrink-0 text-2xl font-bold text-base-content">{{ post.title }}</h1>
-      <button 
-        class="btn btn-primary w-full md:w-auto"
-        onclick="document.getElementById('answer-modal-main').showModal();return false;"
-        type="button"
-      >Répondre</button>
-
-      <dialog id="answer-modal-main" class="modal">
-        <div class="modal-box max-w-xl">
-          <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('answer-modal-main').close()" type="button">✕</button>
-          </form>
-          {% include 'forum/form.html.twig' with {form: answer_form, title: 'Répondre'} %}
-        </div>
-        <form method="dialog" class="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
-    </div>
-    <div class="mb-8">
-      <div class="flex items-center gap-2 mb-2">
-        <span class="font-semibold text-base-content">{{ post.author }}</span>
+<main class="bg-base-200 min-h-screen">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-4xl mx-auto px-4 py-16 space-y-6">
+      <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Forum · Question</p>
+      <h1 class="text-4xl font-extrabold leading-tight">{{ post.title }}</h1>
+      <div class="flex flex-wrap gap-3 text-sm uppercase tracking-[0.3em] text-neutral-content/70">
+        <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ post.author }}</span>
+        {% if post.createdAt is defined %}
+          <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ post.createdAt|date('d/m/Y H:i') }}</span>
+        {% endif %}
+        <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ answers|length }} réponse{{ answers|length <= 1 ? '' : 's' }}</span>
       </div>
-      <p class="mb-4 text-base-content">{{ post.body }}</p>
-    </div>
-
-    {% if answers is not empty %}
-      <div class="flow-root">
-        <div class="my-6 divide-y divide-base-200 dark:divide-gray-800">
-          <h2 class="text-xl font-semibold mb-6 text-base-content">Réponses</h2>
-          <ul>
-            {% for answer in answers %}
-              {% include 'components/answer.html.twig' with {answer: answer, level: 0} %}
-            {% endfor %}
-          </ul>
-        </div>
+      <div class="flex flex-wrap gap-3">
+        <button
+          class="btn btn-primary btn-wide"
+          onclick="document.getElementById('answer-modal-main').showModal();return false;"
+          type="button"
+        >Répondre</button>
+        <a href="{{ path('app_forum') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Retour au forum</a>
       </div>
-    {% endif %}
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-4xl mx-auto px-4 space-y-12">
+      <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
+        <div class="card-body space-y-4">
+          <div class="flex items-center gap-3">
+            <div>
+              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Auteur</p>
+              <p class="text-lg font-semibold text-base-content">{{ post.author }}</p>
+            </div>
+          </div>
+          <p class="text-base text-base-content/80 leading-relaxed">{{ post.body|nl2br }}</p>
+        </div>
+      </article>
+
+      <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
+        <div class="card-body space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Réponses</p>
+              <h2 class="text-2xl font-bold text-base-content">{{ answers|length }} contribution{{ answers|length <= 1 ? '' : 's' }}</h2>
+            </div>
+            <button
+              class="btn btn-sm btn-primary"
+              onclick="document.getElementById('answer-modal-main').showModal();return false;"
+              type="button"
+            >Ajouter une réponse</button>
+          </div>
+
+          {% if answers is not empty %}
+            <ul class="space-y-4">
+              {% for answer in answers %}
+                {% include 'components/answer.html.twig' with {answer: answer, level: 0} %}
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-base-content/70">Soyez la première personne à répondre à ce sujet.</p>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="card bg-base-100 rounded-3xl shadow-lg border border-base-300">
+        <div class="card-body items-start gap-4 md:flex md:items-center md:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Envie d'en parler de vive voix ?</p>
+            <h3 class="text-2xl font-bold text-base-content">L'équipe MJ Vaubécourt reste disponible.</h3>
+            <p class="text-base-content/70">Contactez un dirigeant, un coach ou un bénévole pour obtenir un coup de main immédiat.</p>
+          </div>
+          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary">Contacter le club</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<dialog id="answer-modal-main" class="modal">
+  <div class="modal-box max-w-xl">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('answer-modal-main').close()" type="button">✕</button>
+    </form>
+    {% include 'forum/form.html.twig' with {form: answer_form, title: 'Répondre'} %}
   </div>
-</section>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
 {% endblock %}

@@ -14,6 +14,13 @@
     <div class="hidden w-full lg:block lg:w-auto" id="navbar-main">
       <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-base-200 rounded-lg bg-base-100 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-base-100">
         <li>
+          <a href="{{ path('app_club') }}"
+             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if currentRoute == 'app_club' %}text-primary font-semibold{% endif %}">
+            Club
+          </a>
+        </li>
+        <li>
           <a href="{{ path('app_forum') }}"
              class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
              {% if currentRoute starts with 'app_forum' %}text-primary font-semibold{% endif %}">

@@ -3,40 +3,68 @@
 {% block title %}Équipes{% endblock %}
 
 {% block body %}
-<div class="container mx-auto max-w-3xl py-6">
-  <div class="mb-4">
-    <h1 class="text-2xl lg:text-3xl font-semibold">Nos équipes</h1>
-    <p class="text-sm text-base-content/70 mt-2">Retrouvez les équipes par catégorie.</p>
-  </div>
+<main class="bg-base-200">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-5xl mx-auto px-4 py-16 space-y-4">
+      <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/60">Nos équipes</p>
+      <h1 class="text-4xl font-extrabold leading-tight">Toutes les catégories du MJ Vaubécourt</h1>
+      <p class="text-lg text-neutral-content/80">Masculins, féminins ou mixtes : chaque collectif porte un projet sportif précis.</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="{{ path('app_contact') }}" class="btn btn-primary">Nous rejoindre</a>
+        <a href="{{ path('app_calendar') }}" class="btn btn-outline btn-primary">Calendrier</a>
+      </div>
+    </div>
+  </section>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {% for entry in teams %}
-      {% set primaryTeam = entry.teams|first %}
-      <a href="{{ path('app_team_details', {'slug': entry.slug}) }}" class="card compact bg-base-100 shadow hover:shadow-md transition">
-        <div class="card-body p-3 flex gap-3 items-center">
-          {% if primaryTeam is defined and primaryTeam.photoPath %}
-            <img src="{{ primaryTeam.photoPath }}" alt="{{ entry.categoryLabel }}" class="w-20 h-16 object-cover rounded"/>
-          {% else %}
-            <div class="w-20 h-16 bg-base-200 rounded flex items-center justify-center text-sm">No image</div>
-          {% endif %}
+  <section class="py-14">
+    <div class="max-w-5xl mx-auto px-4 space-y-8">
+      {% for entry in teams %}
+        {% set primaryTeam = entry.teams|first %}
+        <article class="card bg-base-100 shadow-xl rounded-3xl border border-base-300 overflow-hidden flex flex-col md:flex-row">
+          <div class="flex-1 p-8 flex flex-col gap-4">
+            <div>
+              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Catégorie</p>
+              <h2 class="text-3xl font-bold text-base-content">{{ entry.categoryLabel }}</h2>
+            </div>
+            <p class="text-sm text-base-content/70">
+              {% if primaryTeam %}
+                Coach principal : <span class="font-semibold">{{ primaryTeam.coach }}</span>
+              {% else %}
+                Coach communiqué prochainement
+              {% endif %}
+            </p>
 
-          <div class="flex-1">
-            <h3 class="font-medium">{{ entry.categoryLabel }}</h3>
-            {% set summaries = [] %}
-            {% for team in entry.teams %}
-              {% set label = team.gender is null ? 'Mixte' : (team.gender ? 'Masculin' : 'Féminin') %}
-              {% set summaries = summaries|merge([label ~ ' · ' ~ team.label]) %}
-            {% endfor %}
-            <p class="text-xs text-base-content/60 mb-1">Compositions: {{ summaries|join(', ') }}</p>
-            {% if primaryTeam %}
-              <p class="text-xs text-base-content/70">Coach principal: {{ primaryTeam.coach }}</p>
+            <div class="space-y-2">
+              {% for team in entry.teams %}
+                <div class="bg-base-200/70 rounded-2xl px-4 py-3 flex items-center justify-between text-sm text-base-content">
+                  <span class="font-semibold">{{ team.label }}</span>
+                  <span class="text-xs uppercase tracking-[0.3em] text-base-content/60">
+                    {% if team.gender is null %}
+                      Mixte
+                    {% else %}
+                      {{ team.gender ? 'Masculin' : 'Féminin' }}
+                    {% endif %}
+                  </span>
+                </div>
+              {% endfor %}
+            </div>
+
+            <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="btn btn-primary btn-sm w-fit mt-2">
+              Voir cette catégorie
+            </a>
+          </div>
+          <div class="md:w-1/3 bg-neutral">
+            {% if primaryTeam and primaryTeam.photoPath %}
+              <img src="{{ primaryTeam.photoPath }}" alt="{{ entry.categoryLabel }}" class="w-full h-full object-cover opacity-90">
+            {% else %}
+              <div class="h-full min-h-[260px] flex items-center justify-center text-neutral-content/60 text-sm px-6 text-center">Photo à venir</div>
             {% endif %}
           </div>
-        </div>
-      </a>
-    {% else %}
-      <div class="text-sm text-base-content/70">Aucune équipe pour l'instant.</div>
-    {% endfor %}
-  </div>
-</div>
+        </article>
+      {% else %}
+        <p class="text-base-content/70">Aucune équipe n'est enregistrée pour l'instant.</p>
+      {% endfor %}
+    </div>
+  </section>
+</main>
 {% endblock %}

@@ -3,46 +3,52 @@
 {% block title %}{{ categoryLabel }}{% endblock %}
 
 {% block body %}
-<div class="container mx-auto max-w-3xl py-6">
-  <a href="{{ path('app_team_index') }}" class="link link-primary text-sm mb-4 inline-block">← Retour aux équipes</a>
+<main class="bg-base-200">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-4xl mx-auto px-4 py-14 space-y-3">
+      <a href="{{ path('app_team_index') }}" class="text-xs uppercase tracking-[0.3em] text-neutral-content/70 inline-flex items-center gap-2">
+        ← Retour aux équipes
+      </a>
+      <h1 class="text-4xl font-extrabold leading-tight">{{ categoryLabel }}</h1>
+      <p class="text-neutral-content/70">Découvrez l’ensemble des collectifs {{ categoryLabel }} : compositions, staffs techniques et dynamique de travail.</p>
+    </div>
+  </section>
 
-  <div class="mb-6">
-    <h1 class="text-3xl font-semibold">{{ categoryLabel }}</h1>
-    <p class="text-base-content/70 text-sm">Découvrez les équipes masculines et féminines associées à cette catégorie.</p>
-  </div>
-
-  <div class="grid grid-cols-1 gap-6">
-    {% for team in teams %}
-      <a href="{{ path('app_team_show', {slug: categorySlug, id: team.id}) }}" class="card lg:card-side bg-base-100 shadow transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary">
-        {% if team.photoPath %}
-          <figure class="w-full lg:w-1/3"><img src="{{ team.photoPath }}" alt="{{ team.label }}" class="object-cover w-full h-48 lg:h-full"/></figure>
-        {% endif %}
-
-        <div class="card-body">
-          <h2 class="card-title">{{ team.label }}</h2>
-
-          <div class="flex flex-wrap gap-2 items-center">
-            <span class="badge badge-outline">Catégorie: {{ categoryLabel }}</span>
-
-            {% if team.gender is null %}
-              <span class="badge badge-info">Mixte</span>
+  <section class="py-14">
+    <div class="max-w-4xl mx-auto px-4 space-y-8">
+      {% for team in teams %}
+        <article class="card bg-base-100 shadow-xl rounded-3xl border border-base-300 overflow-hidden flex flex-col md:flex-row">
+          <div class="flex-1 p-8 space-y-4">
+            <div>
+              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">{{ categoryLabel }}</p>
+              <h2 class="text-3xl font-bold text-base-content">{{ team.label }}</h2>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs uppercase tracking-[0.3em] text-base-content/60">
+              <span class="badge badge-outline">{{ team.gender is null ? 'Mixte' : (team.gender ? 'Masculin' : 'Féminin') }}</span>
+            </div>
+            <p class="text-base-content/80">
+              Coach : <span class="font-semibold">{{ team.coach }}</span>
+              {% if team.secondCoach %} — Adjoint : <span class="font-semibold">{{ team.secondCoach }}</span>{% endif %}
+            </p>
+            <p class="text-sm text-base-content/70">
+              Des entraînements adaptés rythment la saison pour atteindre les objectifs fixés avec le staff.
+            </p>
+            <a href="{{ path('app_team_show', {slug: categorySlug, id: team.id}) }}" class="btn btn-primary btn-sm w-fit">
+              Voir la fiche équipe
+            </a>
+          </div>
+          <div class="md:w-1/3 bg-neutral">
+            {% if team.photoPath %}
+              <img src="{{ team.photoPath }}" alt="{{ team.label }}" class="w-full h-full object-cover opacity-90">
             {% else %}
-              <span class="badge badge-success">{{ team.gender ? 'Masculin' : 'Féminin' }}</span>
+              <div class="h-full min-h-[240px] flex items-center justify-center text-neutral-content/60 text-sm px-6 text-center">Photo à venir</div>
             {% endif %}
           </div>
-
-          <p class="text-sm text-base-content/70 mt-3">Coach: <strong>{{ team.coach }}</strong>
-            {% if team.secondCoach %} — Adjoint: <strong>{{ team.secondCoach }}</strong>{% endif %}
-          </p>
-
-          {% if team.description is defined and team.description %}
-            <div class="mt-4 prose text-sm">{{ team.description|raw }}</div>
-          {% endif %}
-        </div>
-      </a>
-    {% else %}
-      <p class="text-base-content/70">Aucune équipe n'est enregistrée pour cette catégorie.</p>
-    {% endfor %}
-  </div>
-</div>
+        </article>
+      {% else %}
+        <p class="text-base-content/70">Aucune équipe n'est enregistrée pour cette catégorie.</p>
+      {% endfor %}
+    </div>
+  </section>
+</main>
 {% endblock %}
