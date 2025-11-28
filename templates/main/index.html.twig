@@ -3,23 +3,171 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<section class="max-w-2xl mx-auto px-4 2xl:px-0 py-12">
-  <h2 class="text-xl font-semibold mb-4">Dernières publications</h2>
-  <ul class="space-y-4">
-    {% for post in lastPosts %}
-      <li class="p-4 border rounded-lg bg-base-100">
-        <a href="{{ path('app_forum_details', {id: post.id}) }}" class="text-lg font-bold hover:underline">{{ post.title }}</a>
-        <div class="text-sm text-gray-500 mb-1">
-          par {{ post.author }}{% if post.createdAt is defined %}, {{ post.createdAt|date('d/m/Y H:i') }}{% endif %}
+<main class="bg-base-200">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-6xl mx-auto px-4 py-16 grid gap-10 lg:grid-cols-2">
+      <div class="space-y-5">
+        <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/70">Handball club</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Jouez au handball !</h1>
+        <p class="text-lg text-neutral-content/80">
+          MJ Vaubécourt accompagne les joueuses et joueurs de tout âge pour défendre les couleurs du club.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="{{ path('app_team_index') }}" class="btn btn-primary btn-wide">Dis m'en plus</a>
+          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Nous rejoindre</a>
         </div>
-        <div class="text-base-content">{{ post.body|u.truncate(120, '...') }}</div>
-      </li>
-    {% else %}
-      <li>Aucune publication récente.</li>
-    {% endfor %}
-  </ul>
-  <div class="mt-8 text-center">
-    <a href="{{ path('app_forum') }}" class="btn btn-primary">Voir le forum</a>
-  </div>
-</section>
+      </div>
+      <div>
+        <div class="rounded-3xl border border-neutral-content/20 overflow-hidden shadow-2xl">
+          <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80"
+               alt="Joueur de handball"
+               class="w-full h-80 object-cover">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
+      <article class="card bg-base-100 shadow-xl rounded-3xl lg:col-span-3 border border-base-300">
+        <div class="card-body gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-base-content/50">Nos équipes</p>
+            <h2 class="text-3xl font-bold">Nos collectifs</h2>
+            <p class="text-base-content/70 mt-2">Des catégories jeunes aux seniors : découvrez les équipes en vedette.</p>
+          </div>
+          {% set highlighted = highlightedCategories is not empty ? highlightedCategories : [] %}
+          <div class="rounded-2xl overflow-hidden border border-base-300">
+            {% if highlighted|length > 0 %}
+              {% set heroTeam = highlighted|first %}
+              {% set heroPhoto = heroTeam.teams|first %}
+              {% if heroPhoto and heroPhoto.photoPath %}
+                <img src="{{ heroPhoto.photoPath }}" alt="{{ heroTeam.categoryLabel }}" class="w-full h-60 object-cover">
+              {% else %}
+                <div class="w-full h-60 flex items-center justify-center bg-base-200 text-base-content/50">
+                  Photo à venir
+                </div>
+              {% endif %}
+            {% else %}
+              <div class="w-full h-60 flex items-center justify-center bg-base-200 text-base-content/50">
+                Aucune équipe disponible pour l'instant
+              </div>
+            {% endif %}
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            {% for entry in highlighted %}
+              <div class="rounded-2xl bg-base-200/60 border border-base-300 p-4">
+                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ entry.categoryLabel }}</p>
+                <p class="font-semibold text-lg text-base-content">{{ entry.teams|length }} équipe(s)</p>
+                <p class="text-xs text-base-content/60 mt-1">
+                  {% for team in entry.teams %}
+                    {{ team.label }}{% if not loop.last %}, {% endif %}
+                  {% endfor %}
+                </p>
+                <a href="{{ path('app_team_details', {slug: entry.slug}) }}"
+                   class="link link-primary mt-2 inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em]">
+                  Voir plus →
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </article>
+
+      <div class="lg:col-span-2 flex flex-col gap-6">
+        <article class="card bg-base-100 shadow-lg rounded-3xl border border-base-300">
+          <div class="card-body gap-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Calendrier</p>
+                <h3 class="text-2xl font-bold">Prochains matches</h3>
+              </div>
+              <a href="{{ path('app_calendar') }}" class="link link-primary text-xs uppercase tracking-[0.3em]">Voir tout</a>
+            </div>
+            <div class="space-y-4">
+              {% for match in upcomingMatches %}
+                <div class="flex items-center gap-4 rounded-2xl bg-base-200/60 border border-base-300 p-4">
+                  <div class="text-center px-4 py-2 bg-base-100 rounded-xl shadow-sm">
+                    <p class="text-3xl font-extrabold leading-none">{{ match.date|date('d') }}</p>
+                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.date|date('M') }}</p>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
+                    <p class="text-lg font-semibold">{{ match.opponent }}</p>
+                    <p class="text-xs text-base-content/60 uppercase tracking-[0.3em]">{{ match.location }} · {{ match.time }}</p>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-sm text-base-content/70">Les prochains matches seront publiés bientôt.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </article>
+
+        <article class="card bg-base-100 shadow-lg rounded-3xl border border-base-300">
+          <div class="card-body gap-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Actualités</p>
+                <h3 class="text-2xl font-bold">Dernières actus</h3>
+              </div>
+              <a href="{{ path('app_news') }}" class="link link-primary text-xs uppercase tracking-[0.3em]">Voir tout</a>
+            </div>
+            <div class="space-y-4">
+              {% for news in latestNews %}
+                <a href="{{ path('app_news_details', {id: news.id}) }}"
+                   class="flex gap-4 rounded-2xl border border-base-300 hover:border-primary transition overflow-hidden">
+                  {% if news.imgPath %}
+                    <img src="{{ news.imgPath }}" alt="{{ news.title }}" class="w-24 h-24 object-cover">
+                  {% endif %}
+                  <div class="p-4 flex-1">
+                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ news.createdAt|date('d M Y') }}</p>
+                    <h4 class="text-lg font-semibold text-base-content">{{ news.title }}</h4>
+                    <p class="text-sm text-base-content/70">{{ news.content|u.truncate(90, '...') }}</p>
+                  </div>
+                </a>
+              {% else %}
+                <p class="text-sm text-base-content/70">Aucune actualité disponible.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="card bg-base-100 shadow-xl rounded-3xl border border-base-300">
+        <div class="card-body gap-6">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Forum</p>
+              <h3 class="text-2xl font-bold text-base-content">Dernières discussions</h3>
+            </div>
+            <a href="{{ path('app_forum') }}" class="btn btn-primary btn-sm">Voir le forum</a>
+          </div>
+          <div class="grid gap-4">
+            {% for post in lastPosts %}
+              <article class="rounded-2xl border border-base-300 p-4 hover:border-primary transition">
+                <div class="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-base-content/60 mb-2">
+                  <span>{{ post.author }}</span>
+                  {% if post.createdAt is defined %}
+                    <span>{{ post.createdAt|date('d/m/Y H:i') }}</span>
+                  {% endif %}
+                </div>
+                <a href="{{ path('app_forum_details', {id: post.id}) }}" class="text-lg font-semibold text-base-content">
+                  {{ post.title }}
+                </a>
+                <p class="text-sm text-base-content/70 mt-1">{{ post.body|u.truncate(120, '...') }}</p>
+              </article>
+            {% else %}
+              <p class="text-sm text-base-content/70">Aucune publication récente.</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 {% endblock %}
