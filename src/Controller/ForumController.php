@@ -28,7 +28,7 @@ final class ForumController extends AbstractController
                 'parent' => false,
             ]
         );
-        
+        dump($forumService->generatePostArray());
         return $this->render(
             view: 'forum/index.html.twig',
             parameters: [

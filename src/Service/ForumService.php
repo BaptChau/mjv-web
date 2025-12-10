@@ -11,7 +11,7 @@ class ForumService
     {
     }
 
-    public function generatePostArray(?int $id = null): array
+    public function generatePostArray(?int $id = null, int $limit = 0, int $offset = 0): array
     {
         $posts = [];
 
@@ -21,7 +21,10 @@ class ForumService
                 $posts = [$post];
             }
         } else {
-            $posts = $this->forumPostRepository->findRootPosts();
+            $posts = $this->forumPostRepository->findRootPosts(
+                limit: $limit > 0 ? $limit : null,
+                offset: $offset
+            );
         }
 
         $data = [];

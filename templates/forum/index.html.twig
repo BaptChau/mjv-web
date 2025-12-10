@@ -30,7 +30,7 @@
         <div class="grid grid-cols-2 gap-4 text-neutral-content/80">
           <div class="rounded-2xl border border-neutral-content/20 p-4">
             <p class="text-xs uppercase tracking-[0.4em]">Sujets actifs</p>
-            <p class="text-3xl font-bold">{{ posts|length }}</p>
+            <p class="text-3xl font-bold">{{ totalPosts|default(posts|length) }}</p>
           </div>
           <div class="rounded-2xl border border-neutral-content/20 p-4">
             <p class="text-xs uppercase tracking-[0.4em]">Réponses</p>
@@ -75,6 +75,32 @@
           </p>
         {% endfor %}
       </div>
+
+      {% set currentPage = currentPage|default(1) %}
+      {% set totalPages = totalPages|default(1) %}
+      {% if totalPages > 1 %}
+        <div class="flex flex-col gap-4 items-center justify-between sm:flex-row">
+          <div>
+            {% if currentPage > 1 %}
+              <a href="{{ path('app_forum', {page: currentPage - 1}) }}" class="btn btn-outline btn-primary">
+                ← Précédent
+              </a>
+            {% else %}
+              <span class="btn btn-outline btn-disabled pointer-events-none opacity-50">← Précédent</span>
+            {% endif %}
+          </div>
+          <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Page {{ currentPage }} / {{ totalPages }}</p>
+          <div>
+            {% if currentPage < totalPages %}
+              <a href="{{ path('app_forum', {page: currentPage + 1}) }}" class="btn btn-outline btn-primary">
+                Suivant →
+              </a>
+            {% else %}
+              <span class="btn btn-outline btn-disabled pointer-events-none opacity-50">Suivant →</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
 
       <div class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
         <div class="card-body gap-4 md:flex md:items-center md:justify-between">
