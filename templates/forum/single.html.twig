@@ -11,7 +11,7 @@
         {% if post.createdAt is defined %}
           <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ post.createdAt|date('d/m/Y H:i') }}</span>
         {% endif %}
-        <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ answers|length }} réponse{{ answers|length <= 1 ? '' : 's' }}</span>
+        <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ answers_count|default(0) }} réponse{{ answers_count|default(0) <= 1 ? '' : 's' }}</span>
       </div>
       <div class="flex flex-wrap gap-3">
         <button
@@ -43,7 +43,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Réponses</p>
-              <h2 class="text-2xl font-bold text-base-content">{{ answers|length }} contribution{{ answers|length <= 1 ? '' : 's' }}</h2>
+              <h2 class="text-2xl font-bold text-base-content">{{ answers_count|default(0) }} contribution{{ answers_count|default(0) <= 1 ? '' : 's' }}</h2>
             </div>
             <button
               class="btn btn-sm btn-primary"
