@@ -1,0 +1,154 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block body %}
+<main class="bg-base-200 min-h-screen">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-12 lg:grid-cols-2">
+      <div class="space-y-6">
+        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Calendrier du club</p>
+        <h1 class="text-4xl font-extrabold leading-tight">Tous les matchs MJ Vaubécourt en un coup d'œil</h1>
+        <p class="text-neutral-content/80 text-lg">
+          Consultez les prochaines rencontres, revivez les résultats de la semaine passée
+          et filtrez par date pour retrouver un score précis.
+        </p>
+        <div class="grid grid-cols-2 gap-4 text-neutral-content/80">
+          <div class="rounded-2xl border border-neutral-content/20 p-4">
+            <p class="text-xs uppercase tracking-[0.4em]">Prochains matchs</p>
+            <p class="text-3xl font-bold">{{ upcomingMatches|length }}</p>
+          </div>
+          <div class="rounded-2xl border border-neutral-content/20 p-4">
+            <p class="text-xs uppercase tracking-[0.4em]">Résultats récents</p>
+            <p class="text-3xl font-bold">{{ lastWeekResults|length }}</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80"
+            alt="Calendrier des matchs MJ Vaubécourt"
+            class="w-full h-80 object-cover">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto px-4 space-y-8">
+      <div class="flex flex-col gap-2">
+        <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">À venir</p>
+        <h2 class="text-3xl font-bold text-base-content">Prochains matchs</h2>
+        <p class="text-base-content/70">Rendez-vous sur les terrains pour encourager nos équipes.</p>
+      </div>
+
+      <div class="grid gap-6">
+        {% for match in upcomingMatches %}
+          <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
+            <div class="card-body gap-4 md:flex md:items-center md:justify-between">
+              <div class="flex items-center gap-4">
+                <div class="text-center px-4 py-3 bg-base-200/70 rounded-2xl border border-base-300">
+                  <p class="text-3xl font-extrabold leading-none">{{ match.date|date('d') }}</p>
+                  <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.date|date('M') }}</p>
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
+                  <p class="text-xl font-semibold text-base-content">{{ match.opponent }}</p>
+                  <p class="text-sm text-base-content/70 uppercase tracking-[0.2em]">
+                    {{ match.location }} · {{ match.time }}
+                  </p>
+                </div>
+              </div>
+              <div class="badge badge-outline uppercase tracking-[0.3em] text-xs">{{ match.competition }}</div>
+            </div>
+          </article>
+        {% else %}
+          <p class="text-center text-base-content/60 py-12 rounded-3xl border border-dashed border-base-300 bg-base-100">
+            Aucun match annoncé pour le moment.
+          </p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-base-100">
+    <div class="max-w-5xl mx-auto px-4 space-y-8">
+      <div class="flex flex-col gap-2">
+        <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Récemment</p>
+        <h2 class="text-3xl font-bold text-base-content">Résultats de la semaine précédente</h2>
+        <p class="text-base-content/70">Les scores des derniers matchs joués par le club.</p>
+      </div>
+
+      <div class="grid gap-6">
+        {% for match in lastWeekResults %}
+          <article class="rounded-3xl border border-base-300 bg-base-200/40 p-6 md:flex md:items-center md:justify-between">
+            <div class="flex items-center gap-4">
+              <div class="text-center px-4 py-3 bg-base-100 rounded-2xl border border-base-300">
+                <p class="text-2xl font-bold leading-none">{{ match.date|date('d') }}</p>
+                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.date|date('M') }}</p>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
+                <p class="text-lg font-semibold text-base-content">{{ match.opponent }}</p>
+                <p class="text-xs text-base-content/60 uppercase tracking-[0.2em]">{{ match.location }} · {{ match.competition }}</p>
+              </div>
+            </div>
+            <div class="text-2xl font-bold text-base-content">{{ match.score }}</div>
+          </article>
+        {% else %}
+          <p class="text-center text-base-content/60 py-12 rounded-3xl border border-dashed border-base-300 bg-base-200/60">
+            Aucun résultat cette semaine.
+          </p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-24 pt-12 pb-16 min-h-[60vh] flex items-center">
+    <div class="max-w-5xl mx-auto px-4 w-full">
+      <div class="card bg-base-100 rounded-3xl shadow-xl border border-base-300 mt-8">
+        <div class="card-body gap-6">
+          <div class="flex flex-col gap-2">
+            <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Rechercher</p>
+            <h3 class="text-2xl font-bold text-base-content">Résultats par date</h3>
+            <p class="text-base-content/70">Choisissez une date pour afficher les scores correspondants.</p>
+          </div>
+
+          <form class="flex flex-col gap-4 sm:flex-row sm:items-end" method="get">
+            <label class="form-control w-full sm:max-w-xs">
+              <span class="label-text text-sm uppercase tracking-[0.3em] text-base-content/60">Date</span>
+              <input
+                class="input input-bordered w-full"
+                type="date"
+                name="date"
+                value="{{ selectedDate ? selectedDate|date('Y-m-d') : '' }}"
+              />
+            </label>
+            <button class="btn btn-primary" type="submit">Afficher</button>
+          </form>
+
+          <div class="grid gap-4">
+            {% if selectedDateResults is not empty %}
+              {% for match in selectedDateResults %}
+                <div class="rounded-2xl border border-base-300 p-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
+                    <p class="text-lg font-semibold text-base-content">{{ match.opponent }}</p>
+                    <p class="text-xs text-base-content/60 uppercase tracking-[0.2em]">{{ match.location }} · {{ match.competition }}</p>
+                  </div>
+                  <div class="text-xl font-bold text-base-content">{{ match.score }}</div>
+                </div>
+              {% endfor %}
+            {% elseif selectedDate %}
+              <p class="text-base-content/70">Aucun résultat pour la date sélectionnée.</p>
+            {% else %}
+              <p class="text-base-content/70">Sélectionnez une date pour afficher un résultat.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
