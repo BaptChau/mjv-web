@@ -1,7 +1,6 @@
 twig:
     file_name_pattern: '*.twig'
     globals:
-        breadcrumbs: '@App\Service\BreadcrumbsService'
         teamService: '@App\Service\TeamService'
     debug: true
 

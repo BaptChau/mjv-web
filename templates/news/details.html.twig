@@ -3,50 +3,86 @@
 {% block title %}{{ news.post.title }}{% endblock %}
 
 {% block body %}
-<section class="bg-base-100 py-10">
-  <!-- Hero Section Full Width -->
-  <div class="w-full bg-base-100 shadow-lg rounded-none overflow-hidden mb-8 border-b border-base-200">
-    <div class="max-w-6xl mx-auto">
-      {% if news.post.imgPath is defined and news.post.imgPath %}
-        <img src="{{ news.post.imgPath }}" alt="Image de l'actualité" class="w-full h-96 object-cover rounded-xl">
-      {% endif %}
-      <div class="px-8 py-10">
-        <h1 class="text-4xl font-bold font-serif text-base-content mb-4">{{ news.post.title }}</h1>
-        <p class="text-sm text-base-content/70 mb-6">
-          Par <span class="font-semibold">{{ news.post.author }}</span>
+<main class="bg-base-200 min-h-screen">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-10 lg:grid-cols-2">
+      <div class="space-y-6">
+        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Actualités · Détail</p>
+        <h1 class="text-4xl font-extrabold leading-tight">{{ news.post.title }}</h1>
+        <div class="flex flex-wrap gap-3 text-sm uppercase tracking-[0.3em] text-neutral-content/70">
+          <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ news.post.author }}</span>
           {% if news.post.createdAt is defined %}
-            | {{ news.post.createdAt|date('d F Y') }}
+            <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ news.post.createdAt|date('d/m/Y') }}</span>
           {% endif %}
-        </p>
-        <div class="text-lg text-base-content leading-relaxed font-serif mb-4">
-          {{ news.post.content|nl2br }}
+          <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ news.comments|default([])|length }} commentaire{{ news.comments|default([])|length <= 1 ? '' : 's' }}</span>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="{{ path('app_news') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Retour aux actualités</a>
+          <a href="{{ path('app_news_archives') }}" class="btn btn-primary btn-wide">Voir les archives</a>
+        </div>
+      </div>
+      <div>
+        <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
+          {% if news.post.imgPath is defined and news.post.imgPath %}
+            <img src="{{ news.post.imgPath }}" alt="Image de l'actualité" class="w-full h-80 object-cover">
+          {% else %}
+            <div class="w-full h-80 flex items-center justify-center bg-base-100/10 text-neutral-content/70">
+              Visuel à venir
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="max-w-3xl mx-auto px-4">
-    {# Comments Section #}
-    <div class="bg-base-100 rounded-lg shadow p-6 border border-base-200">
-      <h2 class="text-2xl font-semibold mb-4 text-base-content">Commentaires</h2>
-      {% if news.comments is defined and news.comments|length > 0 %}
-        <ul class="space-y-4">
-          {% for comment in news.comments %}
-            <li class="border-b border-base-200 pb-3">
-              <div class="text-sm text-base-content mb-1">
-                <span class="font-semibold">{{ comment.author }}</span>
-                {% if comment.createdAt is defined %}
-                  <span class="text-xs text-base-content/50">| {{ comment.createdAt|date('d/m/Y H:i') }}</span>
-                {% endif %}
-              </div>
-              <div class="text-base text-base-content">{{ comment.content }}</div>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="text-base-content/60">Aucun commentaire pour cette actualité.</p>
-      {% endif %}
+  <section class="py-16">
+    <div class="max-w-4xl mx-auto px-4 space-y-12">
+      <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
+        <div class="card-body space-y-4">
+          <p class="text-base text-base-content/80 leading-relaxed">{{ news.post.content|nl2br }}</p>
+        </div>
+      </article>
+
+      <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
+        <div class="card-body space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Commentaires</p>
+              <h2 class="text-2xl font-bold text-base-content">{{ news.comments|default([])|length }} contribution{{ news.comments|default([])|length <= 1 ? '' : 's' }}</h2>
+            </div>
+          </div>
+
+          {% if news.comments is defined and news.comments|length > 0 %}
+            <ul class="space-y-4">
+              {% for comment in news.comments %}
+                <li class="rounded-2xl border border-base-300 p-4">
+                  <div class="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-base-content/60 mb-2">
+                    <span>{{ comment.author }}</span>
+                    {% if comment.createdAt is defined %}
+                      <span>{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                    {% endif %}
+                  </div>
+                  <p class="text-base text-base-content/80">{{ comment.content }}</p>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-base-content/70">Aucun commentaire pour cette actualité.</p>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="card bg-base-100 rounded-3xl shadow-lg border border-base-300">
+        <div class="card-body items-start gap-4 md:flex md:items-center md:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Une question sur un article ?</p>
+            <h3 class="text-2xl font-bold text-base-content">Contactez le club directement.</h3>
+            <p class="text-base-content/70">Nous restons disponibles pour toute précision ou retour.</p>
+          </div>
+          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary">Nous écrire</a>
+        </div>
+      </article>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 {% endblock %}

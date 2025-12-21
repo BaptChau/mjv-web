@@ -1,0 +1,100 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Archives des actualités{% endblock %}
+
+{% block body %}
+<main class="bg-base-200 min-h-screen">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-12 lg:grid-cols-2">
+      <div class="space-y-6">
+        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Archives</p>
+        <h1 class="text-4xl font-extrabold leading-tight">Toutes les actualités du club</h1>
+        <p class="text-neutral-content/80 text-lg">
+          Retrouvez l'ensemble des articles publiés par le MJ Vaubécourt.
+        </p>
+        <div class="grid grid-cols-2 gap-4 text-neutral-content/80">
+          <div class="rounded-2xl border border-neutral-content/20 p-4">
+            <p class="text-xs uppercase tracking-[0.4em]">Articles</p>
+            <p class="text-3xl font-bold">{{ total|default(newsList|length) }}</p>
+          </div>
+          <div class="rounded-2xl border border-neutral-content/20 p-4">
+            <p class="text-xs uppercase tracking-[0.4em]">Page</p>
+            <p class="text-3xl font-bold">{{ page }}</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80"
+            alt="Archives des actualités"
+            class="w-full h-80 object-cover">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-base-100">
+    <div class="max-w-5xl mx-auto px-4 space-y-8">
+      <div class="flex flex-col gap-2">
+        <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Archives</p>
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <h2 class="text-3xl font-bold text-base-content">Toutes les actualités</h2>
+          <div class="shadow-md rounded-2xl bg-base-100 px-3 py-2 border border-base-300 w-full max-w-xs sm:w-auto">
+            <form method="get" class="flex items-center gap-2 w-full">
+              <label for="perPage" class="sr-only">Éléments par page</label>
+              <select name="perPage" id="perPage"
+                class="block py-1 px-0 w-full text-xs text-base-content bg-transparent border-0 border-b-2 border-base-200 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+                onchange="this.form.submit()">
+                <option value="5" {{ perPage == 5 ? 'selected' : '' }}>5 / page</option>
+                <option value="10" {{ perPage == 10 ? 'selected' : '' }}>10 / page</option>
+                <option value="20" {{ perPage == 20 ? 'selected' : '' }}>20 / page</option>
+              </select>
+              <input type="hidden" name="page" value="1" />
+            </form>
+          </div>
+        </div>
+        <p class="text-base-content/70">Retrouvez toutes les publications du club et leurs archives.</p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for news in newsList %}
+          {% include 'components/news/news.html.twig' with {news: news} %}
+        {% else %}
+          <p class="col-span-full text-center text-base-content/60 py-12 rounded-3xl border border-dashed border-base-300 bg-base-200/60">
+            Aucune actualité pour le moment.
+          </p>
+        {% endfor %}
+      </div>
+
+      {% if maxPage > 1 %}
+        <div class="flex flex-col gap-4 items-center justify-between sm:flex-row">
+          <div>
+            {% if page > 1 %}
+              <a href="?page={{ page - 1 }}&perPage={{ perPage }}" class="btn btn-outline btn-primary">
+                ← Précédent
+              </a>
+            {% else %}
+              <span class="btn btn-outline btn-disabled pointer-events-none opacity-50">← Précédent</span>
+            {% endif %}
+          </div>
+          <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Page {{ page }} / {{ maxPage }}</p>
+          <div>
+            {% if page < maxPage %}
+              <a href="?page={{ page + 1 }}&perPage={{ perPage }}" class="btn btn-outline btn-primary">
+                Suivant →
+              </a>
+            {% else %}
+              <span class="btn btn-outline btn-disabled pointer-events-none opacity-50">Suivant →</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="flex justify-center">
+        <a href="{{ path('app_news') }}" class="btn btn-outline btn-primary">Retour aux actualités</a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
