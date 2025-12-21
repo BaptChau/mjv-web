@@ -3,100 +3,74 @@
 {% block title %}Actualités{% endblock %}
 
 {% block body %}
-<div class="max-w-12xl mx-auto w-full px-2 py-8">
-  <h1 class="text-3xl font-bold text-center mb-8 text-base-content">Dernières actualités</h1>
-
-  {% if lastNews is defined and lastNews|length > 0 %}
-    <div class="carousel w-full mb-12 relative py-5">
-      <div class="absolute inset-0 z-0 backdrop-blur-md bg-gray-800/60 dark:bg-gray-900/70"></div>
-      {% for news in lastNews %}
-        <div id="slide-{{ loop.index }}" class="carousel-item relative w-full z-10 pb-5">
-          <div class="w-full">
-            {% include 'components/news/news.html.twig' with {news: news} %}
+<main class="bg-base-200 min-h-screen">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-12 lg:grid-cols-2">
+      <div class="space-y-6">
+        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Actualités du club</p>
+        <h1 class="text-4xl font-extrabold leading-tight">Toute la vie du MJ Vaubécourt, semaine après semaine</h1>
+        <p class="text-neutral-content/80 text-lg">
+          Résumés de match, portraits, événements et vie du club : retrouvez chaque moment fort.
+        </p>
+        <div class="grid grid-cols-2 gap-4 text-neutral-content/80">
+          <div class="rounded-2xl border border-neutral-content/20 p-4">
+            <p class="text-xs uppercase tracking-[0.4em]">Articles</p>
+            <p class="text-3xl font-bold">{{ total|default(0) }}</p>
           </div>
-          <div class="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2">
-            <a href="#slide-{{ loop.index0 == 0 ? lastNews|length : loop.index0 }}" class="btn btn-circle btn-sm">❮</a>
-            <a href="#slide-{{ loop.index == lastNews|length ? 1 : loop.index + 1 }}" class="btn btn-circle btn-sm">❯</a>
+          <div class="rounded-2xl border border-neutral-content/20 p-4">
+            <p class="text-xs uppercase tracking-[0.4em]">Dernières actus</p>
+            <p class="text-3xl font-bold">{{ lastNews|length }}</p>
           </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  <h2 class="text-3xl font-bold text-center mb-8 text-base-content">Toutes les actualités</h2>
-
-  <div class="flex justify-end mb-6">
-    <div class="shadow-md rounded-lg bg-base-100 px-2 py-1 w-full max-w-xs sm:w-auto">
-      <form method="get" class="flex items-center gap-1 w-full">
-        <label for="perPage" class="sr-only">Éléments par page</label>
-        <select name="perPage" id="perPage"
-          class="block py-1 px-0 w-full text-xs text-base-content bg-transparent border-0 border-b-2 border-base-200 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
-          onchange="this.form.submit()">
-          <option value="5" {{ perPage == 5 ? 'selected' : '' }}>5 
-            <span class="text-base-content/70 text-xs">/page</span>
-          </option>
-          <option value="10" {{ perPage == 10 ? 'selected' : '' }}>10 
-            <span class="text-base-content/70 text-xs">/page</span>
-          </option>
-          <option value="20" {{ perPage == 20 ? 'selected' : '' }}>20 
-            <span class="text-base-content/70 text-xs">/page</span>
-          </option>
-        </select>
-        <input type="hidden" name="page" value="1" />
-      </form>
-    </div>
-  </div>
-
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-    {% for news in newsList %}
-      <div class="flex flex-col h-full">
-        <div class="flex-1 flex flex-col">
-          {% include 'components/news/news.html.twig' with {news: news} %}
         </div>
       </div>
-    {% else %}
-      <div class="col-span-full text-center text-base-content/60">Aucune actualité pour le moment.</div>
-    {% endfor %}
-  </div>
+      <div>
+        <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80"
+            alt="Actualités MJ Vaubécourt"
+            class="w-full h-80 object-cover">
+        </div>
+      </div>
+    </div>
+  </section>
 
-  {% if maxPage > 1 %}
-    <nav aria-label="Page navigation" class="flex justify-center mt-8">
-      <ul class="inline-flex -space-x-px text-base h-10">
-        {# Previous button #}
-        <li>
-          <a href="?page={{ page > 1 ? page-1 : 1 }}&perPage={{ perPage }}"
-             class="flex items-center justify-center px-4 h-10 ms-0 leading-tight border border-e-0 rounded-s-lg
-                    {{ page == 1 ? 'text-base-content/40 bg-base-200 cursor-not-allowed' : 'text-base-content bg-base-100 hover:bg-base-200 hover:text-base-content' }}"
-             {% if page == 1 %}aria-disabled="true" tabindex="-1"{% endif %}>
-            Précédent
-          </a>
-        </li>
-        {# Page numbers #}
-        {% set start = page > 2 ? page-2 : 1 %}
-        {% set end = (page + 2 < maxPage) ? page+2 : maxPage %}
-        {% for i in start..end %}
-          <li>
-            <a href="?page={{ i }}&perPage={{ perPage }}"
-               class="flex items-center justify-center px-4 h-10 leading-tight border
-                      {{ i == page
-                        ? 'text-primary border-primary bg-primary/10 font-bold'
-                        : 'text-base-content bg-base-100 hover:bg-base-200 hover:text-base-content border-base-200'
-                      }}">
-              {{ i }}
-            </a>
-          </li>
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto px-4 space-y-8">
+      <div class="flex flex-col gap-2">
+        <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">À la une</p>
+        <h2 class="text-3xl font-bold text-base-content">Dernières actualités</h2>
+        <p class="text-base-content/70">Les moments clés du club mis en avant.</p>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-2">
+        {% for news in lastNews %}
+          {% include 'components/news/news.html.twig' with {news: news} %}
+        {% else %}
+          <p class="text-center text-base-content/60 py-12 rounded-3xl border border-dashed border-base-300 bg-base-100">
+            Aucune actualité récente.
+          </p>
         {% endfor %}
-        {# Next button #}
-        <li>
-          <a href="?page={{ page < maxPage ? page+1 : maxPage }}&perPage={{ perPage }}"
-             class="flex items-center justify-center px-4 h-10 leading-tight border rounded-e-lg
-                    {{ page == maxPage ? 'text-base-content/40 bg-base-200 cursor-not-allowed' : 'text-base-content bg-base-100 hover:bg-base-200 hover:text-base-content' }}"
-             {% if page == maxPage %}aria-disabled="true" tabindex="-1"{% endif %}>
-            Suivant
-          </a>
-        </li>
-      </ul>
-    </nav>
-  {% endif %}
-</div>
+      </div>
+
+      <div class="flex justify-center">
+        <a href="{{ path('app_news_archives') }}" class="btn btn-outline btn-primary">Voir toutes les archives</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
+        <div class="card-body gap-4 md:flex md:items-center md:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Rester informé</p>
+            <h3 class="text-2xl font-bold text-base-content">Recevez les prochaines actus du club.</h3>
+            <p class="text-base-content/70">Inscrivez-vous auprès du club pour être averti des nouveaux articles.</p>
+          </div>
+          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary">Nous contacter</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 {% endblock %}

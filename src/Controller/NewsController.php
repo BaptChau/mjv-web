@@ -13,14 +13,26 @@ final class NewsController extends AbstractController
     #[Route('/actualites', name: 'app_news', methods:[Request::METHOD_GET])]
     public function index(Request $request, NewsService $newsService): Response
     {
+        $totalPagination = $newsService->getPaginatedNews(1, 1);
+
+        return $this->render('news/index.html.twig', [
+            'lastNews' => $newsService->getLastNNews(6),
+            'total' => $totalPagination['total'] ?? 0,
+        ]);
+    }
+
+    #[Route('/actualites/archives', name: 'app_news_archives', methods:[Request::METHOD_GET])]
+    public function archives(Request $request, NewsService $newsService): Response
+    {
         $page = max(1, (int) $request->query->get('page', 1));
-        $perPage = in_array((int)$request->query->get('perPage', 10), [5, 10, 20]) ? (int)$request->query->get('perPage', 10) : 10;
+        $perPage = in_array((int) $request->query->get('perPage', 10), [5, 10, 20], true)
+            ? (int) $request->query->get('perPage', 10)
+            : 10;
 
         $pagination = $newsService->getPaginatedNews($page, $perPage);
 
-        return $this->render('news/index.html.twig', [
+        return $this->render('news/archives.html.twig', [
             'newsList' => $pagination['items'],
-            'lastNews' => $newsService->getLastNNews(5),
             'page' => $page,
             'perPage' => $perPage,
             'total' => $pagination['total'],
