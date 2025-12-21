@@ -23,6 +23,7 @@ class AppFixtures extends Fixture
             $post->setParentId(null);
             $post->setFlag((bool) rand(0, 1));
             $manager->persist($post);
+            $manager->flush();
 
             $numAnswers = rand(3, 25);
             for ($j = 1; $j <= $numAnswers; $j++) {

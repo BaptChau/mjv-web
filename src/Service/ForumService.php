@@ -45,4 +45,39 @@ class ForumService
         return $this->forumPostRepository->findLatestRootPosts($n);
     }
 
+    public function getAnswersTree(int $postId): array
+    {
+        return $this->buildAnswersTree($postId);
+    }
+
+    private function buildAnswersTree(int $parentId): array
+    {
+        $children = $this->forumPostRepository->findChildren($parentId);
+        dump($children);
+        $tree = [];
+
+        foreach ($children as $child) {
+            $tree[] = [
+                'post' => $child,
+                'children' => $this->buildAnswersTree($child->getId()),
+            ];
+        }
+
+        return $tree;
+    }
+
+    public function countAnswersTree(array $tree): int
+    {
+        $count = 0;
+
+        foreach ($tree as $node) {
+            $count++;
+            if (!empty($node['children'])) {
+                $count += $this->countAnswersTree($node['children']);
+            }
+        }
+
+        return $count;
+    }
+
 }

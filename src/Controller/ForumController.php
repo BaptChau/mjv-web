@@ -48,7 +48,8 @@ final class ForumController extends AbstractController
             );
         }
 
-        $answers = $forumPostRepository->findBy(['parentId' => $id]);
+        $answersTree = $forumService->getAnswersTree($id);
+        $answersCount = $forumService->countAnswersTree($answersTree);
 
         $answer = new ForumPost();
         $answerForm = $this->createForm(
@@ -65,7 +66,8 @@ final class ForumController extends AbstractController
             view: 'forum/single.html.twig',
             parameters: [
                 'post' => $post,
-                'answers' => $answers, // Pass answers to Twig
+                'answers' => $answersTree,
+                'answers_count' => $answersCount,
                 'answer_form' => $answerForm->createView(),
             ]
             );
