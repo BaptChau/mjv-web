@@ -27,9 +27,16 @@ class ForumService
             );
         }
 
+        $postIds = [];
+        foreach ($posts as $post) {
+            $postIds[] = $post->getId();
+        }
+        $childrenCounts = $this->forumPostRepository->countChildrenForParents($postIds);
+
         $data = [];
         foreach ($posts as $post) {
-            $childrenCount = $this->forumPostRepository->countChildren($post->getId());
+            $postId = $post->getId();
+            $childrenCount = $childrenCounts[$postId] ?? 0;
             $data[$post->getId()] = [
                 'post' => $post,
                 'href' => $this->router->generate('app_forum_details', ['id' => $post->getId()]),
@@ -53,7 +60,7 @@ class ForumService
     private function buildAnswersTree(int $parentId): array
     {
         $children = $this->forumPostRepository->findChildren($parentId);
-        dump($children);
+
         $tree = [];
 
         foreach ($children as $child) {
