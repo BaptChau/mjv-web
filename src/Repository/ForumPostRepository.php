@@ -36,6 +36,32 @@ class ForumPostRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param array<int> $parentIds
+     * @return array<int,int> key = parent id, value = children count
+     */
+    public function countChildrenForParents(array $parentIds): array
+    {
+        if ($parentIds === []) {
+            return [];
+        }
+
+        $rows = $this->createQueryBuilder('f')
+            ->select('f.parentId AS parent_id, COUNT(f.id) AS children_count')
+            ->where('f.parentId IN (:parentIds)')
+            ->setParameter('parentIds', $parentIds)
+            ->groupBy('f.parentId')
+            ->getQuery()
+            ->getArrayResult();
+
+        $counts = [];
+        foreach ($rows as $row) {
+            $counts[(int) $row['parent_id']] = (int) $row['children_count'];
+        }
+
+        return $counts;
+    }
+
+    /**
      * @return array<ForumPost>
      */
     public function findRootPosts(?int $limit = null, int $offset = 0): array

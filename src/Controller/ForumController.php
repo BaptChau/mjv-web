@@ -15,8 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ForumController extends AbstractController
 {
     #[Route('/forum', name: 'app_forum', methods: [Request::METHOD_GET])]
-    public function index(ForumService $forumService): Response
+    public function index(ForumService $forumService, ForumPostRepository $forumPostRepository, Request $request): Response
     {
+        $limit = 10;
+        $currentPage = max(1, (int) $request->query->get('page', 1));
+        $totalPosts = $forumPostRepository->countRootPosts();
+        $totalPages = max(1, (int) ceil($totalPosts / $limit));
+        if ($currentPage > $totalPages) {
+            $currentPage = $totalPages;
+        }
+        $offset = ($currentPage - 1) * $limit;
+
         $newPost = new ForumPost();
         
         $postForm = $this->createForm(
@@ -28,12 +37,18 @@ final class ForumController extends AbstractController
                 'parent' => false,
             ]
         );
-        dump($forumService->generatePostArray());
+    
         return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
-                'posts' => $forumService->generatePostArray(),
+                'posts' => $forumService->generatePostArray(
+                    limit: $limit,
+                    offset: $offset
+                ),
                 'form' => $postForm->createView(),
+                'currentPage' => $currentPage,
+                'totalPages' => $totalPages,
+                'totalPosts' => $totalPosts,
             ]
         );
     }
@@ -104,8 +119,17 @@ final class ForumController extends AbstractController
     }
 
     #[Route(path: '/answer/{postId}', name: 'app_forum_answer', methods:[Request::METHOD_GET])]
-    public function getAnswerForm(int $postId, ForumService $forumService): Response
+    public function getAnswerForm(int $postId, ForumService $forumService, ForumPostRepository $forumPostRepository, Request $request): Response
     {
+        $limit = 10;
+        $currentPage = max(1, (int) $request->query->get('page', 1));
+        $totalPosts = $forumPostRepository->countRootPosts();
+        $totalPages = max(1, (int) ceil($totalPosts / $limit));
+        if ($currentPage > $totalPages) {
+            $currentPage = $totalPages;
+        }
+        $offset = ($currentPage - 1) * $limit;
+
         $answer = new ForumPost();
 
             $postForm = $this->createForm(
@@ -120,8 +144,14 @@ final class ForumController extends AbstractController
                 return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
-                'posts' => $forumService->generatePostArray(),
+                'posts' => $forumService->generatePostArray(
+                    limit: $limit,
+                    offset: $offset
+                ),
                 'form' => $postForm->createView(),
+                'currentPage' => $currentPage,
+                'totalPages' => $totalPages,
+                'totalPosts' => $totalPosts,
             ]
         );
     }
