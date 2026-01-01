@@ -2,30 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\ForumPost;
+use App\Entity\NewsComment;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ForumPostForm extends AbstractType
+class NewsCommentForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        
-        if (empty($options['parent']) || $options['parent'] === false) {
-            $builder->add('title');
-        }
         $builder
-            ->add('body')
+            ->add('content', TextareaType::class)
             ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ForumPost::class,
-            'parent' => false, // custom option
+            'data_class' => NewsComment::class,
         ]);
     }
 }

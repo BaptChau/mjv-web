@@ -18,13 +18,19 @@
           Lancez une nouvelle discussion ou rejoignez celles en cours.
         </p>
         <div class="flex flex-wrap gap-3">
-          <button
-            class="btn btn-primary btn-wide"
-            onclick="document.getElementById('post-modal').showModal()"
-            type="button"
-          >
-            Nouvelle publication
-          </button>
+          {% if is_granted('ROLE_USER') %}
+            <button
+              class="btn btn-primary btn-wide"
+              onclick="document.getElementById('post-modal').showModal()"
+              type="button"
+            >
+              Nouvelle publication
+            </button>
+          {% else %}
+            <a href="{{ path('app_auth_google', {redirect: app.request.uri}) }}" class="btn btn-primary btn-wide">
+              Se connecter avec Google
+            </a>
+          {% endif %}
           <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Contacter le club</a>
         </div>
         <div class="grid grid-cols-2 gap-4 text-neutral-content/80">
@@ -55,13 +61,19 @@
         <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Discussions</p>
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <h2 class="text-3xl font-bold text-base-content">Les dernières publications</h2>
-          <button
-            class="btn btn-primary"
-            onclick="document.getElementById('post-modal').showModal()"
-            type="button"
-          >
-            Publier un sujet
-          </button>
+          {% if is_granted('ROLE_USER') %}
+            <button
+              class="btn btn-primary"
+              onclick="document.getElementById('post-modal').showModal()"
+              type="button"
+            >
+              Publier un sujet
+            </button>
+          {% else %}
+            <a href="{{ path('app_auth_google', {redirect: app.request.uri}) }}" class="btn btn-primary">
+              Se connecter pour publier
+            </a>
+          {% endif %}
         </div>
         <p class="text-base-content/70">Rejoignez les échanges entre bénévoles, parents et joueurs et trouvez rapidement des réponses.</p>
       </div>
@@ -121,7 +133,17 @@
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('post-modal').close()" type="button">✕</button>
     </form>
-    {% include 'forum/form.html.twig' with {form: form} %}
+    {% if is_granted('ROLE_USER') %}
+      {% include 'forum/form.html.twig' with {form: form} %}
+    {% else %}
+      <div class="space-y-4">
+        <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Connexion requise</p>
+        <h3 class="text-2xl font-bold text-base-content">Connectez-vous pour publier un sujet.</h3>
+        <a href="{{ path('app_auth_google', {redirect: app.request.uri}) }}" class="btn btn-primary w-full">
+          Se connecter avec Google
+        </a>
+      </div>
+    {% endif %}
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>

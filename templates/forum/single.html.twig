@@ -14,11 +14,17 @@
         <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ answers_count|default(0) }} réponse{{ answers_count|default(0) <= 1 ? '' : 's' }}</span>
       </div>
       <div class="flex flex-wrap gap-3">
-        <button
-          class="btn btn-primary btn-wide"
-          onclick="document.getElementById('answer-modal-main').showModal();return false;"
-          type="button"
-        >Répondre</button>
+        {% if is_granted('ROLE_USER') %}
+          <button
+            class="btn btn-primary btn-wide"
+            onclick="document.getElementById('answer-modal-main').showModal();return false;"
+            type="button"
+          >Répondre</button>
+        {% else %}
+          <a href="{{ path('app_auth_google', {redirect: app.request.uri}) }}" class="btn btn-primary btn-wide">
+            Se connecter pour répondre
+          </a>
+        {% endif %}
         <a href="{{ path('app_forum') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Retour au forum</a>
       </div>
     </div>
@@ -45,11 +51,17 @@
               <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Réponses</p>
               <h2 class="text-2xl font-bold text-base-content">{{ answers_count|default(0) }} contribution{{ answers_count|default(0) <= 1 ? '' : 's' }}</h2>
             </div>
-            <button
-              class="btn btn-sm btn-primary"
-              onclick="document.getElementById('answer-modal-main').showModal();return false;"
-              type="button"
-            >Ajouter une réponse</button>
+            {% if is_granted('ROLE_USER') %}
+              <button
+                class="btn btn-sm btn-primary"
+                onclick="document.getElementById('answer-modal-main').showModal();return false;"
+                type="button"
+              >Ajouter une réponse</button>
+            {% else %}
+              <a href="{{ path('app_auth_google', {redirect: app.request.uri}) }}" class="btn btn-sm btn-primary">
+                Se connecter
+              </a>
+            {% endif %}
           </div>
 
           {% if answers is not empty %}
@@ -83,7 +95,17 @@
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('answer-modal-main').close()" type="button">✕</button>
     </form>
-    {% include 'forum/form.html.twig' with {form: answer_form, title: 'Répondre'} %}
+    {% if is_granted('ROLE_USER') %}
+      {% include 'forum/form.html.twig' with {form: answer_form, title: 'Répondre'} %}
+    {% else %}
+      <div class="space-y-4">
+        <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Connexion requise</p>
+        <h3 class="text-2xl font-bold text-base-content">Connectez-vous pour répondre.</h3>
+        <a href="{{ path('app_auth_google', {redirect: app.request.uri}) }}" class="btn btn-primary w-full">
+          Se connecter avec Google
+        </a>
+      </div>
+    {% endif %}
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>

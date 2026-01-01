@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ForumPost;
+use App\Entity\User;
 use App\Form\ForumPostForm;
 use App\Repository\ForumPostRepository;
 use App\Service\ForumService;
@@ -28,7 +29,7 @@ final class ForumController extends AbstractController
                 'parent' => false,
             ]
         );
-        dump($forumService->generatePostArray());
+
         return $this->render(
             view: 'forum/index.html.twig',
             parameters: [
@@ -82,6 +83,13 @@ final class ForumController extends AbstractController
     )]
     public function postNewPost(?int $postId, Request $request, EntityManagerInterface $em): Response
     {   
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_auth_google', [
+                'redirect' => $request->headers->get('referer') ?? $this->generateUrl('app_forum'),
+            ]);
+        }
+
         $sanitizedPostId = $postId === 0 ? null : $postId;
 
         $post = new ForumPost();
@@ -90,6 +98,7 @@ final class ForumController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
+            $post->setAuthor($user->getName() ?? $user->getUserIdentifier());
             $post->setFlag(false);
             if ($sanitizedPostId != null) {
                 $post->setParentId($sanitizedPostId);

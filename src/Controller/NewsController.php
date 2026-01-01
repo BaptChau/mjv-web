@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\NewsComment;
+use App\Entity\User;
+use App\Form\NewsCommentForm;
+use App\Repository\NewsPostRepository;
 use App\Service\NewsService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,8 +53,49 @@ final class NewsController extends AbstractController
             return $this->render('news/error.html.twig');
         }
 
+        $comment = new NewsComment();
+        $commentForm = $this->createForm(NewsCommentForm::class, $comment, [
+            'action' => $this->generateUrl('app_news_comment', ['id' => $id]),
+            'method' => Request::METHOD_POST,
+        ]);
+
         return $this->render('news/details.html.twig', [
             'news' => $news,
+            'comment_form' => $commentForm->createView(),
         ]);
+    }
+
+    #[Route('/actualites/{id}/comment', name: 'app_news_comment', methods:[Request::METHOD_POST])]
+    public function comment(
+        int $id,
+        Request $request,
+        NewsPostRepository $newsPostRepository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_auth_google', [
+                'redirect' => $request->headers->get('referer') ?? $this->generateUrl('app_news_details', ['id' => $id]),
+            ]);
+        }
+
+        $post = $newsPostRepository->findOneById($id);
+        if ($post === null) {
+            return $this->redirectToRoute('app_news');
+        }
+
+        $comment = new NewsComment();
+        $form = $this->createForm(NewsCommentForm::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $comment->setAuthor($user->getName() ?? $user->getUserIdentifier());
+            $comment->setNewsId($post);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_news_details', ['id' => $id]);
     }
 }

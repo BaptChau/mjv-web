@@ -1,0 +1,30 @@
+security:
+    password_hashers:
+        App\Entity\User: 'auto'
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticators:
+                - App\Security\GoogleAuthenticator
+            entry_point: App\Security\GoogleAuthenticator
+            logout:
+                path: app_logout
+                target: app_main
+
+    access_control:
+        - { path: ^/auth/google, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
+        - { path: ^/forum/post, roles: ROLE_USER, methods: [POST] }
+        - { path: ^/actualites/\d+/comment, roles: ROLE_USER, methods: [POST] }
