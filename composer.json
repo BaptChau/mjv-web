@@ -12,28 +12,28 @@
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/orm": "^3.6.2",
         "google/apiclient": "^2.19",
-        "symfony/console": "7.3.*",
-        "symfony/dotenv": "7.3.*",
+        "symfony/console": "7.4.*",
+        "symfony/dotenv": "7.4.*",
         "symfony/flex": "^2.10",
-        "symfony/form": "7.3.*",
-        "symfony/framework-bundle": "7.3.*",
-        "symfony/runtime": "7.3.*",
-        "symfony/security-bundle": "7.3.*",
+        "symfony/form": "7.4.*",
+        "symfony/framework-bundle": "7.4.*",
+        "symfony/runtime": "7.4.*",
+        "symfony/security-bundle": "7.4.*",
         "symfony/stimulus-bundle": "^2.32",
-        "symfony/twig-bundle": "7.3.*",
+        "symfony/twig-bundle": "7.4.*",
         "symfony/ux-turbo": "^2.32",
-        "symfony/validator": "7.3.*",
+        "symfony/validator": "7.4.*",
         "symfony/webpack-encore-bundle": "^2.4",
-        "symfony/yaml": "7.3.*",
+        "symfony/yaml": "7.4.*",
         "twig/extra-bundle": "^3.23",
         "twig/string-extra": "^3.23"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.3.1",
-        "symfony/debug-bundle": "7.3.*",
+        "symfony/debug-bundle": "7.4.*",
         "symfony/maker-bundle": "^1.66",
-        "symfony/stopwatch": "7.3.*",
-        "symfony/web-profiler-bundle": "7.3.*"
+        "symfony/stopwatch": "7.4.*",
+        "symfony/web-profiler-bundle": "7.4.*"
     },
     "config": {
         "allow-plugins": {
@@ -82,7 +82,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.3.*"
+            "require": "7.4.*"
         }
     }
 }
