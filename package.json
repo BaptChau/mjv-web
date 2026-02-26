@@ -3,15 +3,15 @@
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
         "@hotwired/stimulus": "^3.0.0",
-        "@hotwired/turbo": "^7.1.1 || ^8.0",
-        "@symfony/stimulus-bridge": "^3.2.0 || ^4.0.0",
+        "@hotwired/turbo": "^8.0.23",
+        "@symfony/stimulus-bridge": "^4.0.1",
         "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
-        "@symfony/webpack-encore": "^5.0.0",
-        "core-js": "^3.38.0",
-        "daisyui": "^5.0.43",
+        "@symfony/webpack-encore": "^5.3.1",
+        "core-js": "^3.48.0",
+        "daisyui": "^5.5.19",
         "regenerator-runtime": "^0.13.9",
-        "webpack": "^5.74.0",
-        "webpack-cli": "^5.1.0"
+        "webpack": "^5.105.3",
+        "webpack-cli": "^6.0.1"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -22,10 +22,10 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "@tailwindcss/postcss": "^4.1.10",
-        "@tailwindcss/vite": "^4.1.10",
+        "@tailwindcss/postcss": "^4.2.1",
+        "@tailwindcss/vite": "^4.2.1",
         "postcss": "^8.5.6",
         "postcss-loader": "^8.1.1",
-        "tailwindcss": "^4.1.10"
+        "tailwindcss": "^4.2.1"
     }
 }
