@@ -2,6 +2,7 @@ install:
 	docker compose build
 
 build:
+	rm -f composer.lock
 	docker compose up --build -d
 
 up:
