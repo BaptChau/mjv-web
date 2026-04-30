@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -28,19 +29,32 @@ class CreateAdminUserCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('email', InputArgument::REQUIRED, 'Admin email')
-            ->addArgument('password', InputArgument::REQUIRED, 'Admin password');
+            ->addArgument('email', InputArgument::REQUIRED, 'Admin email');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
+        $passwordQuestion = new Question('Admin password: ');
+        $passwordQuestion->setHidden(true);
+        $passwordQuestion->setHiddenFallback(false);
+        $passwordQuestion->setValidator(static function (?string $value): string {
+            if (null === $value || '' === trim($value)) {
+                throw new \RuntimeException('The password cannot be empty.');
+            }
+
+            return $value;
+        });
+
+        $helper = $this->getHelper('question');
+        $plainPassword = $helper->ask($input, $output, $passwordQuestion);
+
         $user = new AdminUser();
         $user->setEmail($input->getArgument('email'));
         $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword(
-            $this->passwordHasher->hashPassword($user, $input->getArgument('password'))
+            $this->passwordHasher->hashPassword($user, $plainPassword)
         );
 
         $this->entityManager->persist($user);

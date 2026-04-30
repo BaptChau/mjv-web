@@ -7,7 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class NewsPostCrudController extends AbstractCrudController
@@ -22,8 +22,11 @@ class NewsPostCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('title', 'Titre');
         yield TextField::new('author', 'Auteur');
-        yield TextareaField::new('content', 'Contenu');
-        yield TextField::new('imgPath', 'Image');
+        yield TextEditorField::new('content', 'Contenu');
+        yield ImageField::new('imgPath', 'Image')
+            ->setBasePath('uploads/news')
+            ->setUploadDir('public/uploads/news')
+            ->setRequired(false);
         yield DateTimeField::new('createdAt', 'Cree le')->hideOnForm();
         yield DateTimeField::new('updateAt', 'Mis a jour le')->hideOnForm();
     }
