@@ -7,6 +7,7 @@ use App\Entity\ForumPost;
 use App\Entity\NewsComment;
 use App\Entity\NewsPost;
 use App\Entity\Team;
+use App\Entity\TeamMatch;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -41,6 +42,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Contacts', 'fa fa-envelope', Contact::class);
         yield MenuItem::section('Club');
         yield MenuItem::linkToCrud('Equipes', 'fa fa-users', Team::class);
+        yield MenuItem::linkToCrud('Matchs', 'fa fa-calendar', TeamMatch::class);
         yield MenuItem::section('');
         yield MenuItem::linkToLogout('Deconnexion', 'fa fa-sign-out');
     }

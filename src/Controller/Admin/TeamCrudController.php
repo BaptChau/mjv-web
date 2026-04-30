@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class TeamCrudController extends AbstractCrudController
 {
@@ -25,5 +26,6 @@ class TeamCrudController extends AbstractCrudController
         yield TextField::new('secondCoach', 'Second entraineur');
         yield TextField::new('photoPath', 'Photo');
         yield IntegerField::new('category', 'Categorie');
+        yield UrlField::new('championshipUrl', 'Lien championnat')->hideOnIndex();
     }
 }
