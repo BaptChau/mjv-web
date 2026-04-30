@@ -31,6 +31,9 @@ class Team
     #[ORM\Column]
     private ?int $category = null;
 
+    #[ORM\Column(length: 512, nullable: true)]
+    private ?string $championshipUrl = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,5 +109,22 @@ class Team
         $this->category = $category;
 
         return $this;
+    }
+
+    public function getChampionshipUrl(): ?string
+    {
+        return $this->championshipUrl;
+    }
+
+    public function setChampionshipUrl(?string $championshipUrl): static
+    {
+        $this->championshipUrl = $championshipUrl;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->label ?? '';
     }
 }
