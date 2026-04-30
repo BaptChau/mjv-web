@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(
     name: 'app:scrape-matches',
@@ -20,6 +21,7 @@ class ScrapeMatchesCommand extends Command
     public function __construct(
         private EntityManagerInterface $entityManager,
         private TeamMatchRepository $teamMatchRepository,
+        #[Autowire('%kernel.project_dir%')]
         private string $projectDir,
     ) {
         parent::__construct();

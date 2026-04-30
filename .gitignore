@@ -17,3 +17,9 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 .vscode/
 composer.lock
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
+.claude

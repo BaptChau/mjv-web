@@ -1,0 +1,32 @@
+namespace: App\Tests\Functional
+support_namespace: Support
+paths:
+    tests: tests/Functional
+    output: tests/_output
+    data: tests/_data
+    support: tests/Functional/Support
+
+actor_suffix: Tester
+
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+
+settings:
+    colors: true
+    memory_limit: 1024M
+
+suites:
+    Functional:
+        actor: FunctionalTester
+        path: .
+        modules:
+            enabled:
+                - Symfony:
+                    app_path: 'src'
+                    environment: 'test'
+                    kernel_class: 'App\Kernel'
+                - Doctrine:
+                    depends: Symfony
+                    cleanup: true
+                - Asserts
