@@ -3,17 +3,27 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     providers:
+        # Provider for admin users (EasyAdmin firewall)
         app_admin_provider:
             entity:
                 class: App\Entity\AdminUser
+                property: email
+
+        # Provider for public users authenticated via Google OAuth
+        app_user_provider:
+            entity:
+                class: App\Entity\User
                 property: email
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            lazy: true
+
+        # Admin firewall: covers /mjv-admin-connect and /admin/*
+        # Uses classic form_login with the AdminUser entity.
+        admin:
+            pattern: ^/(mjv-admin-connect|admin)
             provider: app_admin_provider
             form_login:
                 login_path: admin_login
@@ -24,9 +34,28 @@ security:
                 path: admin_logout
                 target: admin_login
 
+        # Main firewall: covers all public routes.
+        # Google OAuth is the only authentication method for public users.
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticators:
+                - App\Security\GoogleAuthenticator
+            entry_point: App\Security\GoogleAuthenticator
+            logout:
+                path: app_logout
+                target: app_main
+
     access_control:
+        # Admin routes
         - { path: ^/mjv-admin-connect$, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
+
+        # OAuth connect routes are always public
+        - { path: ^/connect, roles: PUBLIC_ACCESS }
+
+        # Login page is public
+        - { path: ^/connexion$, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
