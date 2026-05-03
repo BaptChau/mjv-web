@@ -5,31 +5,22 @@
     </span>
     <ul class="flex flex-wrap justify-center md:justify-end items-center text-sm font-medium text-gray-500 dark:text-gray-400 gap-x-4 gap-y-2">
       <li>
-        <a href="/forum" class="hover:underline">Forum</a>
+        <a href="{{ path('app_forum') }}" class="hover:underline">Forum</a>
       </li>
       <li>
-        <a href="/calendrier" class="hover:underline">Calendrier</a>
+        <a href="{{ path('app_calendar') }}" class="hover:underline">Calendrier</a>
       </li>
       <li>
-        <a href="/actualites" class="hover:underline">Actualités</a>
+        <a href="{{ path('app_news') }}" class="hover:underline">Actualités</a>
       </li>
       <li>
-        <a href="/contact" class="hover:underline">Contact</a>
+        <a href="{{ path('app_contact') }}" class="hover:underline">Contact</a>
       </li>
       <li>
-        <a href="/equipes/equipe1" class="hover:underline">Équipe 1</a>
+        <a href="{{ path('app_mentions_legales') }}" class="hover:underline">Mentions légales</a>
       </li>
       <li>
-        <a href="/equipes/equipe2" class="hover:underline">Équipe 2</a>
-      </li>
-      <li>
-        <a href="#" class="hover:underline">Mentions légales</a>
-      </li>
-      <li>
-        <a href="#" class="hover:underline">Politique de confidentialité</a>
-      </li>
-      <li>
-        <a href="#" class="hover:underline">Cookies</a>
+        <a href="{{ path('app_politique_confidentialite') }}" class="hover:underline">Politique de confidentialité</a>
       </li>
     </ul>
   </div>
