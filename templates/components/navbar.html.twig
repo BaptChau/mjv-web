@@ -96,6 +96,28 @@
             Contact
           </a>
         </li>
+        <!-- User session indicator -->
+        <li class="flex items-center">
+          {% if is_granted('ROLE_USER') %}
+            <div class="dropdown dropdown-end">
+              <label tabindex="0" class="btn btn-ghost btn-sm gap-2 normal-case">
+                {% if app.user.picture %}
+                  <img src="{{ app.user.picture }}" alt="avatar" class="w-6 h-6 rounded-full object-cover">
+                {% endif %}
+                <span class="hidden lg:inline text-sm">{{ app.user.name }}</span>
+              </label>
+              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 border border-base-200 rounded-box w-40">
+                <li><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
+              </ul>
+            </div>
+          {% else %}
+            <a href="{{ path('app_login') }}"
+               class="btn btn-primary btn-sm normal-case">
+              Connexion
+            </a>
+          {% endif %}
+        </li>
+
         <!-- Theme selector in navbar -->
         <div class="dropdown dropdown-end ml-4">
           <label tabindex="0" class="btn btn-ghost btn-sm">

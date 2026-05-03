@@ -45,6 +45,18 @@ final class MainController extends AbstractController
         ]);
     }
 
+    #[Route('/mentions-legales', name: 'app_mentions_legales')]
+    public function mentionsLegales(): Response
+    {
+        return $this->render('main/mentions-legales.html.twig');
+    }
+
+    #[Route('/politique-de-confidentialite', name: 'app_politique_confidentialite')]
+    public function politiqueConfidentialite(): Response
+    {
+        return $this->render('main/politique-confidentialite.html.twig');
+    }
+
     #[Route('/club', name: 'app_club')]
     public function club(TeamService $teamService): Response
     {

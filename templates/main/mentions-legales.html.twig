@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales — MJ Vaubécourt{% endblock %}
+
+{% block body %}
+<main class="max-w-3xl mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold mb-8">Mentions légales</h1>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-semibold mb-3">Éditeur du site</h2>
+        <p><strong>Dénomination :</strong> Maison des jeunes Vaubécourt handball</p>
+        <p><strong>Forme juridique :</strong> Association loi 1901</p>
+        <p><strong>SIRET :</strong> 390 451 110 00014</p>
+        <p><strong>Adresse :</strong> 5 route de Clermont, 55250 Fleury-sur-Aire</p>
+        <p><strong>Contact :</strong> <a href="mailto:chaudron964@gmail.com" class="link">chaudron964@gmail.com</a></p>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-semibold mb-3">Hébergement</h2>
+        <p><strong>Hébergeur :</strong> OVH SAS</p>
+        <p><strong>Adresse :</strong> 2 rue Kellermann, 59100 Roubaix, France</p>
+        <p><strong>Site :</strong> <a href="https://www.ovhcloud.com" class="link" target="_blank" rel="noopener">www.ovhcloud.com</a></p>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-semibold mb-3">Propriété intellectuelle</h2>
+        <p>L'ensemble des contenus publiés sur le site <strong>mj-vaubecourt.fr</strong> (textes, photos, logos) sont la propriété de l'association Maison des jeunes Vaubécourt handball ou de leurs auteurs respectifs. Toute reproduction sans autorisation est interdite.</p>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-semibold mb-3">Responsabilité</h2>
+        <p>L'association s'efforce d'assurer l'exactitude et la mise à jour des informations publiées. Elle ne peut être tenue responsable des erreurs, omissions ou des résultats obtenus par une mauvaise utilisation de ces informations. Les contenus publiés par les membres sur le forum engagent uniquement leur auteur.</p>
+    </section>
+
+    <section>
+        <h2 class="text-xl font-semibold mb-3">Données personnelles</h2>
+        <p>Pour toute question relative au traitement de vos données personnelles, consultez notre <a href="{{ path('app_politique_confidentialite') }}" class="link">Politique de confidentialité</a>.</p>
+    </section>
+</main>
+{% endblock %}

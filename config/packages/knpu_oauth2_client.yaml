@@ -1,0 +1,13 @@
+knpu_oauth2_client:
+    clients:
+        # The key "google" is what ClientRegistry::getClient('google') resolves to.
+        google:
+            type: google
+            client_id: '%env(GOOGLE_CLIENT_ID)%'
+            client_secret: '%env(GOOGLE_CLIENT_SECRET)%'
+            # Must exactly match one of the "Authorized redirect URIs" in your Google Cloud Console.
+            redirect_route: connect_google_check
+            redirect_params: {}
+            # Ask for the user's basic profile and verified email address.
+            # Additional scopes (e.g. 'https://www.googleapis.com/auth/calendar') can be added here.
+            # scope: ['openid', 'profile', 'email']
