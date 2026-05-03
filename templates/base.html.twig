@@ -1,7 +1,32 @@
 <!DOCTYPE html>
-<html data-theme="light" lang="fr">
+<html data-theme="light" lang="fr" id="html-root">
     <head>
         <meta charset="UTF-8">
+    <script>
+      (function () {
+        var t = localStorage.getItem('theme') || 'light';
+        document.getElementById('html-root').setAttribute('data-theme', t);
+      })();
+      var themes = ['light', 'dark', 'halloween'];
+      function applyThemeIcons(theme) {
+        var icons = { sun: 'light', moon: 'dark', star: 'halloween' };
+        for (var id in icons) {
+          var el = document.getElementById('icon-' + id);
+          if (el) el.classList.toggle('hidden', icons[id] !== theme);
+        }
+      }
+      function toggleTheme() {
+        var current = document.getElementById('html-root').getAttribute('data-theme');
+        var idx = themes.indexOf(current);
+        var next = themes[(idx + 1) % themes.length];
+        document.getElementById('html-root').setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        applyThemeIcons(next);
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        applyThemeIcons(localStorage.getItem('theme') || 'light');
+      });
+    </script>
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
