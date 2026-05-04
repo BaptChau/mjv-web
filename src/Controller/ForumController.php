@@ -96,7 +96,9 @@ final class ForumController extends AbstractController
         methods:[Request::METHOD_POST]
     )]
     public function postNewPost(?int $postId, Request $request, EntityManagerInterface $em): Response
-    {   
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $sanitizedPostId = $postId === 0 ? null : $postId;
 
         $post = new ForumPost();
