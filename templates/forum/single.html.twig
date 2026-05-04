@@ -14,11 +14,17 @@
         <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ answers_count|default(0) }} réponse{{ answers_count|default(0) <= 1 ? '' : 's' }}</span>
       </div>
       <div class="flex flex-wrap gap-3">
-        <button
-          class="btn btn-primary btn-wide"
-          onclick="document.getElementById('answer-modal-main').showModal();return false;"
-          type="button"
-        >Répondre</button>
+        {% if is_granted('ROLE_USER') %}
+          <button
+            class="btn btn-primary btn-wide"
+            onclick="document.getElementById('answer-modal-main').showModal();return false;"
+            type="button"
+          >Répondre</button>
+        {% else %}
+          <a href="{{ path('app_login') }}" class="btn btn-primary btn-wide">
+            Connectez-vous pour répondre
+          </a>
+        {% endif %}
         <a href="{{ path('app_forum') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Retour au forum</a>
       </div>
     </div>
@@ -45,11 +51,17 @@
               <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Réponses</p>
               <h2 class="text-2xl font-bold text-base-content">{{ answers_count|default(0) }} contribution{{ answers_count|default(0) <= 1 ? '' : 's' }}</h2>
             </div>
-            <button
-              class="btn btn-sm btn-primary"
-              onclick="document.getElementById('answer-modal-main').showModal();return false;"
-              type="button"
-            >Ajouter une réponse</button>
+            {% if is_granted('ROLE_USER') %}
+              <button
+                class="btn btn-sm btn-primary"
+                onclick="document.getElementById('answer-modal-main').showModal();return false;"
+                type="button"
+              >Ajouter une réponse</button>
+            {% else %}
+              <a href="{{ path('app_login') }}" class="btn btn-sm btn-primary">
+                Connexion pour répondre
+              </a>
+            {% endif %}
           </div>
 
           {% if answers is not empty %}
@@ -78,6 +90,7 @@
   </section>
 </main>
 
+{% if is_granted('ROLE_USER') %}
 <dialog id="answer-modal-main" class="modal">
   <div class="modal-box max-w-xl">
     <form method="dialog">
@@ -89,4 +102,5 @@
     <button>close</button>
   </form>
 </dialog>
+{% endif %}
 {% endblock %}
