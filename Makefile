@@ -28,3 +28,14 @@ test:
 
 test-coverage:
 	docker compose exec app php vendor/bin/phpunit --testsuite=Unit --coverage-html=var/coverage
+
+## Production (local simulation)
+
+build-prod:
+	docker compose -f compose.prod.yaml up --build -d
+
+stop-prod:
+	docker compose -f compose.prod.yaml down
+
+logs-prod:
+	docker compose -f compose.prod.yaml logs -f app
