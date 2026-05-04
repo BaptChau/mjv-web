@@ -19,6 +19,9 @@ RUN python3 -m venv /opt/scraper-venv \
     && /opt/scraper-venv/bin/pip install --no-cache-dir -r /tmp/requirements.txt \
     && /opt/scraper-venv/bin/playwright install --with-deps chromium
 
+# Copy application source
+COPY . /app
+
 # Expose port
 EXPOSE 8000
 

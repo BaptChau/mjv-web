@@ -1,0 +1,64 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+    container_name: mjv-web-app-prod
+    environment:
+      APP_ENV: prod
+      APP_SECRET: ${APP_SECRET:-change-me-in-production}
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "8080:8000"
+    depends_on:
+      - database
+      - node
+    command: >
+      sh -c "composer install --no-dev --optimize-autoloader --no-interaction &&
+             php bin/console doctrine:migrations:migrate --no-interaction &&
+             php bin/console cache:warmup &&
+             php -S 0.0.0.0:8000 -t public"
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+    container_name: mjv-web-scheduler-prod
+    environment:
+      APP_ENV: prod
+      APP_SECRET: ${APP_SECRET:-change-me-in-production}
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - app
+      - database
+    restart: unless-stopped
+    command: >
+      sh -c "php bin/console messenger:consume scheduler_scrape_matches -vv"
+
+  node:
+    image: node:20-alpine
+    platform: linux/arm64
+    container_name: mjv-web-node-prod
+    working_dir: /app
+    volumes:
+      - ./:/app:rw,cached
+    command: >
+      sh -c "npm ci && npm run build"
+
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    platform: linux/arm64
+    container_name: mjv-web-db-prod
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    volumes:
+      - database_data_prod:/var/lib/postgresql/data:rw
+
+volumes:
+  database_data_prod:
