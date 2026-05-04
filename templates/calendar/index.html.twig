@@ -45,22 +45,25 @@
 
       <div class="grid gap-6">
         {% for match in upcomingMatches %}
+          {% set isHome = match.homeTeam == match.team.label %}
+          {% set opponent = isHome ? match.awayTeam : match.homeTeam %}
+          {% set location = isHome ? 'Domicile' : 'Extérieur' %}
           <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
             <div class="card-body gap-4 md:flex md:items-center md:justify-between">
               <div class="flex items-center gap-4">
                 <div class="text-center px-4 py-3 bg-base-200/70 rounded-2xl border border-base-300">
-                  <p class="text-3xl font-extrabold leading-none">{{ match.date|date('d') }}</p>
-                  <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.date|date('M') }}</p>
+                  <p class="text-3xl font-extrabold leading-none">{{ match.matchDate|date('d') }}</p>
+                  <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.matchDate|date('M') }}</p>
                 </div>
                 <div>
-                  <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
-                  <p class="text-xl font-semibold text-base-content">{{ match.opponent }}</p>
+                  <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.team.label }}</p>
+                  <p class="text-xl font-semibold text-base-content">{{ opponent }}</p>
                   <p class="text-sm text-base-content/70 uppercase tracking-[0.2em]">
-                    {{ match.location }} · {{ match.time }}
+                    {{ location }} · {{ match.matchDate|date('H\\hi') }}
                   </p>
                 </div>
               </div>
-              <div class="badge badge-outline uppercase tracking-[0.3em] text-xs">{{ match.competition }}</div>
+              <div class="badge badge-outline uppercase tracking-[0.3em] text-xs">{{ match.matchDay }}</div>
             </div>
           </article>
         {% else %}
@@ -82,19 +85,22 @@
 
       <div class="grid gap-6">
         {% for match in lastWeekResults %}
+          {% set isHome = match.homeTeam == match.team.label %}
+          {% set opponent = isHome ? match.awayTeam : match.homeTeam %}
+          {% set location = isHome ? 'Domicile' : 'Extérieur' %}
           <article class="rounded-3xl border border-base-300 bg-base-200/40 p-6 md:flex md:items-center md:justify-between">
             <div class="flex items-center gap-4">
               <div class="text-center px-4 py-3 bg-base-100 rounded-2xl border border-base-300">
-                <p class="text-2xl font-bold leading-none">{{ match.date|date('d') }}</p>
-                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.date|date('M') }}</p>
+                <p class="text-2xl font-bold leading-none">{{ match.matchDate|date('d') }}</p>
+                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.matchDate|date('M') }}</p>
               </div>
               <div>
-                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
-                <p class="text-lg font-semibold text-base-content">{{ match.opponent }}</p>
-                <p class="text-xs text-base-content/60 uppercase tracking-[0.2em]">{{ match.location }} · {{ match.competition }}</p>
+                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.team.label }}</p>
+                <p class="text-lg font-semibold text-base-content">{{ opponent }}</p>
+                <p class="text-xs text-base-content/60 uppercase tracking-[0.2em]">{{ location }} · {{ match.matchDay }}</p>
               </div>
             </div>
-            <div class="text-2xl font-bold text-base-content">{{ match.score }}</div>
+            <div class="text-2xl font-bold text-base-content">{{ match.homeScore }} - {{ match.awayScore }}</div>
           </article>
         {% else %}
           <p class="text-center text-base-content/60 py-12 rounded-3xl border border-dashed border-base-300 bg-base-200/60">
@@ -131,13 +137,16 @@
           <div class="grid gap-4">
             {% if selectedDateResults is not empty %}
               {% for match in selectedDateResults %}
+                {% set isHome = match.homeTeam == match.team.label %}
+                {% set opponent = isHome ? match.awayTeam : match.homeTeam %}
+                {% set location = isHome ? 'Domicile' : 'Extérieur' %}
                 <div class="rounded-2xl border border-base-300 p-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                   <div>
-                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
-                    <p class="text-lg font-semibold text-base-content">{{ match.opponent }}</p>
-                    <p class="text-xs text-base-content/60 uppercase tracking-[0.2em]">{{ match.location }} · {{ match.competition }}</p>
+                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.team.label }}</p>
+                    <p class="text-lg font-semibold text-base-content">{{ opponent }}</p>
+                    <p class="text-xs text-base-content/60 uppercase tracking-[0.2em]">{{ location }} · {{ match.matchDay }}</p>
                   </div>
-                  <div class="text-xl font-bold text-base-content">{{ match.score }}</div>
+                  <div class="text-xl font-bold text-base-content">{{ match.homeScore }} - {{ match.awayScore }}</div>
                 </div>
               {% endfor %}
             {% elseif selectedDate %}
