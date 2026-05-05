@@ -1,4 +1,17 @@
 services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: mjv-web-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
   app:
     build:
       context: .
@@ -11,8 +24,8 @@ services:
       DATABASE_URL: ${DATABASE_URL}
     volumes:
       - ./:/app:rw,cached
-    ports:
-      - "8001:8000"
+    expose:
+      - "8000"
     depends_on:
       - database
       - node
@@ -49,8 +62,8 @@ services:
     volumes:
       - ./:/app:rw,cached
     command: >
-      sh -c "until [ -f vendor/symfony/ux-turbo/assets/package.json ]; do echo 'Waiting for vendor...'; sleep 2; done && 
-             npm install && 
+      sh -c "until [ -f vendor/symfony/ux-turbo/assets/package.json ]; do echo 'Waiting for vendor...'; sleep 2; done &&
+             npm install &&
              npm run watch"
 
   database:
@@ -66,3 +79,5 @@ services:
 
 volumes:
   database_data:
+  caddy_data:
+  caddy_config:
