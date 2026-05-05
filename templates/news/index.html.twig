@@ -5,10 +5,10 @@
 {% block body %}
 <main class="bg-base-200 min-h-screen">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-12 lg:grid-cols-2">
-      <div class="space-y-6">
-        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Actualités du club</p>
-        <h1 class="text-4xl font-extrabold leading-tight">Toute la vie du MJ Vaubécourt, semaine après semaine</h1>
+    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-12 lg:grid-cols-2">
+      <div class="space-y-4 lg:space-y-6">
+        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/70">Actualités du club</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Toute la vie du MJ Vaubécourt, semaine après semaine</h1>
         <p class="text-neutral-content/80 text-lg">
           Résumés de match, portraits, événements et vie du club : retrouvez chaque moment fort.
         </p>
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="hidden lg:block">
         <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80"
@@ -34,11 +34,11 @@
     </div>
   </section>
 
-  <section class="py-16">
+  <section class="py-8 lg:py-16">
     <div class="max-w-5xl mx-auto px-4 space-y-8">
       <div class="flex flex-col gap-2">
         <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">À la une</p>
-        <h2 class="text-3xl font-bold text-base-content">Dernières actualités</h2>
+        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Dernières actualités</h2>
         <p class="text-base-content/70">Les moments clés du club mis en avant.</p>
       </div>
 
@@ -58,7 +58,7 @@
     </div>
   </section>
 
-  <section class="pb-16">
+  <section class="pb-8 lg:pb-16">
     <div class="max-w-5xl mx-auto px-4">
       <div class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
         <div class="card-body gap-4 md:flex md:items-center md:justify-between">

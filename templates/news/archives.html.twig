@@ -5,10 +5,10 @@
 {% block body %}
 <main class="bg-base-200 min-h-screen">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-12 lg:grid-cols-2">
-      <div class="space-y-6">
-        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Archives</p>
-        <h1 class="text-4xl font-extrabold leading-tight">Toutes les actualités du club</h1>
+    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-12 lg:grid-cols-2">
+      <div class="space-y-4 lg:space-y-6">
+        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/70">Archives</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Toutes les actualités du club</h1>
         <p class="text-neutral-content/80 text-lg">
           Retrouvez l'ensemble des articles publiés par le MJ Vaubécourt.
         </p>
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="hidden lg:block">
         <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80"
@@ -34,12 +34,12 @@
     </div>
   </section>
 
-  <section class="py-16 bg-base-100">
+  <section class="py-8 lg:py-16 bg-base-100">
     <div class="max-w-5xl mx-auto px-4 space-y-8">
       <div class="flex flex-col gap-2">
         <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Archives</p>
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <h2 class="text-3xl font-bold text-base-content">Toutes les actualités</h2>
+          <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Toutes les actualités</h2>
           <div class="shadow-md rounded-2xl bg-base-100 px-3 py-2 border border-base-300 w-full max-w-xs sm:w-auto">
             <form method="get" class="flex items-center gap-2 w-full">
               <label for="perPage" class="sr-only">Éléments par page</label>

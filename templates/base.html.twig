@@ -38,8 +38,11 @@
         {% endblock %}
     </head>
     <body class="flex flex-col min-h-screen overflow-x-hidden">
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:text-sm focus:font-semibold">Aller au contenu principal</a>
         {% include 'components/navbar.html.twig' %}
+        <div id="main-content">
         {% block body %}{% endblock %}
+        </div>
         {% include 'components/footer.html.twig' %}
     </body>
 </html>

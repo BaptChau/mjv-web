@@ -5,9 +5,9 @@
 {% block body %}
 <main class="bg-base-200">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-16 space-y-4">
-      <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/60">Nos équipes</p>
-      <h1 class="text-4xl font-extrabold leading-tight">Toutes les catégories du MJ Vaubécourt</h1>
+    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 space-y-4">
+      <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/70">Nos équipes</p>
+      <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Toutes les catégories du MJ Vaubécourt</h1>
       <p class="text-lg text-neutral-content/80">Masculins, féminins ou mixtes : chaque collectif porte un projet sportif précis.</p>
       <div class="flex flex-wrap gap-4">
         <a href="{{ path('app_contact') }}" class="btn btn-primary">Nous rejoindre</a>
@@ -16,15 +16,15 @@
     </div>
   </section>
 
-  <section class="py-14">
+  <section class="py-8 lg:py-14">
     <div class="max-w-5xl mx-auto px-4 space-y-8">
       {% for entry in teams %}
         {% set primaryTeam = entry.teams|first %}
         <article class="card bg-base-100 shadow-xl rounded-3xl border border-base-300 overflow-hidden flex flex-col md:flex-row">
-          <div class="flex-1 p-8 flex flex-col gap-4">
+          <div class="flex-1 p-4 lg:p-8 flex flex-col gap-4">
             <div>
               <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Catégorie</p>
-              <h2 class="text-3xl font-bold text-base-content">{{ entry.categoryLabel }}</h2>
+              <h2 class="text-2xl lg:text-3xl font-bold text-base-content">{{ entry.categoryLabel }}</h2>
             </div>
             <p class="text-sm text-base-content/70">
               {% if primaryTeam %}
@@ -57,7 +57,7 @@
             {% if primaryTeam and primaryTeam.photoPath %}
               <img src="{{ primaryTeam.photoPath }}" alt="{{ entry.categoryLabel }}" class="w-full h-full object-cover opacity-90">
             {% else %}
-              <div class="h-full min-h-[260px] flex items-center justify-center text-neutral-content/60 text-sm px-6 text-center">Photo à venir</div>
+              <div class="h-full min-h-[260px] flex items-center justify-center text-neutral-content/70 text-sm px-6 text-center">Photo à venir</div>
             {% endif %}
           </div>
         </article>

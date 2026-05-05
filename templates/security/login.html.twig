@@ -3,8 +3,8 @@
 {% block title %}Connexion - MJ Vaubécourt{% endblock %}
 
 {% block body %}
-<div class="flex items-center justify-center min-h-[70vh] px-4">
-  <div class="bg-base-100 border border-base-200 rounded-2xl shadow-lg p-10 w-full max-w-sm text-center">
+<main class="flex items-center justify-center min-h-[70vh] px-4">
+  <div class="bg-base-100 border border-base-200 rounded-2xl shadow-lg p-6 lg:p-10 w-full max-w-sm text-center">
 
     <h1 class="text-2xl font-bold mb-2">Connexion</h1>
     <p class="text-base-content/60 text-sm mb-8">
@@ -12,13 +12,13 @@
     </p>
 
     {% if error is defined and error %}
-      <div class="alert alert-error mb-6 text-sm">
+      <div class="alert alert-error mb-6 text-sm" role="alert">
         {{ error.messageKey|trans(error.messageData, 'security') }}
       </div>
     {% endif %}
 
     <a href="{{ path('connect_google_start') }}"
-       class="btn btn-outline btn-block gap-3 normal-case text-base font-medium">
+       class="btn btn-outline btn-block gap-3 normal-case text-base font-medium min-h-[44px]">
       {# Google "G" SVG logo #}
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-5 h-5 flex-shrink-0">
         <path fill="#EA4335" d="M24 9.5c3.14 0 5.95 1.08 8.17 2.86l6.09-6.09C34.46 3.1 29.5 1 24 1 14.82 1 7.01 6.7 3.69 14.7l7.08 5.5C12.43 13.7 17.74 9.5 24 9.5z"/>
@@ -30,9 +30,9 @@
       Se connecter avec Google
     </a>
 
-    <p class="mt-8 text-xs text-base-content/40">
+    <p class="mt-8 text-xs text-base-content/60">
       En vous connectant, vous acceptez les conditions d'utilisation du site.
     </p>
   </div>
-</div>
+</main>
 {% endblock %}
