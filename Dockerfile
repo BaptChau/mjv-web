@@ -2,9 +2,9 @@ FROM php:8.2-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev libzip-dev \
+    git unzip libpq-dev libzip-dev libicu-dev \
     python3 python3-pip python3-venv \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    && docker-php-ext-install pdo pdo_pgsql zip intl
 RUN git config --global --add safe.directory /app
 
 # Install Composer

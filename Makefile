@@ -13,6 +13,9 @@ stop:
 
 migrate:
 	docker compose exec app php bin/console doctrine:migrations:migrate --no-interaction
+
+create-admin:
+	docker compose exec app php bin/console app:create-admin $(email)
 shell:
 	docker compose exec app sh
 
