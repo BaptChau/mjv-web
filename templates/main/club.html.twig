@@ -5,29 +5,29 @@
 {% block body %}
 <main class="bg-base-200">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-10 md:grid-cols-2 items-center">
+    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-10 md:grid-cols-2 items-center">
       <div class="space-y-5">
         <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/70">À propos</p>
-        <h1 class="text-4xl font-extrabold leading-tight">À propos du MJ Vaubécourt</h1>
+        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">À propos du MJ Vaubécourt</h1>
         <p class="text-lg text-neutral-content/80">Un club familial qui conjugue convivialité, ambition sportive et actions citoyennes.</p>
         <div class="flex flex-wrap gap-3">
           <a href="{{ path('app_contact') }}" class="btn btn-primary">Contacter le club</a>
           <a href="{{ path('app_team_index') }}" class="btn btn-outline btn-primary">Voir nos équipes</a>
         </div>
       </div>
-      <div class="rounded-3xl overflow-hidden border border-neutral-content/10 shadow-2xl">
+      <div class="rounded-3xl overflow-hidden border border-neutral-content/10 shadow-2xl hidden md:block">
         <img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?auto=format&fit=crop&w=900&q=80"
              alt="Portrait de joueur de handball"
-             class="w-full h-80 object-cover">
+             class="w-full h-48 lg:h-80 object-cover">
       </div>
     </div>
   </section>
 
-  <section class="py-14">
-    <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+  <section class="py-8 lg:py-14">
+    <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-6 lg:gap-10 items-center">
       <div>
         <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Notre histoire</p>
-        <h2 class="text-3xl font-bold text-base-content">Notre club</h2>
+        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Notre club</h2>
         <p class="text-base-content/70 mt-4">
           Le MJ Vaubécourt s’appuie sur une école de handball labellisée, un réseau de bénévoles engagés et des entraîneurs diplômés qui accompagnent chaque collectif.
         </p>
@@ -38,16 +38,16 @@
       <div class="rounded-3xl overflow-hidden shadow-xl border border-base-300">
         <img src="https://images.unsplash.com/photo-1474557157379-8aa74e34dd6c?auto=format&fit=crop&w=900&q=80"
              alt="Équipe de handball"
-             class="w-full h-80 object-cover">
+             class="w-full h-48 lg:h-80 object-cover">
       </div>
     </div>
   </section>
 
-  <section class="py-14 bg-base-100">
+  <section class="py-8 lg:py-14 bg-base-100">
     <div class="max-w-5xl mx-auto px-4">
-      <div class="text-center mb-10">
+      <div class="text-center mb-6 lg:mb-10">
         <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Nos engagements</p>
-        <h2 class="text-3xl font-bold text-base-content">Nos valeurs</h2>
+        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Nos valeurs</h2>
       </div>
       <div class="grid gap-6 md:grid-cols-3">
         {% for value in values %}
@@ -60,27 +60,27 @@
     </div>
   </section>
 
-  <section class="py-14">
-    <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+  <section class="py-8 lg:py-14">
+    <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-6 lg:gap-10 items-center">
       <div class="rounded-3xl overflow-hidden shadow-xl border border-base-300">
         <img src="https://images.unsplash.com/photo-1471523583954-1b0c4772185a?auto=format&fit=crop&w=900&q=80"
              alt="Salle de handball"
-             class="w-full h-80 object-cover">
+             class="w-full h-48 lg:h-80 object-cover">
       </div>
       <div>
         <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Notre salle</p>
-        <h2 class="text-3xl font-bold text-base-content">Un terrain à notre image</h2>
+        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Un terrain à notre image</h2>
         <p class="text-base-content/70 mt-4">Parquet homologué, tribunes conviviales et espaces d’accueil : notre salle est le cœur battant du club.</p>
         <p class="text-base-content/70 mt-3">Nous la partageons régulièrement avec les scolaires et clubs voisins pour faire rayonner le handball.</p>
       </div>
     </div>
   </section>
 
-  <section class="py-14 bg-neutral text-neutral-content">
+  <section class="py-8 lg:py-14 bg-neutral text-neutral-content">
     <div class="max-w-5xl mx-auto px-4">
       <div class="mb-8">
         <p class="text-sm uppercase tracking-[0.3em] text-neutral-content/70">Encadrement</p>
-        <h2 class="text-3xl font-bold">Nos référents sportifs</h2>
+        <h2 class="text-2xl lg:text-3xl font-bold">Nos référents sportifs</h2>
         <p class="text-neutral-content/70 mt-2">Des coachs investis qui accompagnent les collectifs toute l’année.</p>
       </div>
       <div class="grid gap-6 md:grid-cols-2">
