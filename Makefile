@@ -13,6 +13,9 @@ stop:
 
 migrate:
 	docker compose exec app php bin/console doctrine:migrations:migrate --no-interaction
+
+create-admin:
+	docker compose exec app php bin/console app:create-admin $(email)
 shell:
 	docker compose exec app sh
 
@@ -28,3 +31,14 @@ test:
 
 test-coverage:
 	docker compose exec app php vendor/bin/phpunit --testsuite=Unit --coverage-html=var/coverage
+
+## Production (local simulation)
+
+build-prod:
+	docker compose -f compose.prod.yaml up --build -d
+
+stop-prod:
+	docker compose -f compose.prod.yaml down
+
+logs-prod:
+	docker compose -f compose.prod.yaml logs -f app

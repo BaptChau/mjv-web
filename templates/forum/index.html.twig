@@ -9,23 +9,29 @@
 {% endfor %}
 <main class="bg-base-200 min-h-screen">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-16 grid gap-12 lg:grid-cols-2">
-      <div class="space-y-6">
-        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Forum du club</p>
-        <h1 class="text-4xl font-extrabold leading-tight">Partagez vos idées et vos questions avec la communauté MJ Vaubécourt</h1>
+    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-12 lg:grid-cols-2">
+      <div class="space-y-4 lg:space-y-6">
+        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/70">Forum du club</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Partagez vos idées et vos questions avec la communauté MJ Vaubécourt</h1>
         <p class="text-neutral-content/80 text-lg">
           Une place pour préparer les déplacements, organiser les covoiturages, partager des souvenirs ou demander des conseils.
           Lancez une nouvelle discussion ou rejoignez celles en cours.
         </p>
         <div class="flex flex-wrap gap-3">
-          <button
-            class="btn btn-primary btn-wide"
-            onclick="document.getElementById('post-modal').showModal()"
-            type="button"
-          >
-            Nouvelle publication
-          </button>
-          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Contacter le club</a>
+          {% if is_granted('ROLE_USER') %}
+            <button
+              class="btn btn-primary w-full sm:btn-wide"
+              onclick="document.getElementById('post-modal').showModal()"
+              type="button"
+            >
+              Nouvelle publication
+            </button>
+          {% else %}
+            <a href="{{ path('app_login') }}" class="btn btn-primary w-full sm:btn-wide">
+              Connectez-vous pour publier
+            </a>
+          {% endif %}
+          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary w-full sm:btn-wide lg:btn-md">Contacter le club</a>
         </div>
         <div class="grid grid-cols-2 gap-4 text-neutral-content/80">
           <div class="rounded-2xl border border-neutral-content/20 p-4">
@@ -38,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="hidden lg:block">
         <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80"
@@ -49,19 +55,25 @@
     </div>
   </section>
 
-  <section class="py-16">
+  <section class="py-8 lg:py-16">
     <div class="max-w-5xl mx-auto px-4 space-y-8">
       <div class="flex flex-col gap-2">
         <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Discussions</p>
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <h2 class="text-3xl font-bold text-base-content">Les dernières publications</h2>
-          <button
-            class="btn btn-primary"
-            onclick="document.getElementById('post-modal').showModal()"
-            type="button"
-          >
-            Publier un sujet
-          </button>
+          <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Les dernières publications</h2>
+          {% if is_granted('ROLE_USER') %}
+            <button
+              class="btn btn-primary"
+              onclick="document.getElementById('post-modal').showModal()"
+              type="button"
+            >
+              Publier un sujet
+            </button>
+          {% else %}
+            <a href="{{ path('app_login') }}" class="btn btn-primary">
+              Connexion pour publier
+            </a>
+          {% endif %}
         </div>
         <p class="text-base-content/70">Rejoignez les échanges entre bénévoles, parents et joueurs et trouvez rapidement des réponses.</p>
       </div>
@@ -116,10 +128,11 @@
   </section>
 </main>
 
-<dialog id="post-modal" class="modal">
+{% if is_granted('ROLE_USER') %}
+<dialog id="post-modal" class="modal" aria-label="Nouvelle publication">
   <div class="modal-box max-w-xl">
     <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('post-modal').close()" type="button">✕</button>
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('post-modal').close()" type="button" aria-label="Fermer la fenêtre">✕</button>
     </form>
     {% include 'forum/form.html.twig' with {form: form} %}
   </div>
@@ -127,4 +140,5 @@
     <button>close</button>
   </form>
 </dialog>
+{% endif %}
 {% endblock %}

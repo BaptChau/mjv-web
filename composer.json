@@ -12,7 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/orm": "^3.6.3",
         "dragonmantank/cron-expression": "^3.6",
-        "easycorp/easyadmin-bundle": "^4.29.6",
+        "easycorp/easyadmin-bundle": "^4.29.7",
         "google/apiclient": "^2.19.2",
         "knpuniversity/oauth2-client-bundle": ">=2.20.2",
         "league/oauth2-google": ">=5",

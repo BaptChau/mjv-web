@@ -3,9 +3,9 @@
 {% block body %}
 <main class="bg-base-200 min-h-screen">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-4xl mx-auto px-4 py-16 space-y-6">
-      <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/60">Forum · Question</p>
-      <h1 class="text-4xl font-extrabold leading-tight">{{ post.title }}</h1>
+    <div class="max-w-4xl mx-auto px-4 py-8 lg:py-16 space-y-4 lg:space-y-6">
+      <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/70">Forum · Question</p>
+      <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">{{ post.title }}</h1>
       <div class="flex flex-wrap gap-3 text-sm uppercase tracking-[0.3em] text-neutral-content/70">
         <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ post.author }}</span>
         {% if post.createdAt is defined %}
@@ -14,18 +14,24 @@
         <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ answers_count|default(0) }} réponse{{ answers_count|default(0) <= 1 ? '' : 's' }}</span>
       </div>
       <div class="flex flex-wrap gap-3">
-        <button
-          class="btn btn-primary btn-wide"
-          onclick="document.getElementById('answer-modal-main').showModal();return false;"
-          type="button"
-        >Répondre</button>
-        <a href="{{ path('app_forum') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Retour au forum</a>
+        {% if is_granted('ROLE_USER') %}
+          <button
+            class="btn btn-primary w-full sm:btn-wide"
+            onclick="document.getElementById('answer-modal-main').showModal();return false;"
+            type="button"
+          >Répondre</button>
+        {% else %}
+          <a href="{{ path('app_login') }}" class="btn btn-primary w-full sm:btn-wide">
+            Connectez-vous pour répondre
+          </a>
+        {% endif %}
+        <a href="{{ path('app_forum') }}" class="btn btn-outline btn-primary btn-sm lg:btn-md flex-1 lg:flex-none">Retour au forum</a>
       </div>
     </div>
   </section>
 
-  <section class="py-16">
-    <div class="max-w-4xl mx-auto px-4 space-y-12">
+  <section class="py-8 lg:py-16">
+    <div class="max-w-4xl mx-auto px-4 space-y-8 lg:space-y-12">
       <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
         <div class="card-body space-y-4">
           <div class="flex items-center gap-3">
@@ -45,11 +51,17 @@
               <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Réponses</p>
               <h2 class="text-2xl font-bold text-base-content">{{ answers_count|default(0) }} contribution{{ answers_count|default(0) <= 1 ? '' : 's' }}</h2>
             </div>
-            <button
-              class="btn btn-sm btn-primary"
-              onclick="document.getElementById('answer-modal-main').showModal();return false;"
-              type="button"
-            >Ajouter une réponse</button>
+            {% if is_granted('ROLE_USER') %}
+              <button
+                class="btn btn-sm btn-primary"
+                onclick="document.getElementById('answer-modal-main').showModal();return false;"
+                type="button"
+              >Ajouter une réponse</button>
+            {% else %}
+              <a href="{{ path('app_login') }}" class="btn btn-sm btn-primary">
+                Connexion pour répondre
+              </a>
+            {% endif %}
           </div>
 
           {% if answers is not empty %}
@@ -78,10 +90,11 @@
   </section>
 </main>
 
-<dialog id="answer-modal-main" class="modal">
+{% if is_granted('ROLE_USER') %}
+<dialog id="answer-modal-main" class="modal" aria-label="Répondre au sujet">
   <div class="modal-box max-w-xl">
     <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('answer-modal-main').close()" type="button">✕</button>
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="document.getElementById('answer-modal-main').close()" type="button" aria-label="Fermer la fenêtre">✕</button>
     </form>
     {% include 'forum/form.html.twig' with {form: answer_form, title: 'Répondre'} %}
   </div>
@@ -89,4 +102,5 @@
     <button>close</button>
   </form>
 </dialog>
+{% endif %}
 {% endblock %}
