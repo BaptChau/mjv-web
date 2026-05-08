@@ -1,59 +1,132 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact{% endblock %}
+{% block title %}Contact — MJ Vaubécourt{% endblock %}
 
 {% block body %}
-<main class="container mx-auto max-w-3xl px-4 py-6">
-  <div class="mb-4">
-    <h1 class="text-2xl lg:text-3xl font-semibold">Contactez-nous</h1>
-    <p class="text-sm text-base-content/70 mt-2">Une question, un projet ou un retour ? Écrivez-nous — réponse rapide.</p>
-  </div>
+<div>
+  {# ==================== HERO ==================== #}
+  <section class="relative bg-neutral text-neutral-content overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-32 -right-24 w-[24rem] h-[24rem] rounded-full bg-primary/20 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-16 w-[20rem] h-[20rem] rounded-full bg-secondary/20 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-5">
+      <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+        <span class="w-8 h-0.5 bg-primary"></span> Contact
+      </p>
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight max-w-3xl">
+        Une question ?<br>
+        <span class="text-primary">Écrivez-nous.</span>
+      </h1>
+      <p class="text-base sm:text-lg text-neutral-content/75 max-w-xl leading-relaxed">
+        Réponse rapide pour les questions sportives, administratives ou inscriptions.
+      </p>
+    </div>
+  </section>
 
-  {% for message in app.flashes('success') %}
-    <div class="alert alert-success shadow-sm my-2 p-2 text-sm" role="alert">
-      <div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current h-4 w-4" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-        </svg>
-        <span class="ml-2">{{ message }}</span>
+  {# ==================== CONTACT ==================== #}
+  <section class="py-14 lg:py-24 bg-base-100">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:gap-12 lg:grid-cols-12">
+
+      {# Info column #}
+      <aside class="lg:col-span-5 space-y-6">
+        <h2 class="text-2xl lg:text-3xl font-black tracking-tight">Toutes les façons de nous joindre</h2>
+
+        <ul class="space-y-3" role="list">
+          <li class="flex gap-4 items-start p-5 rounded-2xl border border-base-300 bg-base-100 hover:border-primary/40 hover:shadow-lg transition">
+            <span class="w-12 h-12 shrink-0 rounded-xl bg-primary/15 text-primary flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </span>
+            <div class="min-w-0">
+              <p class="text-[11px] font-black uppercase tracking-wider text-base-content/60">Email</p>
+              <p class="text-base font-black mt-0.5">Formulaire ci-contre</p>
+              <p class="text-sm text-base-content/70 mt-1">Réponse sous 48 h ouvrées</p>
+            </div>
+          </li>
+          <li class="flex gap-4 items-start p-5 rounded-2xl border border-base-300 bg-base-100 hover:border-secondary/40 hover:shadow-lg transition">
+            <span class="w-12 h-12 shrink-0 rounded-xl bg-secondary/15 text-secondary flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+            </span>
+            <div class="min-w-0">
+              <p class="text-[11px] font-black uppercase tracking-wider text-base-content/60">Adresse</p>
+              <p class="text-base font-black mt-0.5">Vaubécourt, Meuse</p>
+              <p class="text-sm text-base-content/70 mt-1">Salle des sports municipale</p>
+            </div>
+          </li>
+          <li class="flex gap-4 items-start p-5 rounded-2xl border border-base-300 bg-base-100 hover:border-accent/40 hover:shadow-lg transition">
+            <span class="w-12 h-12 shrink-0 rounded-xl bg-accent/15 text-accent flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+            </span>
+            <div class="min-w-0">
+              <p class="text-[11px] font-black uppercase tracking-wider text-base-content/60">Disponibilité</p>
+              <p class="text-base font-black mt-0.5">Du lundi au vendredi</p>
+              <p class="text-sm text-base-content/70 mt-1">Réponses traitées en soirée</p>
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+      {# Form column #}
+      <div class="lg:col-span-7">
+        <div class="rounded-3xl border border-base-300 bg-base-100 shadow-xl overflow-hidden">
+          <div class="p-6 lg:p-8 bg-base-200/50 border-b border-base-300">
+            <p class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-primary">
+              <span class="w-2 h-2 rounded-sm bg-primary"></span> Formulaire
+            </p>
+            <h2 class="text-2xl lg:text-3xl font-black tracking-tight mt-1">Votre message</h2>
+          </div>
+
+          <div class="p-6 lg:p-8">
+            {% for message in app.flashes('success') %}
+              <div class="alert alert-success rounded-2xl mb-5" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="font-bold">{{ message }}</span>
+              </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+              <div class="alert alert-error rounded-2xl mb-5" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-bold">{{ message }}</span>
+              </div>
+            {% endfor %}
+
+            {{ form_start(form, {'attr': {'class': 'space-y-5'}}) }}
+              <div class="grid gap-5 sm:grid-cols-2">
+                <div>
+                  {{ form_label(form.identity, null, {'label_attr': {'class': 'block text-[11px] font-black uppercase tracking-wider text-base-content/70 mb-1.5'}}) }}
+                  {{ form_widget(form.identity, {'attr': {'class': 'input input-bordered w-full rounded-xl font-semibold focus:border-primary focus:ring-2 focus:ring-primary', 'placeholder': 'Votre nom complet', 'autocomplete': 'name'}}) }}
+                  <div class="text-error text-xs mt-1 font-semibold">{{ form_errors(form.identity) }}</div>
+                </div>
+                <div>
+                  {{ form_label(form.email, null, {'label_attr': {'class': 'block text-[11px] font-black uppercase tracking-wider text-base-content/70 mb-1.5'}}) }}
+                  {{ form_widget(form.email, {'attr': {'class': 'input input-bordered w-full rounded-xl font-semibold focus:border-primary focus:ring-2 focus:ring-primary', 'placeholder': 'vous@exemple.fr', 'autocomplete': 'email', 'inputmode': 'email'}}) }}
+                  <div class="text-error text-xs mt-1 font-semibold">{{ form_errors(form.email) }}</div>
+                </div>
+              </div>
+
+              <div>
+                {{ form_label(form.content, null, {'label_attr': {'class': 'block text-[11px] font-black uppercase tracking-wider text-base-content/70 mb-1.5'}}) }}
+                {{ form_widget(form.content, {'attr': {'class': 'textarea textarea-bordered w-full rounded-xl min-h-[160px] focus:border-primary focus:ring-2 focus:ring-primary', 'placeholder': 'Comment pouvons-nous vous aider ?'}}) }}
+                <div class="text-error text-xs mt-1 font-semibold">{{ form_errors(form.content) }}</div>
+              </div>
+
+              <p class="text-xs text-base-content/60 leading-relaxed">
+                En envoyant ce formulaire, vous acceptez d'être recontacté concernant votre demande. Voir notre <a href="{{ path('app_politique_confidentialite') }}" class="text-primary font-bold hover:underline">politique de confidentialité</a>.
+              </p>
+
+              <div>
+                {{ form_widget(form.send, {'attr': {'class': 'inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-xl hover:scale-[1.02] transition w-full sm:w-auto sm:min-w-[220px] min-h-[52px] border-0'}}) }}
+              </div>
+            {{ form_end(form) }}
+          </div>
+        </div>
       </div>
     </div>
-  {% endfor %}
-
-  {% for message in app.flashes('error') %}
-    <div class="alert alert-error shadow-sm my-2 p-2 text-sm" role="alert">
-      <div><span>{{ message }}</span></div>
-    </div>
-  {% endfor %}
-
-  <div class="compact w-full bg-base-100 mt-4">
-    <div class="p-3">
-      {{ form_start(form, {'attr': {'class': 'w-full'}}) }}
-
-        <div class="form-control mb-2">
-          {{ form_label(form.identity, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
-          {{ form_widget(form.identity, {'attr': {'class': 'input input-bordered w-full', 'placeholder': 'Votre nom'}}) }}
-          {{ form_errors(form.identity) }}
-        </div>
-
-        <div class="form-control mb-2">
-          {{ form_label(form.email, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
-          {{ form_widget(form.email, {'attr': {'class': 'input input-bordered w-full', 'placeholder': 'Votre email'}}) }}
-          {{ form_errors(form.email) }}
-        </div>
-
-        <div class="form-control mb-2">
-          {{ form_label(form.content, null, {'label_attr': {'class': 'label-text text-sm'}}) }}
-          {{ form_widget(form.content, {'attr': {'class': 'textarea textarea-bordered w-full h-28', 'placeholder': 'Votre message'}}) }}
-          {{ form_errors(form.content) }}
-        </div>
-
-        <div class="form-control mt-3">
-          {{ form_widget(form.send, {'attr': {'class': 'btn btn-primary w-full min-h-[44px]'}}) }}
-        </div>
-
-      {{ form_end(form) }}
-    </div>
-  </div>
-</main>
+  </section>
+</div>
 {% endblock %}

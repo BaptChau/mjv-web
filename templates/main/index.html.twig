@@ -1,173 +1,250 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}MJ Vaubécourt — Handball Club{% endblock %}
 
 {% block body %}
-<main class="bg-base-200">
-  <section class="bg-neutral text-neutral-content">
-    <div class="max-w-6xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-10 lg:grid-cols-2">
-      <div class="space-y-3 lg:space-y-5">
-        <p class="text-xs uppercase tracking-[0.4em] text-neutral-content/70">Handball club</p>
-        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">Jouez au handball !</h1>
-        <p class="text-base lg:text-lg text-neutral-content/80">
-          MJ Vaubécourt accompagne les joueuses et joueurs de tout âge pour défendre les couleurs du club.
+<div>
+
+  {# ==================== HERO ==================== #}
+  <section class="relative bg-neutral text-neutral-content overflow-hidden">
+    {# Decorative geometry #}
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-primary/20 blur-3xl"></div>
+      <div class="absolute -bottom-32 -left-16 w-[24rem] h-[24rem] rounded-full bg-secondary/20 blur-3xl"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:64px_64px]"></div>
+    </div>
+
+    <div class="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-28 grid gap-10 lg:gap-16 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-7 space-y-7">
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+          <span class="w-8 h-0.5 bg-primary"></span> Saison 2025 / 2026
         </p>
-        <div class="flex gap-3">
-          <a href="{{ path('app_team_index') }}" class="btn btn-primary btn-sm lg:btn-md flex-1 lg:flex-none lg:btn-wide">Dis m'en plus</a>
-          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary btn-sm lg:btn-md flex-1 lg:flex-none lg:btn-wide">Nous rejoindre</a>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.95] tracking-tight">
+          Le handball<br>
+          <span class="text-primary">c'est notre</span><br>
+          <span class="relative inline-block">
+            passion magique.
+            <span class="absolute -bottom-2 left-0 right-0 h-1.5 bg-secondary rounded-full" aria-hidden="true"></span>
+          </span>
+        </h1>
+        <p class="text-base sm:text-lg lg:text-xl text-neutral-content/80 max-w-2xl leading-relaxed">
+          De l'école de hand aux seniors, le MJ Vaubécourt forme, accompagne et fait vibrer toutes ses équipes — semaine après semaine.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <a href="{{ path('app_team_index') }}" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-xl hover:shadow-2xl hover:scale-[1.03] transition min-h-[52px]">
+            Voir les équipes
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3"/></svg>
+          </a>
+          <a href="{{ path('app_contact') }}" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border-2 border-neutral-content/30 text-neutral-content font-black uppercase tracking-wide text-sm hover:bg-neutral-content/10 hover:border-neutral-content/60 transition min-h-[52px]">
+            Nous rejoindre
+          </a>
         </div>
+
+        {# Quick stats strip #}
+        <dl class="grid grid-cols-3 gap-3 sm:gap-6 pt-6 max-w-xl">
+          <div>
+            <dt class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-content/60">Équipes</dt>
+            <dd class="text-3xl sm:text-4xl font-black mt-1 tabular-nums text-primary">{{ highlightedCategories|default([])|length }}+</dd>
+          </div>
+          <div class="border-l border-neutral-content/15 pl-3 sm:pl-6">
+            <dt class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-content/60">À venir</dt>
+            <dd class="text-3xl sm:text-4xl font-black mt-1 tabular-nums">{{ upcomingMatches|length }}</dd>
+          </div>
+          <div class="border-l border-neutral-content/15 pl-3 sm:pl-6">
+            <dt class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-content/60">Actus</dt>
+            <dd class="text-3xl sm:text-4xl font-black mt-1 tabular-nums">{{ latestNews|length }}</dd>
+          </div>
+        </dl>
       </div>
-      <div class="hidden lg:block">
-        <div class="rounded-3xl border border-neutral-content/20 overflow-hidden shadow-2xl">
-          <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80"
-               alt="Joueur de handball"
-               class="w-full h-80 object-cover">
+
+      <div class="lg:col-span-5 hidden lg:block">
+        <div class="relative">
+          <div class="absolute -top-4 -left-4 w-24 h-24 rounded-2xl bg-primary z-10 flex items-center justify-center text-primary-content font-black text-3xl rotate-[-6deg] shadow-xl">
+            <span class="leading-none">#1</span>
+          </div>
+          <div class="absolute -bottom-6 -right-6 px-5 py-3 rounded-2xl bg-secondary text-secondary-content font-black uppercase tracking-wide text-sm rotate-[4deg] shadow-xl z-10">
+            Allez la MJV !
+          </div>
+          <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-base-100/10 rotate-1">
+            <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80"
+                 alt=""
+                 loading="lazy"
+                 class="w-full h-[28rem] object-cover">
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-6 lg:py-16">
-    <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-5 gap-4 lg:gap-8">
-      <article class="card bg-base-100 shadow-xl rounded-3xl lg:col-span-3 border border-base-300">
-        <div class="card-body p-4 lg:p-8 gap-4 lg:gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-base-content/70">Nos équipes</p>
-            <h2 class="text-2xl lg:text-3xl font-bold">Nos collectifs</h2>
-            <p class="text-base-content/70 mt-1 text-sm lg:text-base">Des catégories jeunes aux seniors : découvrez les équipes en vedette.</p>
-          </div>
-          {% set highlighted = highlightedCategories is not empty ? highlightedCategories : [] %}
-          <div class="rounded-2xl overflow-hidden border border-base-300">
-            {% if highlighted|length > 0 %}
-              {% set heroTeam = highlighted|first %}
-              {% set heroPhoto = heroTeam.teams|first %}
-              {% if heroPhoto and heroPhoto.photoPath %}
-                <img src="{{ heroPhoto.photoPath }}" alt="{{ heroTeam.categoryLabel }}" class="w-full h-40 lg:h-60 object-cover">
-              {% else %}
-                <div class="w-full h-40 lg:h-60 flex items-center justify-center bg-base-200 text-base-content/50">
-                  Photo à venir
-                </div>
-              {% endif %}
-            {% else %}
-              <div class="w-full h-40 lg:h-60 flex items-center justify-center bg-base-200 text-base-content/50">
-                Aucune équipe disponible pour l'instant
-              </div>
-            {% endif %}
-          </div>
-          <div class="grid sm:grid-cols-2 gap-4">
-            {% for entry in highlighted %}
-              <div class="rounded-2xl bg-base-200/60 border border-base-300 p-4">
-                <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ entry.categoryLabel }}</p>
-                <p class="font-semibold text-lg text-base-content">{{ entry.teams|length }} équipe(s)</p>
-                <p class="text-xs text-base-content/60 mt-1">
-                  {% for team in entry.teams %}
-                    {{ team.label }}{% if not loop.last %}, {% endif %}
-                  {% endfor %}
-                </p>
-                <a href="{{ path('app_team_details', {slug: entry.slug}) }}"
-                   class="link link-primary mt-2 inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em]">
-                  Voir plus →
-                </a>
-              </div>
-            {% endfor %}
-          </div>
+  {# ==================== TEAMS HIGHLIGHT ==================== #}
+  <section class="py-14 lg:py-24 bg-base-100">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header class="flex flex-col gap-3 mb-8 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
+        <div class="space-y-2">
+          <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+            <span class="w-8 h-0.5 bg-primary"></span> Nos équipes
+          </p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">Tous nos collectifs</h2>
+          <p class="text-base lg:text-lg text-base-content/70 max-w-2xl">Des catégories jeunes aux seniors — un projet sportif pour chaque joueuse et joueur.</p>
         </div>
+        <a href="{{ path('app_team_index') }}" class="inline-flex items-center gap-2 text-sm font-black text-primary hover:underline self-start">
+          Voir toutes les équipes
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3"/></svg>
+        </a>
+      </header>
+
+      {% set highlighted = highlightedCategories is not empty ? highlightedCategories : [] %}
+      <div class="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for entry in highlighted %}
+          {% set photo = entry.teams|first %}
+          <a href="{{ path('app_team_details', {slug: entry.slug}) }}"
+             class="group relative rounded-3xl overflow-hidden border border-base-300 bg-base-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <div class="aspect-[4/3] bg-neutral overflow-hidden">
+              {% if photo and photo.photoPath %}
+                <img src="{{ photo.photoPath }}" alt="" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center text-neutral-content/40 text-sm font-semibold">Photo à venir</div>
+              {% endif %}
+              <div class="absolute inset-0 bg-gradient-to-t from-neutral via-neutral/30 to-transparent"></div>
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-5 lg:p-6 text-neutral-content">
+              <p class="text-[11px] font-black uppercase tracking-[0.25em] text-primary mb-1">{{ entry.teams|length }} équipe{{ entry.teams|length > 1 ? 's' : '' }}</p>
+              <h3 class="text-xl lg:text-2xl font-black mb-2">{{ entry.categoryLabel }}</h3>
+              <p class="text-xs text-neutral-content/80 line-clamp-2 mb-3">
+                {% for team in entry.teams %}{{ team.label }}{% if not loop.last %} · {% endif %}{% endfor %}
+              </p>
+              <span class="inline-flex items-center gap-1.5 text-sm font-black">
+                Découvrir
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3"/></svg>
+              </span>
+            </div>
+          </a>
+        {% else %}
+          <div class="sm:col-span-2 lg:col-span-3 text-center py-16 px-4 rounded-3xl border-2 border-dashed border-base-300">
+            <p class="text-base-content/60">Aucune équipe disponible pour l'instant.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {# ==================== MATCHES + NEWS SPLIT ==================== #}
+  <section class="py-14 lg:py-24 bg-base-200">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:gap-10 lg:grid-cols-2">
+
+      {# Upcoming matches #}
+      <article class="bg-base-100 rounded-3xl border border-base-300 overflow-hidden">
+        <header class="p-6 lg:p-8 border-b border-base-200 flex items-end justify-between gap-3">
+          <div class="space-y-1">
+            <p class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-primary">
+              <span class="w-2 h-2 rounded-sm bg-primary"></span> Calendrier
+            </p>
+            <h3 class="text-2xl lg:text-3xl font-black tracking-tight">Prochains matchs</h3>
+          </div>
+          <a href="{{ path('app_calendar') }}" class="text-xs font-black text-primary hover:underline uppercase tracking-wider">Tout voir</a>
+        </header>
+        <ul class="divide-y divide-base-200" role="list">
+          {% for match in upcomingMatches|slice(0, 5) %}
+            <li>
+              <div class="flex items-center gap-4 p-5 lg:p-6 hover:bg-base-200/50 transition-colors">
+                <time datetime="{{ match.matchDate|date('Y-m-d') }}"
+                      class="flex flex-col items-center justify-center w-16 h-16 rounded-2xl bg-primary text-primary-content shrink-0 shadow-md">
+                  <span class="text-2xl font-black leading-none tabular-nums">{{ match.matchDate|date('d') }}</span>
+                  <span class="text-[10px] uppercase tracking-widest font-black mt-0.5">{{ match.matchDate|date('M') }}</span>
+                </time>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[10px] font-black uppercase tracking-[0.2em] text-base-content/60 truncate">{{ match.team.label }}</p>
+                  <p class="text-base font-black truncate mt-0.5">{{ match.homeTeam }} <span class="text-base-content/40">vs</span> {{ match.awayTeam }}</p>
+                  <p class="text-xs text-base-content/60 mt-0.5 truncate">{{ match.venue ?? 'Lieu à définir' }} · {{ match.matchDate|date('H\\hi') }}</p>
+                </div>
+              </div>
+            </li>
+          {% else %}
+            <li class="p-8 text-center text-base-content/60 text-sm">Les prochains matchs seront publiés bientôt.</li>
+          {% endfor %}
+        </ul>
       </article>
 
-      <div class="lg:col-span-2 flex flex-col gap-4 lg:gap-6">
-        <article class="card bg-base-100 shadow-lg rounded-3xl border border-base-300">
-          <div class="card-body p-4 lg:p-8 gap-3 lg:gap-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Calendrier</p>
-                <h3 class="text-xl lg:text-2xl font-bold">Prochains matches</h3>
-              </div>
-              <a href="{{ path('app_calendar') }}" class="link link-primary text-xs uppercase tracking-[0.3em]">Voir tout</a>
-            </div>
-            <div class="space-y-4">
-              {% for match in upcomingMatches %}
-                <div class="flex items-center gap-4 rounded-2xl bg-base-200/60 border border-base-300 p-4">
-                  <div class="text-center px-4 py-2 bg-base-100 rounded-xl shadow-sm">
-                    <p class="text-3xl font-extrabold leading-none">{{ match.matchDate|date('d') }}</p>
-                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.matchDate|date('M') }}</p>
+      {# Latest news #}
+      <article class="bg-base-100 rounded-3xl border border-base-300 overflow-hidden">
+        <header class="p-6 lg:p-8 border-b border-base-200 flex items-end justify-between gap-3">
+          <div class="space-y-1">
+            <p class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-secondary">
+              <span class="w-2 h-2 rounded-sm bg-secondary"></span> Actualités
+            </p>
+            <h3 class="text-2xl lg:text-3xl font-black tracking-tight">Dernières actus</h3>
+          </div>
+          <a href="{{ path('app_news') }}" class="text-xs font-black text-secondary hover:underline uppercase tracking-wider">Tout voir</a>
+        </header>
+        <ul class="divide-y divide-base-200" role="list">
+          {% for news in latestNews|slice(0, 5) %}
+            <li>
+              <a href="{{ path('app_news_details', {id: news.id}) }}"
+                 class="flex gap-4 p-5 lg:p-6 hover:bg-base-200/50 transition-colors group focus-visible:outline-none focus-visible:bg-base-200">
+                {% if news.imgPath %}
+                  <img src="{{ news.imgPath }}" alt="" loading="lazy" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shrink-0">
+                {% else %}
+                  <div class="w-20 h-20 sm:w-24 sm:h-24 bg-base-200 rounded-xl shrink-0 flex items-center justify-center text-base-content/40">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h12a2 2 0 012 2v12H6a2 2 0 01-2-2V5z"/></svg>
                   </div>
-                  <div class="flex-1">
-                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.team.label }}</p>
-                    <p class="text-lg font-semibold">{{ match.homeTeam }} - {{ match.awayTeam }}</p>
-                    <p class="text-xs text-base-content/60 uppercase tracking-[0.3em]">{{ match.venue ?? 'À définir' }} · {{ match.matchDate|date('H\\hi') }}</p>
-                  </div>
+                {% endif %}
+                <div class="flex-1 min-w-0">
+                  <time datetime="{{ news.createdAt|date('c') }}" class="text-[10px] font-black uppercase tracking-[0.2em] text-secondary">{{ news.createdAt|date('d M Y') }}</time>
+                  <h4 class="text-base font-black text-base-content line-clamp-2 mt-1 group-hover:text-secondary transition-colors">{{ news.title }}</h4>
+                  <p class="text-xs text-base-content/60 mt-1 line-clamp-2">{{ news.content|u.truncate(110, '...') }}</p>
                 </div>
-              {% else %}
-                <p class="text-sm text-base-content/70">Les prochains matches seront publiés bientôt.</p>
-              {% endfor %}
-            </div>
-          </div>
-        </article>
-
-        <article class="card bg-base-100 shadow-lg rounded-3xl border border-base-300">
-          <div class="card-body p-4 lg:p-8 gap-3 lg:gap-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Actualités</p>
-                <h3 class="text-xl lg:text-2xl font-bold">Dernières actus</h3>
-              </div>
-              <a href="{{ path('app_news') }}" class="link link-primary text-xs uppercase tracking-[0.3em]">Voir tout</a>
-            </div>
-            <div class="space-y-4">
-              {% for news in latestNews %}
-                <a href="{{ path('app_news_details', {id: news.id}) }}"
-                   class="flex gap-4 rounded-2xl border border-base-300 hover:border-primary transition overflow-hidden">
-                  {% if news.imgPath %}
-                    <img src="{{ news.imgPath }}" alt="{{ news.title }}" class="w-24 h-24 object-cover">
-                  {% endif %}
-                  <div class="p-4 flex-1">
-                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ news.createdAt|date('d M Y') }}</p>
-                    <h4 class="text-lg font-semibold text-base-content">{{ news.title }}</h4>
-                    <p class="text-sm text-base-content/70">{{ news.content|u.truncate(90, '...') }}</p>
-                  </div>
-                </a>
-              {% else %}
-                <p class="text-sm text-base-content/70">Aucune actualité disponible.</p>
-              {% endfor %}
-            </div>
-          </div>
-        </article>
-      </div>
+              </a>
+            </li>
+          {% else %}
+            <li class="p-8 text-center text-base-content/60 text-sm">Aucune actualité disponible.</li>
+          {% endfor %}
+        </ul>
+      </article>
     </div>
   </section>
 
-  <section class="pb-6 lg:pb-16">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="card bg-base-100 shadow-xl rounded-3xl border border-base-300">
-        <div class="card-body p-4 lg:p-8 gap-4 lg:gap-6">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Forum</p>
-              <h3 class="text-2xl font-bold text-base-content">Dernières discussions</h3>
-            </div>
-            <a href="{{ path('app_forum') }}" class="btn btn-primary btn-sm">Voir le forum</a>
+  {# ==================== FORUM CTA ==================== #}
+  <section class="py-14 lg:py-24 bg-base-100">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative rounded-3xl bg-neutral text-neutral-content p-8 lg:p-12 overflow-hidden">
+        <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-primary/30 blur-3xl pointer-events-none" aria-hidden="true"></div>
+        <div class="relative grid gap-8 lg:grid-cols-12 items-center">
+          <div class="lg:col-span-7 space-y-3">
+            <p class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-primary">
+              <span class="w-6 h-0.5 bg-primary"></span> Forum du club
+            </p>
+            <h3 class="text-3xl lg:text-4xl font-black tracking-tight">Rejoignez la conversation</h3>
+            <p class="text-neutral-content/75 max-w-xl">Covoiturage, déplacements, retours de match — l'espace d'échange entre membres, parents et bénévoles.</p>
           </div>
-          <div class="grid gap-4">
-            {% for post in lastPosts %}
-              <article class="rounded-2xl border border-base-300 p-4 hover:border-primary transition">
-                <div class="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-base-content/60 mb-2">
-                  <span>{{ post.author }}</span>
-                  {% if post.createdAt is defined %}
-                    <span>{{ post.createdAt|date('d/m/Y H:i') }}</span>
-                  {% endif %}
-                </div>
-                <a href="{{ path('app_forum_details', {id: post.id}) }}" class="text-lg font-semibold text-base-content">
-                  {{ post.title }}
-                </a>
-                <p class="text-sm text-base-content/70 mt-1">{{ post.body|u.truncate(120, '...') }}</p>
-              </article>
-            {% else %}
-              <p class="text-sm text-base-content/70">Aucune publication récente.</p>
-            {% endfor %}
+          <div class="lg:col-span-5 lg:flex lg:justify-end">
+            <a href="{{ path('app_forum') }}" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-xl hover:scale-105 transition min-h-[52px] w-full lg:w-auto">
+              Voir le forum
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3"/></svg>
+            </a>
           </div>
         </div>
+
+        {% if lastPosts is not empty %}
+          <ul class="relative grid gap-3 md:grid-cols-2 mt-8" role="list">
+            {% for post in lastPosts|slice(0, 4) %}
+              <li>
+                <a href="{{ path('app_forum_details', {id: post.id}) }}"
+                   class="block h-full rounded-2xl border border-neutral-content/15 bg-neutral-content/5 p-4 hover:bg-neutral-content/10 hover:border-primary transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                  <div class="flex items-center justify-between text-[11px] font-bold text-neutral-content/70 mb-2 gap-2">
+                    <span class="truncate uppercase tracking-wider">{{ post.author }}</span>
+                    {% if post.createdAt is defined %}
+                      <time datetime="{{ post.createdAt|date('c') }}" class="shrink-0 tabular-nums">{{ post.createdAt|date('d/m') }}</time>
+                    {% endif %}
+                  </div>
+                  <p class="text-base font-black text-neutral-content line-clamp-2">{{ post.title }}</p>
+                  <p class="text-xs text-neutral-content/70 mt-1 line-clamp-2">{{ post.body|u.truncate(100, '...') }}</p>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </div>
     </div>
   </section>
-</main>
+</div>
 {% endblock %}

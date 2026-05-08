@@ -3,74 +3,42 @@
 {% block title %}Politique de confidentialité — MJ Vaubécourt{% endblock %}
 
 {% block body %}
-<main class="max-w-3xl mx-auto px-4 py-10">
-    <h1 class="text-3xl font-bold mb-2">Politique de confidentialité</h1>
-    <p class="text-sm text-gray-500 mb-8">Dernière mise à jour : mai 2026</p>
+<div class="bg-base-100">
+  <section class="bg-neutral text-neutral-content">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-3">
+      <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+        <span class="w-8 h-0.5 bg-primary"></span> RGPD
+      </p>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">Politique de confidentialité</h1>
+      <p class="text-neutral-content/70 max-w-2xl">Comment vos données personnelles sont collectées, utilisées et protégées.</p>
+      <p class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-content/10 border border-neutral-content/20 text-xs font-bold mt-4">
+        <span class="w-2 h-2 rounded-full bg-primary"></span> Dernière mise à jour : mai 2026
+      </p>
+    </div>
+  </section>
 
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Responsable du traitement</h2>
-        <p>Maison des jeunes Vaubécourt handball, association loi 1901, 5 route de Clermont, 55250 Fleury-sur-Aire.</p>
-        <p>Contact : <a href="mailto:chaudron964@gmail.com" class="link">chaudron964@gmail.com</a></p>
-    </section>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-6">
+    {% set blocks = [
+      {color: 'primary', title: 'Responsable du traitement', body: '<p>Maison des jeunes Vaubécourt handball, association loi 1901, 5 route de Clermont, 55250 Fleury-sur-Aire.</p><p class="mt-2">Contact : <a href="mailto:chaudron964@gmail.com" class="text-primary font-bold hover:underline">chaudron964@gmail.com</a></p>'},
+      {color: 'secondary', title: 'Données collectées', body: '<p class="mb-2">Lors de la connexion via Google, nous récupérons uniquement les informations transmises par votre compte Google :</p><ul class="list-disc pl-5 space-y-1"><li>Adresse e-mail</li><li>Nom d\'affichage</li><li>Photo de profil (URL)</li><li>Identifiant Google unique (non visible pour vous)</li></ul><p class="mt-2">Aucun mot de passe n\'est stocké sur notre site. Nous ne collectons aucune autre donnée personnelle.</p>'},
+      {color: 'accent', title: 'Finalité du traitement', body: '<p>Ces données sont utilisées uniquement pour :</p><ul class="list-disc pl-5 space-y-1 mt-2"><li>Créer et gérer votre compte membre</li><li>Vous permettre de publier sur le forum et de commenter les actualités</li><li>Afficher votre nom et votre photo à côté de vos contributions</li></ul>'},
+      {color: 'primary', title: 'Base légale', body: '<p>Le traitement est fondé sur votre <strong class="font-black">consentement</strong> (article 6.1.a du RGPD), exprimé lors du clic sur "Se connecter avec Google". Vous pouvez retirer ce consentement à tout moment en demandant la suppression de votre compte.</p>'},
+      {color: 'secondary', title: 'Durée de conservation', body: '<p>Vos données sont conservées tant que votre compte est actif. Sur demande de suppression, elles sont effacées dans un délai de 30 jours.</p>'},
+      {color: 'accent', title: 'Partage des données', body: '<p>Vos données ne sont transmises à aucun tiers à des fins commerciales ou publicitaires. Elles sont hébergées chez OVH (France). La connexion via Google implique l\'application de la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-primary font-bold hover:underline">politique de confidentialité de Google</a>.</p>'},
+      {color: 'primary', title: 'Cookies', body: '<p>Le site utilise uniquement un cookie de session technique, nécessaire au bon fonctionnement de l\'authentification. Ce cookie est supprimé à la fermeture de votre navigateur ou lors de la déconnexion. Aucun cookie publicitaire, analytique ou de traçage n\'est utilisé.</p>'},
+      {color: 'secondary', title: 'Google reCAPTCHA', body: '<p>Certains formulaires du site utilisent Google reCAPTCHA afin de lutter contre les soumissions automatisées (spam). Ce service peut collecter des données à des fins de sécurité conformément à la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-primary font-bold hover:underline">politique de confidentialité de Google</a>.</p>'},
+      {color: 'accent', title: 'Vos droits', body: '<p class="mb-2">Conformément au RGPD, vous disposez des droits suivants :</p><ul class="list-disc pl-5 space-y-1"><li><strong class="font-black">Accès</strong> : obtenir une copie de vos données</li><li><strong class="font-black">Rectification</strong> : corriger des données inexactes</li><li><strong class="font-black">Suppression</strong> : demander l\'effacement de votre compte</li><li><strong class="font-black">Opposition</strong> : vous opposer au traitement</li><li><strong class="font-black">Portabilité</strong> : recevoir vos données dans un format lisible</li></ul><p class="mt-3">Pour exercer ces droits, contactez-nous à <a href="mailto:chaudron964@gmail.com" class="text-primary font-bold hover:underline">chaudron964@gmail.com</a>. Vous pouvez également introduire une réclamation auprès de la <a href="https://www.cnil.fr" target="_blank" rel="noopener" class="text-primary font-bold hover:underline">CNIL</a>.</p>'}
+    ] %}
 
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Données collectées</h2>
-        <p class="mb-2">Lors de la connexion via Google, nous récupérons uniquement les informations transmises par votre compte Google :</p>
-        <ul class="list-disc list-inside space-y-1">
-            <li>Adresse e-mail</li>
-            <li>Nom d'affichage</li>
-            <li>Photo de profil (URL)</li>
-            <li>Identifiant Google unique (non visible pour vous)</li>
-        </ul>
-        <p class="mt-2">Aucun mot de passe n'est stocké sur notre site. Nous ne collectons aucune autre donnée personnelle.</p>
-    </section>
-
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Finalité du traitement</h2>
-        <p>Ces données sont utilisées uniquement pour :</p>
-        <ul class="list-disc list-inside space-y-1 mt-2">
-            <li>Créer et gérer votre compte membre</li>
-            <li>Vous permettre de publier sur le forum et de commenter les actualités</li>
-            <li>Afficher votre nom et votre photo à côté de vos contributions</li>
-        </ul>
-    </section>
-
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Base légale</h2>
-        <p>Le traitement est fondé sur votre <strong>consentement</strong> (article 6.1.a du RGPD), exprimé lors du clic sur "Se connecter avec Google". Vous pouvez retirer ce consentement à tout moment en demandant la suppression de votre compte.</p>
-    </section>
-
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Durée de conservation</h2>
-        <p>Vos données sont conservées tant que votre compte est actif. Sur demande de suppression, elles sont effacées dans un délai de 30 jours.</p>
-    </section>
-
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Partage des données</h2>
-        <p>Vos données ne sont transmises à aucun tiers à des fins commerciales ou publicitaires. Elles sont hébergées chez OVH (France). La connexion via Google implique l'application de la <a href="https://policies.google.com/privacy" class="link" target="_blank" rel="noopener">politique de confidentialité de Google</a>.</p>
-    </section>
-
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Cookies</h2>
-        <p>Le site utilise uniquement un cookie de session technique, nécessaire au bon fonctionnement de l'authentification. Ce cookie est supprimé à la fermeture de votre navigateur ou lors de la déconnexion. Aucun cookie publicitaire, analytique ou de traçage n'est utilisé.</p>
-    </section>
-
-    <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Google reCAPTCHA</h2>
-        <p>Certains formulaires du site utilisent Google reCAPTCHA afin de lutter contre les soumissions automatisées (spam). Ce service peut collecter des données à des fins de sécurité conformément à la <a href="https://policies.google.com/privacy" class="link" target="_blank" rel="noopener">politique de confidentialité de Google</a>.</p>
-    </section>
-
-    <section>
-        <h2 class="text-xl font-semibold mb-3">Vos droits</h2>
-        <p class="mb-2">Conformément au RGPD, vous disposez des droits suivants :</p>
-        <ul class="list-disc list-inside space-y-1">
-            <li><strong>Accès</strong> : obtenir une copie de vos données</li>
-            <li><strong>Rectification</strong> : corriger des données inexactes</li>
-            <li><strong>Suppression</strong> : demander l'effacement de votre compte</li>
-            <li><strong>Opposition</strong> : vous opposer au traitement</li>
-            <li><strong>Portabilité</strong> : recevoir vos données dans un format lisible</li>
-        </ul>
-        <p class="mt-3">Pour exercer ces droits, contactez-nous à <a href="mailto:chaudron964@gmail.com" class="link">chaudron964@gmail.com</a>. Vous pouvez également introduire une réclamation auprès de la <a href="https://www.cnil.fr" class="link" target="_blank" rel="noopener">CNIL</a>.</p>
-    </section>
-</main>
+    {% for block in blocks %}
+      {% set bar = block.color == 'primary' ? 'bg-primary' : (block.color == 'secondary' ? 'bg-secondary' : 'bg-accent') %}
+      <section class="rounded-3xl border border-base-300 p-6 lg:p-8 bg-base-100 hover:shadow-lg transition-shadow">
+        <h2 class="text-xl lg:text-2xl font-black tracking-tight mb-4 flex items-center gap-3">
+          <span class="w-1 h-6 {{ bar }} rounded-full"></span> {{ block.title }}
+        </h2>
+        <div class="text-base-content/80 leading-relaxed text-sm lg:text-base">{{ block.body|raw }}</div>
+      </section>
+    {% endfor %}
+  </article>
+</div>
 {% endblock %}

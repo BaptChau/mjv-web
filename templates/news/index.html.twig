@@ -1,76 +1,91 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Actualités{% endblock %}
+{% block title %}Actualités — MJ Vaubécourt{% endblock %}
 
 {% block body %}
-<main class="bg-base-200 min-h-screen">
-  <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-12 lg:grid-cols-2">
-      <div class="space-y-4 lg:space-y-6">
-        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/70">Actualités du club</p>
-        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Toute la vie du MJ Vaubécourt, semaine après semaine</h1>
-        <p class="text-neutral-content/80 text-lg">
-          Résumés de match, portraits, événements et vie du club : retrouvez chaque moment fort.
+<div>
+  {# ==================== HERO ==================== #}
+  <section class="relative bg-neutral text-neutral-content overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-secondary/20 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-16 w-[20rem] h-[20rem] rounded-full bg-primary/20 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-24 grid gap-10 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-8 space-y-5">
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-secondary">
+          <span class="w-8 h-0.5 bg-secondary"></span> Actualités
         </p>
-        <div class="grid grid-cols-2 gap-4 text-neutral-content/80">
-          <div class="rounded-2xl border border-neutral-content/20 p-4">
-            <p class="text-xs uppercase tracking-[0.4em]">Articles</p>
-            <p class="text-3xl font-bold">{{ total|default(0) }}</p>
-          </div>
-          <div class="rounded-2xl border border-neutral-content/20 p-4">
-            <p class="text-xs uppercase tracking-[0.4em]">Dernières actus</p>
-            <p class="text-3xl font-bold">{{ lastNews|length }}</p>
-          </div>
-        </div>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight">
+          La vie du club,<br>
+          <span class="text-secondary">en temps réel.</span>
+        </h1>
+        <p class="text-base sm:text-lg text-neutral-content/75 max-w-xl leading-relaxed">
+          Résumés de match, portraits, événements et coulisses : retrouvez chaque moment fort du MJ Vaubécourt.
+        </p>
       </div>
-      <div class="hidden lg:block">
-        <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80"
-            alt="Actualités MJ Vaubécourt"
-            class="w-full h-80 object-cover">
+      <div class="lg:col-span-4 grid grid-cols-2 gap-3">
+        <div class="rounded-2xl border border-neutral-content/15 bg-neutral-content/5 backdrop-blur p-5">
+          <dt class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-content/60">Articles</dt>
+          <dd class="text-4xl lg:text-5xl font-black mt-2 tabular-nums text-secondary">{{ total|default(0) }}</dd>
+        </div>
+        <div class="rounded-2xl border border-neutral-content/15 bg-neutral-content/5 backdrop-blur p-5">
+          <dt class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-content/60">À la une</dt>
+          <dd class="text-4xl lg:text-5xl font-black mt-2 tabular-nums">{{ lastNews|length }}</dd>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-8 lg:py-16">
-    <div class="max-w-5xl mx-auto px-4 space-y-8">
-      <div class="flex flex-col gap-2">
-        <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">À la une</p>
-        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Dernières actualités</h2>
-        <p class="text-base-content/70">Les moments clés du club mis en avant.</p>
-      </div>
-
-      <div class="grid gap-6 lg:grid-cols-2">
-        {% for news in lastNews %}
-          {% include 'components/news/news.html.twig' with {news: news} %}
-        {% else %}
-          <p class="text-center text-base-content/60 py-12 rounded-3xl border border-dashed border-base-300 bg-base-100">
-            Aucune actualité récente.
+  {# ==================== LATEST NEWS GRID ==================== #}
+  <section class="py-14 lg:py-24 bg-base-100">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <header class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div class="space-y-2">
+          <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+            <span class="w-8 h-0.5 bg-primary"></span> À la une
           </p>
-        {% endfor %}
-      </div>
+          <h2 class="text-3xl lg:text-4xl font-black tracking-tight">Dernières publications</h2>
+        </div>
+        <a href="{{ path('app_news_archives') }}" class="inline-flex items-center gap-2 text-sm font-black text-primary hover:underline self-start">
+          Voir toutes les archives
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3"/></svg>
+        </a>
+      </header>
 
-      <div class="flex justify-center">
-        <a href="{{ path('app_news_archives') }}" class="btn btn-outline btn-primary">Voir toutes les archives</a>
-      </div>
+      <ul class="grid gap-5 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        {% for news in lastNews %}
+          <li>{% include 'components/news/news.html.twig' with {news: news} %}</li>
+        {% else %}
+          <li class="sm:col-span-2 lg:col-span-3">
+            <div class="text-center py-16 px-4 rounded-3xl border-2 border-dashed border-base-300">
+              <svg class="w-12 h-12 mx-auto text-base-content/30 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h12a2 2 0 012 2v12H6a2 2 0 01-2-2V5z"/></svg>
+              <p class="text-base-content/60 font-semibold">Aucune actualité récente.</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
   </section>
 
-  <section class="pb-8 lg:pb-16">
-    <div class="max-w-5xl mx-auto px-4">
-      <div class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
-        <div class="card-body gap-4 md:flex md:items-center md:justify-between">
-          <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Rester informé</p>
-            <h3 class="text-2xl font-bold text-base-content">Recevez les prochaines actus du club.</h3>
-            <p class="text-base-content/70">Inscrivez-vous auprès du club pour être averti des nouveaux articles.</p>
+  {# ==================== CTA ==================== #}
+  <section class="py-14 lg:py-20 bg-base-200">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative rounded-3xl bg-neutral text-neutral-content p-8 lg:p-12 overflow-hidden">
+        <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-secondary/30 blur-3xl pointer-events-none" aria-hidden="true"></div>
+        <div class="relative grid gap-6 lg:grid-cols-12 items-center">
+          <div class="lg:col-span-8 space-y-2">
+            <p class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-secondary">
+              <span class="w-6 h-0.5 bg-secondary"></span> Rester informé
+            </p>
+            <h3 class="text-2xl lg:text-3xl font-black tracking-tight">Recevez les prochaines actus du club</h3>
+            <p class="text-neutral-content/75 text-sm lg:text-base">Inscrivez-vous auprès du club pour être averti des nouveaux articles.</p>
           </div>
-          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary">Nous contacter</a>
+          <div class="lg:col-span-4 lg:flex lg:justify-end">
+            <a href="{{ path('app_contact') }}" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-xl hover:scale-105 transition w-full lg:w-auto min-h-[52px]">Nous contacter</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
-</main>
+</div>
 {% endblock %}
