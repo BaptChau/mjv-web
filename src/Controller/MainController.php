@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\TeamMatchRepository;
 use App\Service\ForumService;
 use App\Service\NewsService;
 use App\Service\TeamService;
@@ -16,31 +17,15 @@ final class MainController extends AbstractController
         ForumService $forumService,
         TeamService $teamService,
         NewsService $newsService,
+        TeamMatchRepository $teamMatchRepository,
     ): Response
     {
         $categories = $teamService->getAllWithCategoryLabel();
 
-        $upcomingMatches = [
-            [
-                'date' => new \DateTimeImmutable('+3 days'),
-                'opponent' => 'Lunéville',
-                'teamLabel' => 'Seniors masculins',
-                'location' => 'Domicile',
-                'time' => '20h30',
-            ],
-            [
-                'date' => new \DateTimeImmutable('+6 days'),
-                'opponent' => 'Darnvilliers',
-                'teamLabel' => 'Jeunes U18',
-                'location' => 'Extérieur',
-                'time' => '18h00',
-            ],
-        ];
-
         return $this->render(view: 'main/index.html.twig', parameters:[
             'lastPosts' => $forumService->getLastNPosts(5),
             'highlightedCategories' => array_slice($categories, 0, 3),
-            'upcomingMatches' => $upcomingMatches,
+            'upcomingMatches' => $teamMatchRepository->findUpcoming(),
             'latestNews' => $newsService->getLastNNews(2),
         ]);
     }

@@ -88,13 +88,13 @@
               {% for match in upcomingMatches %}
                 <div class="flex items-center gap-4 rounded-2xl bg-base-200/60 border border-base-300 p-4">
                   <div class="text-center px-4 py-2 bg-base-100 rounded-xl shadow-sm">
-                    <p class="text-3xl font-extrabold leading-none">{{ match.date|date('d') }}</p>
-                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.date|date('M') }}</p>
+                    <p class="text-3xl font-extrabold leading-none">{{ match.matchDate|date('d') }}</p>
+                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.matchDate|date('M') }}</p>
                   </div>
                   <div class="flex-1">
-                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.teamLabel }}</p>
-                    <p class="text-lg font-semibold">{{ match.opponent }}</p>
-                    <p class="text-xs text-base-content/60 uppercase tracking-[0.3em]">{{ match.location }} · {{ match.time }}</p>
+                    <p class="text-xs uppercase tracking-[0.3em] text-base-content/60">{{ match.team.label }}</p>
+                    <p class="text-lg font-semibold">{{ match.homeTeam }} - {{ match.awayTeam }}</p>
+                    <p class="text-xs text-base-content/60 uppercase tracking-[0.3em]">{{ match.venue ?? 'À définir' }} · {{ match.matchDate|date('H\\hi') }}</p>
                   </div>
                 </div>
               {% else %}
