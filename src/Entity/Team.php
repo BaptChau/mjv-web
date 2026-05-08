@@ -92,7 +92,7 @@ class Team
         return $this->photoPath;
     }
 
-    public function setPhotoPath(string $photoPath): static
+    public function setPhotoPath(?string $photoPath): static
     {
         $this->photoPath = $photoPath;
 
