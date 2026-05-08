@@ -1,6 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ categoryLabel }} — MJ Vaubécourt{% endblock %}
+{% block title %}Handball {{ categoryLabel }} — Équipes MJ Vaubécourt{% endblock %}
+{% block meta_description %}Catégorie {{ categoryLabel }} du MJ Vaubécourt : compositions, staffs techniques, coachs et photos des équipes de handball jeunes ou seniors qui portent les couleurs du club.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Équipes", "item": "{{ site_url }}{{ path('app_team_index') }}" },
+    { "@type": "ListItem", "position": 3, "name": {{ categoryLabel|json_encode|raw }}, "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block body %}
 <div>

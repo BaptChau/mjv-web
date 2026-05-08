@@ -4,7 +4,10 @@ FROM php:8.2-cli
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libzip-dev libicu-dev \
     python3 python3-pip python3-venv \
-    && docker-php-ext-install pdo pdo_pgsql zip intl
+    curl ca-certificates \
+    && docker-php-ext-install pdo pdo_pgsql zip intl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 RUN git config --global --add safe.directory /app
 
 # Install Composer

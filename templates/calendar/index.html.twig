@@ -1,6 +1,47 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Calendrier — MJ Vaubécourt{% endblock %}
+{% block title %}Calendrier des matchs de handball — MJ Vaubécourt (Meuse){% endblock %}
+{% block meta_description %}Consultez le calendrier complet des matchs du MJ Vaubécourt : prochaines rencontres, résultats récents et recherche par date pour toutes les équipes du club.{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Calendrier", "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% if upcomingMatches is defined and upcomingMatches|length > 0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {% for match in upcomingMatches|slice(0, 10) %}
+    {
+      "@type": "SportsEvent",
+      "name": "{{ match.homeTeam }} vs {{ match.awayTeam }}",
+      "sport": "Handball",
+      "startDate": "{{ match.matchDate|date('c') }}",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "location": {
+        "@type": "Place",
+        "name": "{{ match.venue ?? 'Salle des sports de Vaubécourt' }}",
+        "address": { "@type": "PostalAddress", "addressLocality": "Vaubécourt", "addressRegion": "Meuse", "addressCountry": "FR" }
+      },
+      "homeTeam": { "@type": "SportsTeam", "name": "{{ match.homeTeam }}" },
+      "awayTeam": { "@type": "SportsTeam", "name": "{{ match.awayTeam }}" },
+      "organizer": { "@type": "SportsOrganization", "name": "MJ Vaubécourt", "url": "{{ site_url }}" }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endblock %}
 
 {% block body %}
 <div>

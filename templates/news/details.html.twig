@@ -1,6 +1,46 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ news.post.title }} — MJ Vaubécourt{% endblock %}
+{% set article_excerpt = news.post.content|striptags|slice(0, 155)|trim %}
+{% set article_image = (news.post.imgPath is defined and news.post.imgPath) ? (news.post.imgPath starts with 'http' ? news.post.imgPath : site_url ~ news.post.imgPath) : default_image %}
+
+{% block title %}{{ news.post.title }} — Actualité MJ Vaubécourt{% endblock %}
+{% block meta_description %}{{ article_excerpt }}{% if article_excerpt|length >= 155 %}…{% endif %}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{{ article_image }}{% endblock %}
+{% block og_image_alt %}{{ news.post.title }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": {{ news.post.title|json_encode|raw }},
+  "description": {{ article_excerpt|json_encode|raw }},
+  "image": "{{ article_image }}",
+  "datePublished": "{{ news.post.createdAt is defined ? news.post.createdAt|date('c') : '' }}",
+  "dateModified": "{{ news.post.createdAt is defined ? news.post.createdAt|date('c') : '' }}",
+  "author": { "@type": "Person", "name": {{ news.post.author|json_encode|raw }} },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MJ Vaubécourt",
+    "logo": { "@type": "ImageObject", "url": "{{ default_image }}" }
+  },
+  "mainEntityOfPage": "{{ site_url }}{{ app.request.pathInfo }}",
+  "commentCount": {{ news.comments|default([])|length }}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Actualités", "item": "{{ site_url }}{{ path('app_news') }}" },
+    { "@type": "ListItem", "position": 3, "name": {{ news.post.title|json_encode|raw }}, "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block body %}
 <div>

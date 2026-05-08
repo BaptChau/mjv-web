@@ -1,6 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}MJ Vaubécourt — Handball Club{% endblock %}
+{% block title %}MJ Vaubécourt — Club de handball à Vaubécourt (Meuse 55){% endblock %}
+{% block meta_description %}Bienvenue au MJ Vaubécourt, club de handball en Meuse (55). Le handball c'est notre passion magique : équipes jeunes et seniors, matchs, actualités et école de hand.{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "MJ Vaubécourt",
+  "url": "{{ site_url }}",
+  "inLanguage": "fr-FR",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ site_url }}/actualites?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{% if upcomingMatches is defined and upcomingMatches|length > 0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {% for match in upcomingMatches|slice(0, 5) %}
+    {
+      "@type": "SportsEvent",
+      "name": "{{ match.homeTeam }} vs {{ match.awayTeam }}",
+      "sport": "Handball",
+      "startDate": "{{ match.matchDate|date('c') }}",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "{{ match.venue ?? 'Salle des sports de Vaubécourt' }}",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vaubécourt",
+          "addressRegion": "Meuse",
+          "addressCountry": "FR"
+        }
+      },
+      "homeTeam": { "@type": "SportsTeam", "name": "{{ match.homeTeam }}" },
+      "awayTeam": { "@type": "SportsTeam", "name": "{{ match.awayTeam }}" },
+      "organizer": { "@type": "SportsOrganization", "name": "MJ Vaubécourt", "url": "{{ site_url }}" }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endblock %}
 
 {% block body %}
 <div>

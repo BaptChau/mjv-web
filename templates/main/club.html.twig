@@ -1,6 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Le Club — MJ Vaubécourt{% endblock %}
+{% block title %}Le Club MJ Vaubécourt — Histoire, valeurs et encadrement handball{% endblock %}
+{% block meta_description %}Découvrez le MJ Vaubécourt : un club de handball familial en Meuse, son histoire, ses valeurs, sa salle et ses entraîneurs. Convivialité, ambition et engagement local.{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "Le club MJ Vaubécourt",
+  "url": "{{ site_url }}{{ app.request.pathInfo }}",
+  "about": { "@type": "SportsClub", "name": "MJ Vaubécourt", "sport": "Handball" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Le club", "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block body %}
 <div>
