@@ -1,182 +1,291 @@
 {% set currentRoute = app.request.attributes.get('_route') %}
 {% set teamGroups = teamService.getMenuGroups() %}
-<nav class="bg-base-100 border-b border-base-200" aria-label="Navigation principale">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="{{ path('app_main') }}" class="flex items-center space-x-3">
-      <span class="self-center text-2xl font-semibold whitespace-nowrap">MJ Vaubécourt</span>
-    </a>
-    <button id="menu-toggle" type="button" class="inline-flex items-center p-2 min-w-[44px] min-h-[44px] justify-center text-sm text-base-content/70 rounded-lg lg:hidden hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary" aria-controls="navbar-main" aria-expanded="false">
-      <span class="sr-only">Ouvrir le menu principal</span>
-      <svg class="w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 17 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-      </svg>
-    </button>
-    <div class="hidden w-full lg:block lg:w-auto" id="navbar-main">
-      <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-base-200 rounded-lg bg-base-100 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-base-100">
-        <li>
-          <a href="{{ path('app_club') }}"
-             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute == 'app_club' %}text-primary font-semibold{% endif %}"
-             {% if currentRoute == 'app_club' %}aria-current="page"{% endif %}>
-            Club
-          </a>
-        </li>
-        <li>
-          <a href="{{ path('app_forum') }}"
-             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_forum' %}text-primary font-semibold{% endif %}"
-             {% if currentRoute starts with 'app_forum' %}aria-current="page"{% endif %}>
-            Forum
-          </a>
-        </li>
-        <li>
-          <a href="{{ path('app_calendar') }}"
-             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_calendar' %}text-primary font-semibold{% endif %}"
-             {% if currentRoute starts with 'app_calendar' %}aria-current="page"{% endif %}>
-            Calendrier
-          </a>
-        </li>
-        <li>
-          <a href="{{ path('app_news') }}"
-             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_news' %}text-primary font-semibold{% endif %}"
-             {% if currentRoute starts with 'app_news' %}aria-current="page"{% endif %}>
-            Actualités
-          </a>
-        </li>
-        <li id="teams-dropdown" class="dropdown dropdown-bottom lg:dropdown-hover">
-          <button id="teams-toggle" type="button" tabindex="0" aria-haspopup="true" aria-expanded="false"
-             class="flex items-center w-full py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent gap-1
-             {% if currentRoute starts with 'app_team' %}text-primary font-semibold{% endif %}">
+
+{# ============================================================
+   Top navigation bar (sticky). Bold sports-club identity with
+   tricolour accent strip, primary nav for desktop, mobile drawer.
+   ============================================================ #}
+<header class="sticky top-0 z-40 bg-base-100/95 backdrop-blur supports-[backdrop-filter]:bg-base-100/75 border-b border-base-300">
+  {# Accent strip — bold club identity #}
+  <div class="h-1 w-full flex" aria-hidden="true">
+    <span class="flex-1 bg-primary"></span>
+    <span class="w-12 bg-secondary"></span>
+    <span class="w-6 bg-accent"></span>
+  </div>
+
+  <nav class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Navigation principale">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+
+      {# Brand #}
+      <a href="{{ path('app_main') }}" class="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg">
+        <span class="relative inline-flex w-11 h-11 items-center justify-center rounded-xl bg-primary text-primary-content font-black text-base shadow-md group-hover:scale-105 transition-transform">
+          MJV
+          <span class="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-secondary border-2 border-base-100"></span>
+        </span>
+        <span class="hidden sm:flex flex-col leading-none">
+          <span class="text-base font-black tracking-tight uppercase">MJ Vaubécourt</span>
+          <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-base-content/60 mt-0.5">Handball Club</span>
+        </span>
+      </a>
+
+      {# Desktop primary nav #}
+      <ul class="hidden lg:flex items-center gap-1 font-bold text-sm uppercase tracking-wide">
+        {% set desktopLinks = [
+          {route: 'app_club', label: 'Le Club', match: 'app_club'},
+          {route: 'app_calendar', label: 'Calendrier', match: 'app_calendar'},
+          {route: 'app_news', label: 'Actus', match: 'app_news'},
+          {route: 'app_forum', label: 'Forum', match: 'app_forum'}
+        ] %}
+        {% for link in desktopLinks %}
+          {% set isActive = currentRoute starts with link.match %}
+          <li>
+            <a href="{{ path(link.route) }}"
+               class="relative px-4 py-2.5 rounded-lg transition-colors hover:bg-base-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
+               {% if isActive %}text-primary{% endif %}"
+               {% if isActive %}aria-current="page"{% endif %}>
+              {{ link.label }}
+              {% if isActive %}
+                <span class="absolute left-1/2 -translate-x-1/2 bottom-0.5 w-6 h-0.5 bg-primary rounded-full" aria-hidden="true"></span>
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+
+        {# Teams dropdown (desktop) #}
+        <li class="dropdown dropdown-bottom dropdown-hover">
+          <button type="button" tabindex="0" aria-haspopup="true" aria-expanded="false"
+             class="relative flex items-center gap-1 px-4 py-2.5 rounded-lg transition-colors hover:bg-base-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
+             {% if currentRoute starts with 'app_team' %}text-primary{% endif %}">
             Équipes
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
             </svg>
+            {% if currentRoute starts with 'app_team' %}
+              <span class="absolute left-1/2 -translate-x-1/2 bottom-0.5 w-6 h-0.5 bg-primary rounded-full" aria-hidden="true"></span>
+            {% endif %}
           </button>
-          <div id="teams-menu"
-               class="dropdown-content z-20 bg-base-100 border border-base-200 rounded-box shadow mt-1 w-56 p-3 space-y-2">
+          <div class="dropdown-content z-20 bg-base-100 border border-base-300 rounded-2xl shadow-2xl mt-2 w-72 p-4 space-y-4">
             {% if teamGroups.youth is not empty %}
-              <p class="text-xs uppercase font-semibold text-base-content/60">Jeunes</p>
-              <ul class="space-y-1">
-                {% for entry in teamGroups.youth %}
-                  <li>
-                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-2 min-h-[44px] flex items-center rounded hover:bg-base-200">
-                      {{ entry.label }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
+              <div>
+                <p class="text-[10px] uppercase tracking-[0.2em] font-black text-primary mb-2 flex items-center gap-2">
+                  <span class="w-3 h-0.5 bg-primary"></span> Jeunes
+                </p>
+                <ul class="space-y-0.5">
+                  {% for entry in teamGroups.youth %}
+                    <li>
+                      <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="flex items-center justify-between px-3 py-2.5 min-h-[40px] text-sm font-semibold rounded-lg hover:bg-primary/10 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                        {{ entry.label }}
+                        <svg class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
             {% endif %}
-
-            {% if teamGroups.youth is not empty and teamGroups.adult is not empty %}
-              <div class="border-t border-base-200 my-1"></div>
-            {% endif %}
-
             {% if teamGroups.adult is not empty %}
-              <p class="text-xs uppercase font-semibold text-base-content/60">Adultes</p>
-              <ul class="space-y-1">
-                {% for entry in teamGroups.adult %}
-                  <li>
-                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-2 min-h-[44px] flex items-center rounded hover:bg-base-200">
-                      {{ entry.label }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
+              <div>
+                <p class="text-[10px] uppercase tracking-[0.2em] font-black text-secondary mb-2 flex items-center gap-2">
+                  <span class="w-3 h-0.5 bg-secondary"></span> Adultes
+                </p>
+                <ul class="space-y-0.5">
+                  {% for entry in teamGroups.adult %}
+                    <li>
+                      <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="flex items-center px-3 py-2.5 min-h-[40px] text-sm font-semibold rounded-lg hover:bg-secondary/10 hover:text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">{{ entry.label }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
             {% endif %}
-
-            <div class="border-t border-base-200 pt-2">
-              <a href="{{ path('app_team_index') }}" class="block text-sm text-primary font-semibold hover:underline">
+            <div class="border-t border-base-300 pt-3">
+              <a href="{{ path('app_team_index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-primary font-bold hover:underline">
                 Toutes les équipes
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
         </li>
+
         <li>
+          {% set isActive = currentRoute starts with 'app_contact' %}
           <a href="{{ path('app_contact') }}"
-             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_contact' %}text-primary font-semibold{% endif %}"
-             {% if currentRoute starts with 'app_contact' %}aria-current="page"{% endif %}>
+             class="relative px-4 py-2.5 rounded-lg transition-colors hover:bg-base-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary
+             {% if isActive %}text-primary{% endif %}"
+             {% if isActive %}aria-current="page"{% endif %}>
             Contact
+            {% if isActive %}<span class="absolute left-1/2 -translate-x-1/2 bottom-0.5 w-6 h-0.5 bg-primary rounded-full" aria-hidden="true"></span>{% endif %}
           </a>
         </li>
-        <!-- User session indicator -->
-        <li class="flex items-center">
-          {% if is_granted('ROLE_USER') %}
-            <div class="dropdown dropdown-end">
-              <label tabindex="0" class="btn btn-ghost btn-sm gap-2 normal-case">
-                {% if app.user.picture %}
-                  <img src="{{ app.user.picture }}" alt="Photo de profil de {{ app.user.name }}" class="w-6 h-6 rounded-full object-cover">
-                {% endif %}
-                <span class="hidden lg:inline text-sm">{{ app.user.name }}</span>
-              </label>
-              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 border border-base-200 rounded-box w-40">
-                <li><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
-              </ul>
-            </div>
-          {% else %}
-            <a href="{{ path('app_login') }}"
-               class="btn btn-primary btn-sm normal-case">
-              Connexion
-            </a>
-          {% endif %}
-        </li>
-
-        <!-- Theme toggle -->
-        <li>
-          <button id="theme-toggle" onclick="toggleTheme()" class="btn btn-ghost btn-sm" aria-label="Changer de thème">
-            {# Soleil = light #}
-            <svg id="icon-sun" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="4"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.95l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M4.05 4.05l-.71-.71"/>
-            </svg>
-            {# Lune = dark #}
-            <svg id="icon-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-            </svg>
-            {# Étoile = MJV (halloween) #}
-            <svg id="icon-star" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/>
-            </svg>
-          </button>
-        </li>
       </ul>
+
+      {# Right utility cluster #}
+      <div class="flex items-center gap-1.5">
+        <button id="theme-toggle" onclick="toggleTheme()" type="button"
+                class="btn btn-ghost btn-sm btn-square min-w-[44px] min-h-[44px] rounded-xl"
+                aria-label="Changer de thème">
+          <svg id="icon-sun" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.95l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M4.05 4.05l-.71-.71"/>
+          </svg>
+          <svg id="icon-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+          </svg>
+          <svg id="icon-star" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/>
+          </svg>
+        </button>
+
+        {% if is_granted('ROLE_USER') %}
+          <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn btn-ghost btn-sm gap-2 normal-case min-h-[44px] rounded-xl" aria-label="Menu utilisateur">
+              {% if app.user.picture %}
+                <img src="{{ app.user.picture }}" alt="" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20">
+              {% else %}
+                <span class="w-8 h-8 rounded-full bg-primary text-primary-content text-xs font-black flex items-center justify-center">{{ app.user.name|first|upper }}</span>
+              {% endif %}
+              <span class="hidden md:inline text-sm font-semibold">{{ app.user.name }}</span>
+            </label>
+            <ul tabindex="0" class="dropdown-content z-30 menu p-2 mt-2 shadow-2xl bg-base-100 border border-base-300 rounded-2xl w-56">
+              <li class="menu-title px-3 py-2"><span class="text-[10px] uppercase tracking-[0.2em] font-black">Connecté en tant que</span></li>
+              <li class="px-3 pb-2"><span class="text-sm font-bold pointer-events-none">{{ app.user.name }}</span></li>
+              <li><a href="{{ path('app_logout') }}" class="text-error font-semibold rounded-lg">Se déconnecter</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <a href="{{ path('app_login') }}" class="btn btn-primary btn-sm normal-case min-h-[44px] rounded-full px-5 font-bold shadow-md hover:shadow-lg">Connexion</a>
+        {% endif %}
+
+        {# Hamburger #}
+        <button id="menu-toggle" type="button"
+                class="lg:hidden inline-flex items-center justify-center p-2 min-w-[44px] min-h-[44px] rounded-xl text-base-content hover:bg-base-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-controls="mobile-drawer" aria-expanded="false">
+          <span class="sr-only">Ouvrir le menu</span>
+          <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
     </div>
+  </nav>
+</header>
+
+{# ============================================================
+   Mobile/tablet slide-over drawer
+   ============================================================ #}
+<div id="mobile-drawer" class="hidden fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu mobile">
+  <div id="mobile-drawer-backdrop" class="absolute inset-0 bg-base-content/60 backdrop-blur-sm"></div>
+  <div class="absolute right-0 top-0 h-full w-[88%] max-w-sm bg-base-100 shadow-2xl flex flex-col">
+    <div class="flex items-center justify-between px-5 h-16 border-b border-base-300">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex w-9 h-9 items-center justify-center rounded-lg bg-primary text-primary-content font-black text-xs">MJV</span>
+        <span class="font-black uppercase tracking-tight">Menu</span>
+      </div>
+      <button id="mobile-drawer-close" type="button" class="btn btn-ghost btn-sm btn-square min-w-[44px] min-h-[44px] rounded-xl" aria-label="Fermer le menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6"/></svg>
+      </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto p-5 space-y-1" aria-label="Navigation mobile">
+      {% set mobileLinks = [
+        {route: 'app_main', label: 'Accueil', match: 'app_main'},
+        {route: 'app_club', label: 'Le Club', match: 'app_club'},
+        {route: 'app_team_index', label: 'Toutes les équipes', match: 'app_team'},
+        {route: 'app_calendar', label: 'Calendrier', match: 'app_calendar'},
+        {route: 'app_news', label: 'Actualités', match: 'app_news'},
+        {route: 'app_forum', label: 'Forum', match: 'app_forum'},
+        {route: 'app_contact', label: 'Contact', match: 'app_contact'}
+      ] %}
+      {% for link in mobileLinks %}
+        {% set isActive = currentRoute starts with link.match %}
+        <a href="{{ path(link.route) }}"
+           class="flex items-center justify-between px-4 py-3.5 min-h-[52px] rounded-xl text-base font-bold uppercase tracking-wide hover:bg-base-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary {% if isActive %}bg-primary text-primary-content shadow-md{% endif %}"
+           {% if isActive %}aria-current="page"{% endif %}>
+          {{ link.label }}
+          <svg class="w-4 h-4 {% if isActive %}{% else %}opacity-40{% endif %}" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </a>
+      {% endfor %}
+
+      {% if teamGroups.youth is not empty or teamGroups.adult is not empty %}
+        <div class="pt-5 mt-5 border-t border-base-300 space-y-3">
+          <p class="px-4 text-[10px] uppercase tracking-[0.25em] font-black text-base-content/60">Catégories</p>
+          {% if teamGroups.youth is not empty %}
+            <div>
+              <p class="px-4 text-[10px] uppercase tracking-[0.2em] font-black text-primary mb-1">Jeunes</p>
+              {% for entry in teamGroups.youth %}
+                <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="flex items-center px-4 py-2.5 min-h-[44px] text-sm font-semibold rounded-lg hover:bg-primary/10 hover:text-primary">{{ entry.label }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if teamGroups.adult is not empty %}
+            <div>
+              <p class="px-4 text-[10px] uppercase tracking-[0.2em] font-black text-secondary mb-1">Adultes</p>
+              {% for entry in teamGroups.adult %}
+                <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="flex items-center px-4 py-2.5 min-h-[44px] text-sm font-semibold rounded-lg hover:bg-secondary/10 hover:text-secondary">{{ entry.label }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </nav>
   </div>
+</div>
+
+{# ============================================================
+   Mobile bottom-nav
+   ============================================================ #}
+<nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-base-100/95 backdrop-blur border-t border-base-300 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
+     aria-label="Navigation rapide" style="padding-bottom: env(safe-area-inset-bottom);">
+  <ul class="grid grid-cols-5">
+    {% set bottomNav = [
+      {route: 'app_main', label: 'Accueil', match: 'app_main', icon: 'home'},
+      {route: 'app_calendar', label: 'Agenda', match: 'app_calendar', icon: 'calendar'},
+      {route: 'app_news', label: 'Actus', match: 'app_news', icon: 'news'},
+      {route: 'app_team_index', label: 'Équipes', match: 'app_team', icon: 'team'},
+      {route: 'app_contact', label: 'Contact', match: 'app_contact', icon: 'mail'}
+    ] %}
+    {% for item in bottomNav %}
+      {% set isActive = currentRoute starts with item.match %}
+      <li>
+        <a href="{{ path(item.route) }}" class="relative flex flex-col items-center justify-center gap-1 py-2 min-h-[60px] text-[10px] font-black uppercase tracking-wider {% if isActive %}text-primary{% else %}text-base-content/60{% endif %} hover:bg-base-200 focus-visible:outline-none focus-visible:bg-base-200"
+           {% if isActive %}aria-current="page"{% endif %}>
+          {% if isActive %}<span class="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary rounded-b-full" aria-hidden="true"></span>{% endif %}
+          {% if item.icon == 'home' %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h4v-6h6v6h4V10"/></svg>
+          {% elseif item.icon == 'calendar' %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path stroke-linecap="round" d="M8 3v4M16 3v4M3 11h18"/></svg>
+          {% elseif item.icon == 'news' %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h12a2 2 0 012 2v12H6a2 2 0 01-2-2V5zM18 9h2a1 1 0 011 1v8a1 1 0 01-1 1h-2M8 9h6M8 13h6M8 17h4"/></svg>
+          {% elseif item.icon == 'team' %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6 5.87a4 4 0 10-6 0M16 7a3 3 0 11-6 0 3 3 0 016 0zm5 3a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          {% else %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          {% endif %}
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
 </nav>
+
 <script>
-  document.getElementById('menu-toggle').addEventListener('click', function () {
-    var nav = document.getElementById('navbar-main');
-    nav.classList.toggle('hidden');
-    var expanded = !nav.classList.contains('hidden');
-    this.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-  });
-
   (function () {
-    const dropdown = document.getElementById('teams-dropdown');
-    const toggle = document.getElementById('teams-toggle');
-    if (!dropdown || !toggle) {
-      return;
+    var menuToggle = document.getElementById('menu-toggle');
+    var drawer = document.getElementById('mobile-drawer');
+    var closeBtn = document.getElementById('mobile-drawer-close');
+    var backdrop = document.getElementById('mobile-drawer-backdrop');
+    function open() {
+      drawer.classList.remove('hidden');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
     }
-
-    toggle.addEventListener('click', function (event) {
-      if (window.innerWidth >= 1024) {
-        return; // rely on hover on desktop
-      }
-      event.preventDefault();
-      dropdown.classList.toggle('dropdown-open');
-      const expanded = dropdown.classList.contains('dropdown-open') ? 'true' : 'false';
-      toggle.setAttribute('aria-expanded', expanded);
-    });
-    document.addEventListener('click', function (event) {
-      if (window.innerWidth >= 1024) {
-        return;
-      }
-      if (!dropdown.contains(event.target)) {
-        dropdown.classList.remove('dropdown-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
+    function close() {
+      drawer.classList.add('hidden');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    if (menuToggle) menuToggle.addEventListener('click', open);
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (backdrop) backdrop.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drawer && !drawer.classList.contains('hidden')) close();
     });
   })();
 </script>

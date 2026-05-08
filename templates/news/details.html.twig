@@ -1,32 +1,56 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ news.post.title }}{% endblock %}
+{% block title %}{{ news.post.title }} — MJ Vaubécourt{% endblock %}
 
 {% block body %}
-<main class="bg-base-200 min-h-screen">
-  <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-10 lg:grid-cols-2">
-      <div class="space-y-6">
-        <p class="text-xs uppercase tracking-[0.5em] text-neutral-content/70">Actualités · Détail</p>
-        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">{{ news.post.title }}</h1>
-        <div class="flex flex-wrap gap-3 text-sm uppercase tracking-[0.3em] text-neutral-content/70">
-          <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ news.post.author }}</span>
+<div>
+  {# ==================== HERO ==================== #}
+  <section class="relative bg-neutral text-neutral-content overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-32 -right-24 w-[28rem] h-[28rem] rounded-full bg-secondary/20 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid gap-10 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-7 space-y-5">
+        <nav aria-label="Fil d'Ariane" class="text-xs">
+          <ol class="flex items-center gap-2 text-neutral-content/70 font-semibold">
+            <li><a href="{{ path('app_news') }}" class="hover:text-neutral-content hover:underline">Actualités</a></li>
+            <li aria-hidden="true">/</li>
+            <li class="text-neutral-content/90 truncate max-w-[60vw]" aria-current="page">Article</li>
+          </ol>
+        </nav>
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-secondary">
+          <span class="w-8 h-0.5 bg-secondary"></span> Article
+        </p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">{{ news.post.title }}</h1>
+        <ul class="flex flex-wrap gap-2" role="list">
+          <li class="inline-flex items-center gap-2 rounded-full bg-neutral-content/10 border border-neutral-content/20 px-4 py-2 text-xs font-bold">
+            <span class="w-6 h-6 rounded-full bg-secondary text-secondary-content text-[10px] font-black flex items-center justify-center">{{ news.post.author|first|upper }}</span>
+            {{ news.post.author }}
+          </li>
           {% if news.post.createdAt is defined %}
-            <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ news.post.createdAt|date('d/m/Y') }}</span>
+            <li class="inline-flex items-center gap-2 rounded-full bg-neutral-content/10 border border-neutral-content/20 px-4 py-2 text-xs font-bold tabular-nums">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 2"/></svg>
+              {{ news.post.createdAt|date('d/m/Y') }}
+            </li>
           {% endif %}
-          <span class="rounded-full border border-neutral-content/30 px-4 py-1">{{ news.comments|default([])|length }} commentaire{{ news.comments|default([])|length <= 1 ? '' : 's' }}</span>
-        </div>
-        <div class="flex flex-wrap gap-3">
-          <a href="{{ path('app_news') }}" class="btn btn-outline btn-primary btn-sm lg:btn-md flex-1 lg:flex-none">Retour aux actualités</a>
-          <a href="{{ path('app_news_archives') }}" class="btn btn-primary btn-sm lg:btn-md flex-1 lg:flex-none">Voir les archives</a>
+          <li class="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-content px-4 py-2 text-xs font-black uppercase tracking-wider">
+            {{ news.comments|default([])|length }} commentaire{{ news.comments|default([])|length <= 1 ? '' : 's' }}
+          </li>
+        </ul>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <a href="{{ path('app_news') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border-2 border-neutral-content/30 font-black uppercase tracking-wide text-sm hover:bg-neutral-content/10 transition min-h-[44px]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            Retour
+          </a>
+          <a href="{{ path('app_news_archives') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-secondary text-secondary-content font-black uppercase tracking-wide text-sm shadow-lg hover:scale-105 transition min-h-[44px]">Archives</a>
         </div>
       </div>
-      <div class="hidden lg:block">
-        <div class="rounded-3xl border border-neutral-content/20 bg-base-100/10 backdrop-blur shadow-2xl overflow-hidden">
+      <div class="lg:col-span-5 hidden lg:block">
+        <div class="rounded-3xl border-4 border-base-100/10 shadow-2xl overflow-hidden rotate-1">
           {% if news.post.imgPath is defined and news.post.imgPath %}
-            <img src="{{ news.post.imgPath }}" alt="{{ news.post.title }}" class="w-full h-80 object-cover">
+            <img src="{{ news.post.imgPath }}" alt="" class="w-full h-96 object-cover">
           {% else %}
-            <div class="w-full h-80 flex items-center justify-center bg-base-100/10 text-neutral-content/70">
+            <div class="w-full h-96 flex items-center justify-center bg-neutral-content/5 text-neutral-content/40 font-semibold">
               Visuel à venir
             </div>
           {% endif %}
@@ -35,54 +59,60 @@
     </div>
   </section>
 
-  <section class="py-8 lg:py-16">
-    <div class="max-w-4xl mx-auto px-4 space-y-8 lg:space-y-12">
-      <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
-        <div class="card-body space-y-4">
-          <p class="text-base text-base-content/80 leading-relaxed">{{ news.post.content|nl2br }}</p>
-        </div>
+  {# ==================== ARTICLE BODY ==================== #}
+  <section class="py-12 lg:py-20 bg-base-100">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <article class="prose prose-lg max-w-none">
+        <div class="text-base lg:text-lg text-base-content/85 leading-relaxed whitespace-pre-line">{{ news.post.content|nl2br }}</div>
       </article>
 
-      <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300">
-        <div class="card-body space-y-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Commentaires</p>
-              <h2 class="text-2xl font-bold text-base-content">{{ news.comments|default([])|length }} contribution{{ news.comments|default([])|length <= 1 ? '' : 's' }}</h2>
-            </div>
+      {# Comments #}
+      <article class="rounded-3xl border border-base-300 bg-base-100 overflow-hidden">
+        <header class="p-6 lg:p-8 border-b border-base-200 flex items-end justify-between gap-3">
+          <div class="space-y-1">
+            <p class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-secondary">
+              <span class="w-2 h-2 rounded-sm bg-secondary"></span> Commentaires
+            </p>
+            <h2 class="text-2xl lg:text-3xl font-black tracking-tight">{{ news.comments|default([])|length }} contribution{{ news.comments|default([])|length <= 1 ? '' : 's' }}</h2>
           </div>
+        </header>
 
+        <div class="p-6 lg:p-8">
           {% if news.comments is defined and news.comments|length > 0 %}
-            <ul class="space-y-4">
+            <ul class="space-y-3">
               {% for comment in news.comments %}
-                <li class="rounded-2xl border border-base-300 p-4">
-                  <div class="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-base-content/60 mb-2">
-                    <span>{{ comment.author }}</span>
+                <li class="rounded-2xl border border-base-300 bg-base-100 p-5">
+                  <header class="flex items-center justify-between gap-3 mb-2">
+                    <div class="inline-flex items-center gap-2">
+                      <span class="w-7 h-7 rounded-full bg-secondary text-secondary-content text-[10px] font-black flex items-center justify-center">{{ comment.author|first|upper }}</span>
+                      <span class="text-sm font-bold">{{ comment.author }}</span>
+                    </div>
                     {% if comment.createdAt is defined %}
-                      <span>{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                      <time class="text-xs font-semibold text-base-content/60 tabular-nums">{{ comment.createdAt|date('d/m/Y H:i') }}</time>
                     {% endif %}
-                  </div>
-                  <p class="text-base text-base-content/80">{{ comment.content }}</p>
+                  </header>
+                  <p class="text-sm text-base-content/85 leading-relaxed">{{ comment.content }}</p>
                 </li>
               {% endfor %}
             </ul>
           {% else %}
-            <p class="text-base-content/70">Aucun commentaire pour cette actualité.</p>
+            <div class="text-center py-10 px-4 rounded-2xl border-2 border-dashed border-base-300">
+              <p class="text-base-content/60 font-semibold">Aucun commentaire pour cette actualité.</p>
+            </div>
           {% endif %}
         </div>
       </article>
 
-      <article class="card bg-base-100 rounded-3xl shadow-lg border border-base-300">
-        <div class="card-body items-start gap-4 md:flex md:items-center md:justify-between">
-          <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Une question sur un article ?</p>
-            <h3 class="text-2xl font-bold text-base-content">Contactez le club directement.</h3>
-            <p class="text-base-content/70">Nous restons disponibles pour toute précision ou retour.</p>
-          </div>
-          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary">Nous écrire</a>
+      {# Contact CTA #}
+      <aside class="rounded-3xl bg-base-200 p-6 lg:p-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div class="space-y-1">
+          <p class="text-[11px] font-black uppercase tracking-[0.25em] text-primary">Une question ?</p>
+          <h3 class="text-xl lg:text-2xl font-black tracking-tight">Contactez le club directement</h3>
+          <p class="text-base-content/70 text-sm">Disponible pour toute précision ou retour.</p>
         </div>
-      </article>
+        <a href="{{ path('app_contact') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-md hover:scale-105 transition md:shrink-0 min-h-[44px]">Nous écrire</a>
+      </aside>
     </div>
   </section>
-</main>
+</div>
 {% endblock %}

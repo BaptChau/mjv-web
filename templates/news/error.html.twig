@@ -1,12 +1,22 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Index{% endblock %}
-{% block head %}
-    {{ parent() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
-{% endblock %}
+{% block title %}Article introuvable — MJ Vaubécourt{% endblock %}
+
 {% block body %}
-message d'erreur
+<div class="bg-base-100">
+  <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-28 text-center space-y-6">
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-error/15 text-error mx-auto">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    </div>
+    <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-error">
+      <span class="w-8 h-0.5 bg-error"></span> Erreur
+    </p>
+    <h1 class="text-4xl lg:text-5xl font-black tracking-tight">Article introuvable</h1>
+    <p class="text-base-content/70">Cette actualité n'existe pas ou a été retirée.</p>
+    <div class="flex flex-wrap gap-3 justify-center pt-2">
+      <a href="{{ path('app_news') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-md hover:scale-105 transition min-h-[44px]">Retour aux actualités</a>
+      <a href="{{ path('app_main') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-base-300 font-black uppercase tracking-wide text-sm hover:border-primary hover:text-primary transition min-h-[44px]">Accueil</a>
+    </div>
+  </section>
+</div>
 {% endblock %}

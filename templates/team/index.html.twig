@@ -1,70 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Équipes{% endblock %}
+{% block title %}Nos équipes — MJ Vaubécourt{% endblock %}
 
 {% block body %}
-<main class="bg-base-200">
-  <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 space-y-4">
-      <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/70">Nos équipes</p>
-      <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Toutes les catégories du MJ Vaubécourt</h1>
-      <p class="text-lg text-neutral-content/80">Masculins, féminins ou mixtes : chaque collectif porte un projet sportif précis.</p>
-      <div class="flex flex-wrap gap-4">
-        <a href="{{ path('app_contact') }}" class="btn btn-primary">Nous rejoindre</a>
-        <a href="{{ path('app_calendar') }}" class="btn btn-outline btn-primary">Calendrier</a>
+<div>
+  {# ==================== HERO ==================== #}
+  <section class="relative bg-neutral text-neutral-content overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-32 -right-24 w-[28rem] h-[28rem] rounded-full bg-primary/20 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-16 w-[20rem] h-[20rem] rounded-full bg-secondary/20 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-24 space-y-6">
+      <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+        <span class="w-8 h-0.5 bg-primary"></span> Nos équipes
+      </p>
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight max-w-4xl">
+        Toutes les <span class="text-primary">catégories</span><br>
+        du club.
+      </h1>
+      <p class="text-base sm:text-lg text-neutral-content/75 max-w-2xl leading-relaxed">
+        Masculins, féminins ou mixtes — chaque collectif porte un projet sportif précis et un coach dédié.
+      </p>
+      <div class="flex flex-wrap gap-3 pt-2">
+        <a href="{{ path('app_contact') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-xl hover:scale-105 transition min-h-[48px]">Nous rejoindre</a>
+        <a href="{{ path('app_calendar') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-neutral-content/30 font-black uppercase tracking-wide text-sm hover:bg-neutral-content/10 transition min-h-[48px]">Calendrier</a>
       </div>
     </div>
   </section>
 
-  <section class="py-8 lg:py-14">
-    <div class="max-w-5xl mx-auto px-4 space-y-8">
-      {% for entry in teams %}
-        {% set primaryTeam = entry.teams|first %}
-        <article class="card bg-base-100 shadow-xl rounded-3xl border border-base-300 overflow-hidden flex flex-col md:flex-row">
-          <div class="flex-1 p-4 lg:p-8 flex flex-col gap-4">
-            <div>
-              <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Catégorie</p>
-              <h2 class="text-2xl lg:text-3xl font-bold text-base-content">{{ entry.categoryLabel }}</h2>
+  {# ==================== TEAMS LIST ==================== #}
+  <section class="py-14 lg:py-24 bg-base-100">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-5 lg:gap-7">
+        {% for entry in teams %}
+          {% set primaryTeam = entry.teams|first %}
+          <article class="group rounded-3xl border border-base-300 bg-base-100 hover:shadow-2xl hover:border-primary/40 transition-all duration-300 overflow-hidden grid md:grid-cols-12">
+            <div class="md:col-span-7 lg:col-span-8 p-6 lg:p-10 flex flex-col gap-5 order-2 md:order-1">
+              <div class="space-y-2">
+                <p class="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.25em] text-primary">
+                  <span class="w-2 h-2 rounded-sm bg-primary"></span> Catégorie
+                </p>
+                <h2 class="text-3xl lg:text-4xl font-black tracking-tight">{{ entry.categoryLabel }}</h2>
+              </div>
+              <p class="text-sm text-base-content/70">
+                {% if primaryTeam %}
+                  Coach principal <span class="font-black text-base-content">{{ primaryTeam.coach }}</span>
+                {% else %}
+                  Coach communiqué prochainement
+                {% endif %}
+              </p>
+
+              <div class="grid sm:grid-cols-2 gap-2.5">
+                {% for team in entry.teams %}
+                  <div class="rounded-xl bg-base-200/60 border border-base-300 px-4 py-3 flex items-center justify-between gap-3">
+                    <span class="font-black text-sm truncate">{{ team.label }}</span>
+                    <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full
+                      {% if team.gender is null %}bg-accent/15 text-accent{% elseif team.gender %}bg-primary/15 text-primary{% else %}bg-secondary/15 text-secondary{% endif %}">
+                      {% if team.gender is null %}Mixte{% else %}{{ team.gender ? 'Masculin' : 'Féminin' }}{% endif %}
+                    </span>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-md hover:scale-105 transition self-start min-h-[44px] mt-2">
+                Voir cette catégorie
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3"/></svg>
+              </a>
             </div>
-            <p class="text-sm text-base-content/70">
-              {% if primaryTeam %}
-                Coach principal : <span class="font-semibold">{{ primaryTeam.coach }}</span>
+            <div class="md:col-span-5 lg:col-span-4 bg-neutral relative min-h-[220px] md:min-h-0 order-1 md:order-2 overflow-hidden">
+              {% if primaryTeam and primaryTeam.photoPath %}
+                <img src="{{ primaryTeam.photoPath }}" alt="{{ entry.categoryLabel }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-tr from-neutral/40 via-transparent to-transparent"></div>
               {% else %}
-                Coach communiqué prochainement
+                <div class="absolute inset-0 flex items-center justify-center text-neutral-content/40 text-sm font-semibold px-6 text-center">Photo à venir</div>
               {% endif %}
-            </p>
-
-            <div class="space-y-2">
-              {% for team in entry.teams %}
-                <div class="bg-base-200/70 rounded-2xl px-4 py-3 flex items-center justify-between text-sm text-base-content">
-                  <span class="font-semibold">{{ team.label }}</span>
-                  <span class="text-xs uppercase tracking-[0.3em] text-base-content/60">
-                    {% if team.gender is null %}
-                      Mixte
-                    {% else %}
-                      {{ team.gender ? 'Masculin' : 'Féminin' }}
-                    {% endif %}
-                  </span>
-                </div>
-              {% endfor %}
             </div>
-
-            <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="btn btn-primary btn-sm w-fit mt-2">
-              Voir cette catégorie
-            </a>
-          </div>
-          <div class="md:w-1/3 bg-neutral">
-            {% if primaryTeam and primaryTeam.photoPath %}
-              <img src="{{ primaryTeam.photoPath }}" alt="{{ entry.categoryLabel }}" class="w-full h-full object-cover opacity-90">
-            {% else %}
-              <div class="h-full min-h-[260px] flex items-center justify-center text-neutral-content/70 text-sm px-6 text-center">Photo à venir</div>
-            {% endif %}
-          </div>
-        </article>
-      {% else %}
-        <p class="text-base-content/70">Aucune équipe n'est enregistrée pour l'instant.</p>
-      {% endfor %}
+          </article>
+        {% else %}
+          <p class="text-base-content/60 text-center py-16 px-4 rounded-3xl border-2 border-dashed border-base-300">Aucune équipe n'est enregistrée pour l'instant.</p>
+        {% endfor %}
+      </div>
     </div>
   </section>
-</main>
+</div>
 {% endblock %}

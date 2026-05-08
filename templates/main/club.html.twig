@@ -1,107 +1,143 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}À propos du club{% endblock %}
+{% block title %}Le Club — MJ Vaubécourt{% endblock %}
 
 {% block body %}
-<main class="bg-base-200">
-  <section class="bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-10 md:grid-cols-2 items-center">
-      <div class="space-y-5">
-        <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/70">À propos</p>
-        <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">À propos du MJ Vaubécourt</h1>
-        <p class="text-lg text-neutral-content/80">Un club familial qui conjugue convivialité, ambition sportive et actions citoyennes.</p>
-        <div class="flex flex-wrap gap-3">
-          <a href="{{ path('app_contact') }}" class="btn btn-primary">Contacter le club</a>
-          <a href="{{ path('app_team_index') }}" class="btn btn-outline btn-primary">Voir nos équipes</a>
+<div>
+
+  {# ==================== HERO ==================== #}
+  <section class="relative bg-neutral text-neutral-content overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-primary/20 blur-3xl"></div>
+      <div class="absolute -bottom-32 -left-16 w-[20rem] h-[20rem] rounded-full bg-secondary/20 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid gap-10 lg:gap-16 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-7 space-y-6">
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+          <span class="w-8 h-0.5 bg-primary"></span> À propos
+        </p>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight">
+          Un club <span class="text-primary">familial</span>,<br>
+          une équipe <span class="relative inline-block">unie<span class="absolute -bottom-1 left-0 right-0 h-1 bg-secondary rounded-full" aria-hidden="true"></span></span>.
+        </h1>
+        <p class="text-base sm:text-lg text-neutral-content/80 max-w-xl leading-relaxed">
+          Convivialité, ambition sportive et engagement local — telle est notre signature depuis nos débuts.
+        </p>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <a href="{{ path('app_contact') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-primary text-primary-content font-black uppercase tracking-wide text-sm shadow-xl hover:scale-105 transition min-h-[48px]">Contacter le club</a>
+          <a href="{{ path('app_team_index') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-neutral-content/30 font-black uppercase tracking-wide text-sm hover:bg-neutral-content/10 transition min-h-[48px]">Voir nos équipes</a>
         </div>
       </div>
-      <div class="rounded-3xl overflow-hidden border border-neutral-content/10 shadow-2xl hidden md:block">
-        <img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?auto=format&fit=crop&w=900&q=80"
-             alt="Portrait de joueur de handball"
-             class="w-full h-48 lg:h-80 object-cover">
+      <div class="lg:col-span-5 hidden lg:block">
+        <div class="rounded-3xl overflow-hidden border-4 border-base-100/10 shadow-2xl rotate-1">
+          <img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?auto=format&fit=crop&w=900&q=80"
+               alt="" class="w-full h-96 object-cover">
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="py-8 lg:py-14">
-    <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-6 lg:gap-10 items-center">
-      <div>
-        <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Notre histoire</p>
-        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Notre club</h2>
-        <p class="text-base-content/70 mt-4">
-          Le MJ Vaubécourt s’appuie sur une école de handball labellisée, un réseau de bénévoles engagés et des entraîneurs diplômés qui accompagnent chaque collectif.
+  {# ==================== HISTORY ==================== #}
+  <section class="py-14 lg:py-24 bg-base-100">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div class="space-y-5">
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+          <span class="w-8 h-0.5 bg-primary"></span> Notre histoire
         </p>
-        <p class="text-base-content/70 mt-4">
+        <h2 class="text-4xl lg:text-5xl font-black leading-tight tracking-tight">Le hand au cœur du village</h2>
+        <p class="text-base text-base-content/75 leading-relaxed">
+          Le MJ Vaubécourt s'appuie sur une école de handball labellisée, un réseau de bénévoles engagés et des entraîneurs diplômés qui accompagnent chaque collectif.
+        </p>
+        <p class="text-base text-base-content/75 leading-relaxed">
           Des actions citoyennes aux partenariats scolaires, nous ouvrons des passerelles pour faire découvrir le handball et transmettre nos valeurs.
         </p>
       </div>
-      <div class="rounded-3xl overflow-hidden shadow-xl border border-base-300">
+      <div class="rounded-3xl overflow-hidden border border-base-300 shadow-xl">
         <img src="https://images.unsplash.com/photo-1474557157379-8aa74e34dd6c?auto=format&fit=crop&w=900&q=80"
-             alt="Équipe de handball"
-             class="w-full h-48 lg:h-80 object-cover">
+             alt="" class="w-full h-80 lg:h-96 object-cover">
       </div>
     </div>
   </section>
 
-  <section class="py-8 lg:py-14 bg-base-100">
-    <div class="max-w-5xl mx-auto px-4">
-      <div class="text-center mb-6 lg:mb-10">
-        <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Nos engagements</p>
-        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Nos valeurs</h2>
-      </div>
-      <div class="grid gap-6 md:grid-cols-3">
+  {# ==================== VALUES ==================== #}
+  <section class="py-14 lg:py-24 bg-base-200">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header class="text-center max-w-3xl mx-auto mb-10 lg:mb-14 space-y-3">
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+          <span class="w-8 h-0.5 bg-primary"></span> Nos engagements
+        </p>
+        <h2 class="text-4xl lg:text-5xl font-black leading-tight tracking-tight">Nos valeurs</h2>
+        <p class="text-base-content/70">Trois piliers qui guident chaque entraînement, chaque match, chaque action du club.</p>
+      </header>
+      <div class="grid gap-5 md:grid-cols-3">
         {% for value in values %}
-          <article class="bg-base-200/70 border border-base-300 rounded-3xl p-6 h-full">
-            <h3 class="text-xl font-semibold text-base-content">{{ value.title }}</h3>
-            <p class="text-base-content/70 mt-3">{{ value.description }}</p>
+          {% set i = loop.index0 % 3 %}
+          {% set bar = i == 0 ? 'bg-primary' : (i == 1 ? 'bg-secondary' : 'bg-accent') %}
+          {% set chipBg = i == 0 ? 'bg-primary/15' : (i == 1 ? 'bg-secondary/15' : 'bg-accent/15') %}
+          {% set chipText = i == 0 ? 'text-primary' : (i == 1 ? 'text-secondary' : 'text-accent') %}
+          <article class="group relative bg-base-100 rounded-3xl border border-base-300 p-6 lg:p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 {{ bar }}" aria-hidden="true"></div>
+            <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl {{ chipBg }} {{ chipText }} font-black text-xl mb-4">{{ loop.index }}</span>
+            <h3 class="text-xl lg:text-2xl font-black tracking-tight mb-3">{{ value.title }}</h3>
+            <p class="text-base-content/70 leading-relaxed">{{ value.description }}</p>
           </article>
         {% endfor %}
       </div>
     </div>
   </section>
 
-  <section class="py-8 lg:py-14">
-    <div class="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-6 lg:gap-10 items-center">
-      <div class="rounded-3xl overflow-hidden shadow-xl border border-base-300">
+  {# ==================== VENUE ==================== #}
+  <section class="py-14 lg:py-24 bg-base-100">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div class="rounded-3xl overflow-hidden border border-base-300 shadow-xl order-2 md:order-1">
         <img src="https://images.unsplash.com/photo-1471523583954-1b0c4772185a?auto=format&fit=crop&w=900&q=80"
-             alt="Salle de handball"
-             class="w-full h-48 lg:h-80 object-cover">
+             alt="" class="w-full h-80 lg:h-96 object-cover">
       </div>
-      <div>
-        <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">Notre salle</p>
-        <h2 class="text-2xl lg:text-3xl font-bold text-base-content">Un terrain à notre image</h2>
-        <p class="text-base-content/70 mt-4">Parquet homologué, tribunes conviviales et espaces d’accueil : notre salle est le cœur battant du club.</p>
-        <p class="text-base-content/70 mt-3">Nous la partageons régulièrement avec les scolaires et clubs voisins pour faire rayonner le handball.</p>
+      <div class="space-y-5 order-1 md:order-2">
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-secondary">
+          <span class="w-8 h-0.5 bg-secondary"></span> Notre salle
+        </p>
+        <h2 class="text-4xl lg:text-5xl font-black leading-tight tracking-tight">Un terrain à notre image</h2>
+        <p class="text-base text-base-content/75 leading-relaxed">Parquet homologué, tribunes conviviales et espaces d'accueil : notre salle est le cœur battant du club.</p>
+        <p class="text-base text-base-content/75 leading-relaxed">Nous la partageons régulièrement avec les scolaires et clubs voisins pour faire rayonner le handball.</p>
       </div>
     </div>
   </section>
 
-  <section class="py-8 lg:py-14 bg-neutral text-neutral-content">
-    <div class="max-w-5xl mx-auto px-4">
-      <div class="mb-8">
-        <p class="text-sm uppercase tracking-[0.3em] text-neutral-content/70">Encadrement</p>
-        <h2 class="text-2xl lg:text-3xl font-bold">Nos référents sportifs</h2>
-        <p class="text-neutral-content/70 mt-2">Des coachs investis qui accompagnent les collectifs toute l’année.</p>
-      </div>
-      <div class="grid gap-6 md:grid-cols-2">
+  {# ==================== STAFF ==================== #}
+  <section class="py-14 lg:py-24 bg-neutral text-neutral-content relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-0 right-0 w-[20rem] h-[20rem] rounded-full bg-primary/20 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header class="mb-10 lg:mb-14 space-y-3">
+        <p class="inline-flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-primary">
+          <span class="w-8 h-0.5 bg-primary"></span> Encadrement
+        </p>
+        <h2 class="text-4xl lg:text-5xl font-black leading-tight tracking-tight">Nos référents sportifs</h2>
+        <p class="text-neutral-content/70 max-w-2xl">Des coachs investis qui accompagnent les collectifs toute l'année.</p>
+      </header>
+      <div class="grid gap-5 md:grid-cols-2">
         {% if staffHighlights is not empty %}
           {% for staff in staffHighlights %}
-            <article class="rounded-3xl border border-neutral-content/20 p-6 flex items-center gap-4 bg-neutral/40">
+            <article class="rounded-3xl border border-neutral-content/15 bg-neutral-content/5 backdrop-blur p-5 lg:p-6 flex items-center gap-5 hover:bg-neutral-content/10 transition">
               {% if staff.photo %}
-                <img src="{{ staff.photo }}" alt="{{ staff.coach }}" class="w-24 h-24 object-cover rounded-2xl border border-neutral-content/30">
+                <img src="{{ staff.photo }}" alt="" class="w-24 h-24 lg:w-28 lg:h-28 object-cover rounded-2xl border-2 border-primary/30 shrink-0">
+              {% else %}
+                <span class="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl bg-primary/20 text-primary flex items-center justify-center font-black text-3xl shrink-0">{{ staff.coach|first|upper }}</span>
               {% endif %}
-              <div>
-                <p class="text-xs uppercase tracking-[0.3em] text-neutral-content/70">{{ staff.team }}</p>
-                <h3 class="text-2xl font-semibold">{{ staff.coach }}</h3>
-                <p class="text-neutral-content/80 text-sm mt-2">Planification des séances et suivi humain du groupe.</p>
+              <div class="min-w-0">
+                <p class="text-[10px] font-black uppercase tracking-[0.25em] text-primary mb-1">{{ staff.team }}</p>
+                <h3 class="text-2xl font-black tracking-tight">{{ staff.coach }}</h3>
+                <p class="text-neutral-content/75 text-sm mt-2">Planification des séances et suivi humain du groupe.</p>
               </div>
             </article>
           {% endfor %}
         {% else %}
-          <p class="text-neutral-content/80">Les informations sur l'encadrement seront publiées prochainement.</p>
+          <p class="text-neutral-content/70 col-span-full">Les informations sur l'encadrement seront publiées prochainement.</p>
         {% endif %}
       </div>
     </div>
   </section>
-</main>
+</div>
 {% endblock %}
