@@ -19,13 +19,13 @@ class Team
     #[ORM\Column(nullable: true)]
     private ?bool $gender = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $coach = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $secondCoach = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoPath = null;
 
     #[ORM\Column]

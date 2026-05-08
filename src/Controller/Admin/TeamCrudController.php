@@ -3,11 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Team;
+use App\Enum\CategoryEnum;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
@@ -29,7 +30,11 @@ class TeamCrudController extends AbstractCrudController
             ->setBasePath('uploads/teams')
             ->setUploadDir('public/uploads/teams')
             ->setRequired(false);
-        yield IntegerField::new('category', 'Categorie');
+        yield ChoiceField::new('category', 'Categorie')
+            ->setChoices(array_combine(
+                array_map(fn(CategoryEnum $c) => CategoryEnum::getLabel($c), CategoryEnum::cases()),
+                array_map(fn(CategoryEnum $c) => $c->value, CategoryEnum::cases())
+            ));
         yield UrlField::new('championshipUrl', 'Lien championnat')->hideOnIndex();
     }
 }
