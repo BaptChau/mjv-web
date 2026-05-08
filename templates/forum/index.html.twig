@@ -1,6 +1,29 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Forum — MJ Vaubécourt{% endblock %}
+{% block title %}Forum du club — MJ Vaubécourt handball{% endblock %}
+{% block meta_description %}Forum du MJ Vaubécourt : échangez avec la communauté du club, organisez covoiturages et déplacements, partagez vos retours de match entre joueurs, parents et bénévoles.{% endblock %}
+{% block meta_robots %}{{ (currentPage|default(1)) > 1 ? 'noindex, follow' : 'index, follow' }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DiscussionForumPosting",
+  "name": "Forum MJ Vaubécourt",
+  "url": "{{ site_url }}{{ app.request.pathInfo }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Forum", "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block body %}
 {% set totalReplies = 0 %}

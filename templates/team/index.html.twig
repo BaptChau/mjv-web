@@ -1,6 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos équipes — MJ Vaubécourt{% endblock %}
+{% block title %}Nos équipes de handball — MJ Vaubécourt (jeunes & seniors){% endblock %}
+{% block meta_description %}Découvrez toutes les équipes du MJ Vaubécourt : catégories jeunes, seniors, masculins, féminins et mixtes. Coachs, projet sportif et photos pour chaque collectif.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Équipes", "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% if teams is defined and teams|length > 0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Équipes du MJ Vaubécourt",
+  "itemListElement": [
+    {% for entry in teams %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "item": {
+        "@type": "SportsTeam",
+        "name": {{ entry.categoryLabel|json_encode|raw }},
+        "sport": "Handball",
+        "url": "{{ site_url }}{{ path('app_team_details', {slug: entry.slug}) }}"
+      }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endblock %}
 
 {% block body %}
 <div>

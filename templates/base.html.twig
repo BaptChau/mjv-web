@@ -28,7 +28,75 @@
         applyThemeIcons(localStorage.getItem('theme') || 'light');
       });
     </script>
-        <title>{% block title %}MJ Vaubécourt — Handball{% endblock %}</title>
+
+        {# ==================== SEO ==================== #}
+        {# Reusable variables — child templates override the blocks below #}
+        {% set site_name = 'MJ Vaubécourt' %}
+        {% set site_url = 'https://mj-vaubecourt.fr' %}
+        {% set default_description = 'MJ Vaubécourt — club de handball à Vaubécourt (Meuse, 55). Le handball c\'est notre passion magique : équipes jeunes et seniors, calendrier des matchs, actualités et école de hand.' %}
+        {% set default_image = site_url ~ '/build/images/og-default.jpg' %}
+        {% set canonical_url = block('canonical') is defined and block('canonical')|trim is not empty ? block('canonical') : (app.request is defined and app.request ? site_url ~ app.request.pathInfo : site_url) %}
+
+        <title>{% block title %}MJ Vaubécourt — Club de handball à Vaubécourt (Meuse){% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}{{ default_description }}{% endblock %}">
+        <meta name="keywords" content="{% block meta_keywords %}handball Vaubécourt, MJ Vaubécourt, club handball Meuse, handball 55, école de hand Meuse, MJV handball{% endblock %}">
+        <meta name="author" content="MJ Vaubécourt">
+        <meta name="robots" content="{% block meta_robots %}index, follow, max-image-preview:large{% endblock %}">
+        <meta name="theme-color" content="#1d232a">
+        <meta name="geo.region" content="FR-55">
+        <meta name="geo.placename" content="Vaubécourt">
+
+        <link rel="canonical" href="{% block canonical %}{{ site_url }}{{ app.request.pathInfo }}{% endblock %}">
+        <link rel="alternate" hreflang="fr" href="{{ site_url }}{{ app.request.pathInfo }}">
+
+        {# Open Graph #}
+        <meta property="og:site_name" content="{{ site_name }}">
+        <meta property="og:locale" content="fr_FR">
+        <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+        <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
+        <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
+        <meta property="og:url" content="{% block og_url %}{{ site_url }}{{ app.request.pathInfo }}{% endblock %}">
+        <meta property="og:image" content="{% block og_image %}{{ default_image }}{% endblock %}">
+        <meta property="og:image:alt" content="{% block og_image_alt %}Logo et identité visuelle du MJ Vaubécourt handball{% endblock %}">
+
+        {# Twitter Card #}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ block('og_title') }}">
+        <meta name="twitter:description" content="{{ block('og_description') }}">
+        <meta name="twitter:image" content="{{ block('og_image') }}">
+
+        {# JSON-LD structured data — Organization / SportsClub on every page #}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "SportsClub",
+          "name": "MJ Vaubécourt",
+          "alternateName": "Maison des jeunes Vaubécourt handball",
+          "sport": "Handball",
+          "slogan": "Le handball c'est notre passion magique",
+          "url": "{{ site_url }}",
+          "logo": "{{ default_image }}",
+          "image": "{{ default_image }}",
+          "description": "{{ default_description }}",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "5 route de Clermont",
+            "postalCode": "55250",
+            "addressLocality": "Fleury-sur-Aire",
+            "addressRegion": "Meuse",
+            "addressCountry": "FR"
+          },
+          "areaServed": {
+            "@type": "Place",
+            "name": "Vaubécourt, Meuse, France"
+          }
+        }
+        </script>
+
+        {% block structured_data %}{% endblock %}
+        {% block seo_extra %}{% endblock %}
+        {# ================== END SEO ================== #}
+
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}

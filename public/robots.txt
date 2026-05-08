@@ -1,0 +1,20 @@
+# robots.txt — MJ Vaubécourt
+# https://mj-vaubecourt.fr
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /login
+Disallow: /connect/
+Disallow: /_profiler/
+Disallow: /_wdt/
+
+# Common AI scrapers — adjust to taste
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://mj-vaubecourt.fr/sitemap.xml
