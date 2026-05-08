@@ -5,19 +5,19 @@
 {% block body %}
 <main class="bg-base-200">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-6xl mx-auto px-4 py-16 grid gap-10 lg:grid-cols-2">
-      <div class="space-y-5">
-        <p class="text-sm uppercase tracking-[0.4em] text-neutral-content/70">Handball club</p>
-        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Jouez au handball !</h1>
-        <p class="text-lg text-neutral-content/80">
+    <div class="max-w-6xl mx-auto px-4 py-8 lg:py-16 grid gap-6 lg:gap-10 lg:grid-cols-2">
+      <div class="space-y-3 lg:space-y-5">
+        <p class="text-xs uppercase tracking-[0.4em] text-neutral-content/70">Handball club</p>
+        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">Jouez au handball !</h1>
+        <p class="text-base lg:text-lg text-neutral-content/80">
           MJ Vaubécourt accompagne les joueuses et joueurs de tout âge pour défendre les couleurs du club.
         </p>
-        <div class="flex flex-wrap gap-3">
-          <a href="{{ path('app_team_index') }}" class="btn btn-primary btn-wide">Dis m'en plus</a>
-          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary btn-wide lg:btn-md">Nous rejoindre</a>
+        <div class="flex gap-3">
+          <a href="{{ path('app_team_index') }}" class="btn btn-primary btn-sm lg:btn-md flex-1 lg:flex-none lg:btn-wide">Dis m'en plus</a>
+          <a href="{{ path('app_contact') }}" class="btn btn-outline btn-primary btn-sm lg:btn-md flex-1 lg:flex-none lg:btn-wide">Nous rejoindre</a>
         </div>
       </div>
-      <div>
+      <div class="hidden lg:block">
         <div class="rounded-3xl border border-neutral-content/20 overflow-hidden shadow-2xl">
           <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80"
                alt="Joueur de handball"
@@ -27,14 +27,14 @@
     </div>
   </section>
 
-  <section class="py-16">
-    <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-5 gap-8">
+  <section class="py-6 lg:py-16">
+    <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-5 gap-4 lg:gap-8">
       <article class="card bg-base-100 shadow-xl rounded-3xl lg:col-span-3 border border-base-300">
-        <div class="card-body gap-6">
+        <div class="card-body p-4 lg:p-8 gap-4 lg:gap-6">
           <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-base-content/50">Nos équipes</p>
-            <h2 class="text-3xl font-bold">Nos collectifs</h2>
-            <p class="text-base-content/70 mt-2">Des catégories jeunes aux seniors : découvrez les équipes en vedette.</p>
+            <p class="text-xs uppercase tracking-[0.4em] text-base-content/70">Nos équipes</p>
+            <h2 class="text-2xl lg:text-3xl font-bold">Nos collectifs</h2>
+            <p class="text-base-content/70 mt-1 text-sm lg:text-base">Des catégories jeunes aux seniors : découvrez les équipes en vedette.</p>
           </div>
           {% set highlighted = highlightedCategories is not empty ? highlightedCategories : [] %}
           <div class="rounded-2xl overflow-hidden border border-base-300">
@@ -42,14 +42,14 @@
               {% set heroTeam = highlighted|first %}
               {% set heroPhoto = heroTeam.teams|first %}
               {% if heroPhoto and heroPhoto.photoPath %}
-                <img src="{{ heroPhoto.photoPath }}" alt="{{ heroTeam.categoryLabel }}" class="w-full h-60 object-cover">
+                <img src="{{ heroPhoto.photoPath }}" alt="{{ heroTeam.categoryLabel }}" class="w-full h-40 lg:h-60 object-cover">
               {% else %}
-                <div class="w-full h-60 flex items-center justify-center bg-base-200 text-base-content/50">
+                <div class="w-full h-40 lg:h-60 flex items-center justify-center bg-base-200 text-base-content/50">
                   Photo à venir
                 </div>
               {% endif %}
             {% else %}
-              <div class="w-full h-60 flex items-center justify-center bg-base-200 text-base-content/50">
+              <div class="w-full h-40 lg:h-60 flex items-center justify-center bg-base-200 text-base-content/50">
                 Aucune équipe disponible pour l'instant
               </div>
             {% endif %}
@@ -74,13 +74,13 @@
         </div>
       </article>
 
-      <div class="lg:col-span-2 flex flex-col gap-6">
+      <div class="lg:col-span-2 flex flex-col gap-4 lg:gap-6">
         <article class="card bg-base-100 shadow-lg rounded-3xl border border-base-300">
-          <div class="card-body gap-4">
+          <div class="card-body p-4 lg:p-8 gap-3 lg:gap-4">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Calendrier</p>
-                <h3 class="text-2xl font-bold">Prochains matches</h3>
+                <h3 class="text-xl lg:text-2xl font-bold">Prochains matches</h3>
               </div>
               <a href="{{ path('app_calendar') }}" class="link link-primary text-xs uppercase tracking-[0.3em]">Voir tout</a>
             </div>
@@ -105,11 +105,11 @@
         </article>
 
         <article class="card bg-base-100 shadow-lg rounded-3xl border border-base-300">
-          <div class="card-body gap-4">
+          <div class="card-body p-4 lg:p-8 gap-3 lg:gap-4">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Actualités</p>
-                <h3 class="text-2xl font-bold">Dernières actus</h3>
+                <h3 class="text-xl lg:text-2xl font-bold">Dernières actus</h3>
               </div>
               <a href="{{ path('app_news') }}" class="link link-primary text-xs uppercase tracking-[0.3em]">Voir tout</a>
             </div>
@@ -136,10 +136,10 @@
     </div>
   </section>
 
-  <section class="pb-16">
+  <section class="pb-6 lg:pb-16">
     <div class="max-w-6xl mx-auto px-4">
       <div class="card bg-base-100 shadow-xl rounded-3xl border border-base-300">
-        <div class="card-body gap-6">
+        <div class="card-body p-4 lg:p-8 gap-4 lg:gap-6">
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">Forum</p>

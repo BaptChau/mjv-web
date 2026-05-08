@@ -5,23 +5,23 @@
 {% block body %}
 <main class="bg-base-200">
   <section class="bg-neutral text-neutral-content">
-    <div class="max-w-4xl mx-auto px-4 py-14 space-y-3">
+    <div class="max-w-4xl mx-auto px-4 py-8 lg:py-14 space-y-3">
       <a href="{{ path('app_team_index') }}" class="text-xs uppercase tracking-[0.3em] text-neutral-content/70 inline-flex items-center gap-2">
         ← Retour aux équipes
       </a>
-      <h1 class="text-4xl font-extrabold leading-tight">{{ categoryLabel }}</h1>
+      <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">{{ categoryLabel }}</h1>
       <p class="text-neutral-content/70">Découvrez l’ensemble des collectifs {{ categoryLabel }} : compositions, staffs techniques et dynamique de travail.</p>
     </div>
   </section>
 
-  <section class="py-14">
-    <div class="max-w-4xl mx-auto px-4 space-y-8">
+  <section class="py-8 lg:py-14">
+    <div class="max-w-4xl mx-auto px-4 space-y-6 lg:space-y-8">
       {% for team in teams %}
         <article class="card bg-base-100 shadow-xl rounded-3xl border border-base-300 overflow-hidden flex flex-col md:flex-row">
-          <div class="flex-1 p-8 space-y-4">
+          <div class="flex-1 p-4 lg:p-8 space-y-4">
             <div>
               <p class="text-xs uppercase tracking-[0.4em] text-base-content/60">{{ categoryLabel }}</p>
-              <h2 class="text-3xl font-bold text-base-content">{{ team.label }}</h2>
+              <h2 class="text-2xl lg:text-3xl font-bold text-base-content">{{ team.label }}</h2>
             </div>
             <div class="flex flex-wrap gap-2 text-xs uppercase tracking-[0.3em] text-base-content/60">
               <span class="badge badge-outline">{{ team.gender is null ? 'Mixte' : (team.gender ? 'Masculin' : 'Féminin') }}</span>

@@ -1,12 +1,12 @@
 {% set currentRoute = app.request.attributes.get('_route') %}
 {% set teamGroups = teamService.getMenuGroups() %}
-<nav class="bg-base-100 border-b border-base-200">
+<nav class="bg-base-100 border-b border-base-200" aria-label="Navigation principale">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="{{ path('app_main') }}" class="flex items-center space-x-3">
       <span class="self-center text-2xl font-semibold whitespace-nowrap">MJ Vaubécourt</span>
     </a>
-    <button id="menu-toggle" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-main" aria-expanded="false">
-      <span class="sr-only">Open main menu</span>
+    <button id="menu-toggle" type="button" class="inline-flex items-center p-2 min-w-[44px] min-h-[44px] justify-center text-sm text-base-content/70 rounded-lg lg:hidden hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary" aria-controls="navbar-main" aria-expanded="false">
+      <span class="sr-only">Ouvrir le menu principal</span>
       <svg class="w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 17 14">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
       </svg>
@@ -15,29 +15,33 @@
       <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-base-200 rounded-lg bg-base-100 lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0 lg:bg-base-100">
         <li>
           <a href="{{ path('app_club') }}"
-             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute == 'app_club' %}text-primary font-semibold{% endif %}">
+             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if currentRoute == 'app_club' %}text-primary font-semibold{% endif %}"
+             {% if currentRoute == 'app_club' %}aria-current="page"{% endif %}>
             Club
           </a>
         </li>
         <li>
           <a href="{{ path('app_forum') }}"
-             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_forum' %}text-primary font-semibold{% endif %}">
+             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if currentRoute starts with 'app_forum' %}text-primary font-semibold{% endif %}"
+             {% if currentRoute starts with 'app_forum' %}aria-current="page"{% endif %}>
             Forum
           </a>
         </li>
         <li>
           <a href="{{ path('app_calendar') }}"
-             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_calendar' %}text-primary font-semibold{% endif %}">
+             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if currentRoute starts with 'app_calendar' %}text-primary font-semibold{% endif %}"
+             {% if currentRoute starts with 'app_calendar' %}aria-current="page"{% endif %}>
             Calendrier
           </a>
         </li>
         <li>
           <a href="{{ path('app_news') }}"
-             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_news' %}text-primary font-semibold{% endif %}">
+             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if currentRoute starts with 'app_news' %}text-primary font-semibold{% endif %}"
+             {% if currentRoute starts with 'app_news' %}aria-current="page"{% endif %}>
             Actualités
           </a>
         </li>
@@ -57,7 +61,7 @@
               <ul class="space-y-1">
                 {% for entry in teamGroups.youth %}
                   <li>
-                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-1 rounded hover:bg-base-200">
+                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-2 min-h-[44px] flex items-center rounded hover:bg-base-200">
                       {{ entry.label }}
                     </a>
                   </li>
@@ -74,7 +78,7 @@
               <ul class="space-y-1">
                 {% for entry in teamGroups.adult %}
                   <li>
-                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-1 rounded hover:bg-base-200">
+                    <a href="{{ path('app_team_details', {slug: entry.slug}) }}" class="block px-2 py-2 min-h-[44px] flex items-center rounded hover:bg-base-200">
                       {{ entry.label }}
                     </a>
                   </li>
@@ -91,8 +95,9 @@
         </li>
         <li>
           <a href="{{ path('app_contact') }}"
-             class="block py-2 px-3 rounded hover:bg-base-200 lg:hover:bg-transparent
-             {% if currentRoute starts with 'app_contact' %}text-primary font-semibold{% endif %}">
+             class="block py-3 px-3 min-h-[44px] rounded hover:bg-base-200 lg:hover:bg-transparent
+             {% if currentRoute starts with 'app_contact' %}text-primary font-semibold{% endif %}"
+             {% if currentRoute starts with 'app_contact' %}aria-current="page"{% endif %}>
             Contact
           </a>
         </li>
@@ -102,7 +107,7 @@
             <div class="dropdown dropdown-end">
               <label tabindex="0" class="btn btn-ghost btn-sm gap-2 normal-case">
                 {% if app.user.picture %}
-                  <img src="{{ app.user.picture }}" alt="avatar" class="w-6 h-6 rounded-full object-cover">
+                  <img src="{{ app.user.picture }}" alt="Photo de profil de {{ app.user.name }}" class="w-6 h-6 rounded-full object-cover">
                 {% endif %}
                 <span class="hidden lg:inline text-sm">{{ app.user.name }}</span>
               </label>
@@ -142,7 +147,10 @@
 </nav>
 <script>
   document.getElementById('menu-toggle').addEventListener('click', function () {
-    document.getElementById('navbar-main').classList.toggle('hidden');
+    var nav = document.getElementById('navbar-main');
+    nav.classList.toggle('hidden');
+    var expanded = !nav.classList.contains('hidden');
+    this.setAttribute('aria-expanded', expanded ? 'true' : 'false');
   });
 
   (function () {

@@ -1,16 +1,16 @@
 <article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300 overflow-hidden h-full">
     {% if news.imgPath %}
-        <img src="{{ news.imgPath }}" alt="{{ news.title }}" class="w-full h-56 object-cover">
+        <img src="{{ news.imgPath }}" alt="{{ news.title }}" class="w-full h-40 lg:h-56 object-cover">
     {% endif %}
-    <div class="card-body gap-4">
+    <div class="card-body p-4 lg:p-6 gap-3 lg:gap-4">
         <div class="text-xs uppercase tracking-[0.3em] text-base-content/60">
             {{ news.createdAt|date('d M Y') }} · {{ news.author }}
         </div>
-        <h3 class="text-2xl font-bold text-base-content">{{ news.title }}</h3>
+        <h3 class="text-xl lg:text-2xl font-bold text-base-content">{{ news.title }}</h3>
         <p class="text-base text-base-content/70 leading-relaxed">
             {{ news.content|u.truncate(180, '...') }}
         </p>
-        <a href="{{ path('app_news_details', {id: news.id}) }}" class="link link-primary text-xs uppercase tracking-[0.3em]">
+        <a href="{{ path('app_news_details', {id: news.id}) }}" class="link link-primary text-xs uppercase tracking-[0.3em] min-h-[44px] inline-flex items-center">
             Lire l'article →
         </a>
     </div>
