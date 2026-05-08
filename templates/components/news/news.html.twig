@@ -1,17 +1,39 @@
-<article class="card bg-base-100 rounded-3xl shadow-xl border border-base-300 overflow-hidden h-full">
+<article class="group relative bg-base-100 rounded-2xl border border-base-300 hover:border-primary hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full flex flex-col">
     {% if news.imgPath %}
-        <img src="{{ news.imgPath }}" alt="{{ news.title }}" class="w-full h-40 lg:h-56 object-cover">
-    {% endif %}
-    <div class="card-body p-4 lg:p-6 gap-3 lg:gap-4">
-        <div class="text-xs uppercase tracking-[0.3em] text-base-content/60">
-            {{ news.createdAt|date('d M Y') }} · {{ news.author }}
+        <div class="relative overflow-hidden aspect-[16/10] bg-base-200">
+            <img src="{{ news.imgPath }}"
+                 alt=""
+                 loading="lazy"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="absolute top-3 left-3">
+                <time datetime="{{ news.createdAt|date('c') }}"
+                      class="inline-flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-base-100 shadow-lg border border-base-200">
+                    <span class="text-xl font-black leading-none text-primary">{{ news.createdAt|date('d') }}</span>
+                    <span class="text-[9px] uppercase tracking-widest font-black text-base-content/70 mt-0.5">{{ news.createdAt|date('M') }}</span>
+                </time>
+            </div>
         </div>
-        <h3 class="text-xl lg:text-2xl font-bold text-base-content">{{ news.title }}</h3>
-        <p class="text-base text-base-content/70 leading-relaxed">
-            {{ news.content|u.truncate(180, '...') }}
+    {% endif %}
+    <div class="p-5 lg:p-6 gap-3 flex-1 flex flex-col">
+        {% if not news.imgPath %}
+            <time datetime="{{ news.createdAt|date('c') }}" class="text-[11px] font-black uppercase tracking-[0.2em] text-primary">{{ news.createdAt|date('d M Y') }}</time>
+        {% endif %}
+        <div class="flex items-center gap-2 text-xs font-semibold text-base-content/60">
+            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            <span class="truncate">{{ news.author }}</span>
+        </div>
+        <h3 class="text-lg lg:text-xl font-black leading-tight text-base-content group-hover:text-primary transition-colors line-clamp-2">
+            {{ news.title }}
+        </h3>
+        <p class="text-sm text-base-content/70 leading-relaxed line-clamp-3 flex-1">
+            {{ news.content|u.truncate(170, '...') }}
         </p>
-        <a href="{{ path('app_news_details', {id: news.id}) }}" class="link link-primary text-xs uppercase tracking-[0.3em] min-h-[44px] inline-flex items-center">
-            Lire l'article →
+        <a href="{{ path('app_news_details', {id: news.id}) }}"
+           class="inline-flex items-center gap-1.5 text-sm font-black text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded mt-auto pt-3 min-h-[44px]"
+           aria-label="Lire l'article : {{ news.title }}">
+            Lire l'article
+            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3"/></svg>
         </a>
     </div>
 </article>
