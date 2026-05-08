@@ -1,6 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact — MJ Vaubécourt{% endblock %}
+{% block title %}Contact — MJ Vaubécourt handball (Meuse, 55){% endblock %}
+{% block meta_description %}Contactez le MJ Vaubécourt pour toute question sportive, administrative ou pour une inscription au club de handball. Réponse rapide via notre formulaire en ligne.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact MJ Vaubécourt",
+  "url": "{{ site_url }}{{ app.request.pathInfo }}",
+  "mainEntity": {
+    "@type": "SportsClub",
+    "name": "MJ Vaubécourt",
+    "url": "{{ site_url }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "5 route de Clermont",
+      "postalCode": "55250",
+      "addressLocality": "Fleury-sur-Aire",
+      "addressRegion": "Meuse",
+      "addressCountry": "FR"
+    }
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Contact", "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block body %}
 <div>

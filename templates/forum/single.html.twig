@@ -1,5 +1,43 @@
 {% extends "base.html.twig" %}
+
+{% set post_excerpt = post.body|striptags|slice(0, 155)|trim %}
+
 {% block title %}{{ post.title }} — Forum MJ Vaubécourt{% endblock %}
+{% block meta_description %}{{ post_excerpt }}{% if post_excerpt|length >= 155 %}…{% endif %}{% endblock %}
+{% block og_type %}article{% endblock %}
+{# Forum threads are user-generated; allow indexing but don't waste budget on auth-gated reply pages #}
+{% block meta_robots %}index, follow{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DiscussionForumPosting",
+  "headline": {{ post.title|json_encode|raw }},
+  "text": {{ post_excerpt|json_encode|raw }},
+  "url": "{{ site_url }}{{ app.request.pathInfo }}",
+  "datePublished": "{{ post.createdAt is defined ? post.createdAt|date('c') : '' }}",
+  "author": { "@type": "Person", "name": {{ post.author|json_encode|raw }} },
+  "interactionStatistic": {
+    "@type": "InteractionCounter",
+    "interactionType": "https://schema.org/CommentAction",
+    "userInteractionCount": {{ answers_count|default(0) }}
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Forum", "item": "{{ site_url }}{{ path('app_forum') }}" },
+    { "@type": "ListItem", "position": 3, "name": {{ post.title|json_encode|raw }}, "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block body %}
 <div>
   {# ==================== HERO ==================== #}

@@ -1,6 +1,30 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Actualités — MJ Vaubécourt{% endblock %}
+{% block title %}Actualités du club de handball MJ Vaubécourt{% endblock %}
+{% block meta_description %}Toute l'actualité du MJ Vaubécourt : résumés de match, portraits de joueurs, événements et coulisses du club de handball en Meuse. Restez informé semaine après semaine.{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Actualités MJ Vaubécourt",
+  "url": "{{ site_url }}{{ app.request.pathInfo }}",
+  "publisher": { "@type": "SportsClub", "name": "MJ Vaubécourt", "url": "{{ site_url }}" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Actualités", "item": "{{ site_url }}{{ app.request.pathInfo }}" }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block body %}
 <div>
