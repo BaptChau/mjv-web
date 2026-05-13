@@ -1,0 +1,26 @@
+# =============================================================================
+# Scraper image: Python + Playwright for match scraping
+# Separated from the app image to keep it lean (~1.5GB savings)
+# =============================================================================
+FROM python:3.12-slim AS scraper
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app/scripts
+
+COPY scripts/requirements.txt ./requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt \
+    && playwright install --with-deps chromium
+
+# Create non-root user
+RUN groupadd -g 1000 scraper && useradd -u 1000 -g scraper -m scraper \
+    && chown -R scraper:scraper /app
+
+COPY scripts/ ./
+
+USER scraper
+
+CMD ["python", "scrape_matches.py"]

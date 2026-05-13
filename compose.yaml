@@ -16,6 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: app-dev
       platforms:
         - linux/arm64
     container_name: mjv-web-app
@@ -39,6 +40,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: app-dev
       platforms:
         - linux/arm64
     container_name: mjv-web-scheduler
