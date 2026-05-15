@@ -43,6 +43,7 @@ services:
     command:
       - |
         cp -a /app/public/. /srv/public/ &&
+        ln -sf /app/vendor /srv/vendor &&
         chown -R appuser:appuser /srv/public &&
         php bin/console doctrine:migrations:migrate --no-interaction &&
         php-fpm
