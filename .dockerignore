@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+Dockerfile.scraper
+compose*.yaml
+compose-linux.yaml
+.dockerignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Node
+node_modules
+
+# PHP
+vendor
+
+# Symfony dev/test artifacts
+var/cache
+var/log
+var/*.db
+
+# Tests
+tests
+codeception.yml
+phpunit.xml.dist
+
+# Documentation
+README.md
+Makefile
+
+# OS
+.DS_Store
+Thumbs.db
