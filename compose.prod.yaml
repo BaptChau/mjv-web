@@ -8,15 +8,18 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile.prod:/etc/caddy/Caddyfile:ro
+      - app_public:/srv/public:ro
       - caddy_data_prod:/data
       - caddy_config_prod:/config
     depends_on:
-      - app
+      app:
+        condition: service_started
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
+      target: app-prod
       platforms:
         - linux/amd64
     container_name: mjv-web-app-prod
@@ -27,22 +30,26 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    volumes:
+      - app_public:/srv/public
+      - uploads_data:/app/public/uploads
     expose:
-      - "8000"
+      - "9000"
     depends_on:
-      - database
-    command: >
-      sh -c "composer install --no-dev --optimize-autoloader --no-interaction &&
-             npm ci --prefer-offline &&
-             npm run build &&
-             php bin/console doctrine:migrations:migrate --no-interaction &&
-             php bin/console cache:warmup &&
-             php -S 0.0.0.0:8000 -t public"
+      database:
+        condition: service_started
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        cp -a /app/public/. /srv/public/ &&
+        php bin/console doctrine:migrations:migrate --no-interaction &&
+        php-fpm
 
   scheduler:
     build:
       context: .
       dockerfile: Dockerfile
+      target: app-prod
       platforms:
         - linux/amd64
     container_name: mjv-web-scheduler-prod
@@ -52,10 +59,27 @@ services:
       APP_SECRET: ${APP_SECRET}
       DATABASE_URL: ${DATABASE_URL}
     depends_on:
-      - app
-      - database
-    command: >
-      sh -c "php bin/console messenger:consume scheduler_scrape_matches -vv"
+      app:
+        condition: service_started
+      database:
+        condition: service_started
+    command: ["php", "bin/console", "messenger:consume", "scheduler_scrape_matches", "-vv"]
+
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile.scraper
+      platforms:
+        - linux/amd64
+    container_name: mjv-web-scraper-prod
+    restart: "no"
+    profiles:
+      - scraper
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      database:
+        condition: service_started
 
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
@@ -68,8 +92,14 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-app}
     volumes:
       - database_data_prod:/var/lib/postgresql/data:rw
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
 volumes:
   database_data_prod:
   caddy_data_prod:
   caddy_config_prod:
+  app_public:
+  uploads_data:
