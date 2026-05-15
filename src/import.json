@@ -1,0 +1,96 @@
+{
+    "SENIOR" : [
+        {
+            "label": "Équipe 1",
+            "gender": true,
+            "coach": "Virgile POUPART",
+            "secondCoach": "Baptiste CHAURON"
+        },
+        {
+            "label": "Équipe 2",
+            "gender": true,
+            "coach": "Justine CHENOT",
+            "secondCoach": null
+        },
+        {
+            "label": "Équipe 3",
+            "gender": true,
+            "coach": "Jérémy CURMAN",
+            "secondCoach": null
+        },
+        {
+            "label": "Équipe 1",
+            "gender": false,
+            "coach": "Jacky ANDRÉ",
+            "secondCoach": "Olivier LE NORMAND"
+        },
+        {
+            "label": "Loisir",
+            "gender": null,
+            "coach": "Nicolas JACQUOT",
+            "secondCoach": null
+        }
+    ],
+    "U18": [
+        {
+            "label": "u18 Féminine",
+            "gender": false,
+            "coach": "Fabien OBARA",
+            "secondCoach": "Gaëlle ANDRÉ"
+        },
+        {
+            "label": "u18 Masculine",
+            "gender": true,
+            "coach": "Nicolas JACQUOT",
+            "secondCoach": null
+        }
+    ],
+    "U15": [
+        {
+            "label": "u15 Masculine",
+            "gender": true,
+            "coach": "Antoine VOILQUIN",
+            "secondCoach": "Alexandre ROLLINGER"
+        }
+    ],
+    "U13": [
+        {
+            "label": "u13 Masculine",
+            "gender": true,
+            "coach": "Jérôme LORRAIN",
+            "secondCoach": null
+        }
+    ],
+    "U11": [
+        {
+            "label": "u11 Masculine",
+            "gender": true,
+            "coach": "Baptiste CHAURON",
+            "secondCoach": null
+        }
+    ],
+        "U9": [
+            {
+                "label": "u9 Mixte",
+                "gender": null,
+                "coach": "Fabien OBARA",
+                "secondCoach": null
+            }
+        ],
+    "U7": [
+        {
+            "label": "u7 Mixte",
+            "gender": null,
+            "coach": "Fabien OBARA",
+            "secondCoach": null
+        }
+    ],
+    "BABY": [
+        {
+            "label": "baby Mixte",
+            "gender": null,
+            "coach": "Fabien OBARA",
+            "secondCoach": null
+        }
+    ]  
+}
