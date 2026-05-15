@@ -5,7 +5,10 @@ mj-vaubecourt.fr {
     file_server
 
     # PHP requests via FastCGI to php-fpm
-    php_fastcgi app:9000
+    # root for php_fastcgi must match the path inside the PHP-FPM container
+    php_fastcgi app:9000 {
+        root /app/public
+    }
 
     # Compression
     encode gzip zstd

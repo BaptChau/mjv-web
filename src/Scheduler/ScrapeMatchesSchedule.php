@@ -8,7 +8,7 @@ use Symfony\Component\Scheduler\RecurringMessage;
 use Symfony\Component\Scheduler\Schedule;
 use Symfony\Component\Scheduler\ScheduleProviderInterface;
 
-#[AsSchedule('scrape_matches')]
+#[AsSchedule]
 class ScrapeMatchesSchedule implements ScheduleProviderInterface
 {
     public function getSchedule(): Schedule
