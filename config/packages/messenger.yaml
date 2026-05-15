@@ -1,4 +1,2 @@
 framework:
-    messenger:
-        routing:
-            'App\Message\ScrapeMatchesMessage': scheduler_default
+    messenger: ~
