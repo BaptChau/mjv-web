@@ -28,6 +28,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json webpack.config.js postcss.config.mjs ./
 COPY assets ./assets
+COPY templates ./templates
 
 # We need the symfony UX vendor assets for the build
 COPY --from=composer-deps /app/vendor/symfony/ux-turbo/assets ./vendor/symfony/ux-turbo/assets

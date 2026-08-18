@@ -11,6 +11,9 @@ services:
       - app_public:/srv/public:ro
       - caddy_data_prod:/data
       - caddy_config_prod:/config
+    networks:
+      - default
+      - web-proxy
     depends_on:
       app:
         condition: service_started
@@ -38,10 +41,13 @@ services:
     depends_on:
       database:
         condition: service_started
+    user: root
     entrypoint: ["sh", "-c"]
     command:
       - |
         cp -a /app/public/. /srv/public/ &&
+        ln -sf /app/vendor /srv/vendor &&
+        chown -R appuser:appuser /srv/public &&
         php bin/console doctrine:migrations:migrate --no-interaction &&
         php-fpm
 
@@ -63,7 +69,7 @@ services:
         condition: service_started
       database:
         condition: service_started
-    command: ["php", "bin/console", "messenger:consume", "scheduler_scrape_matches", "-vv"]
+    command: ["php", "bin/console", "messenger:consume", "scheduler_default", "-vv"]
 
   scraper:
     build:
@@ -96,6 +102,10 @@ services:
       resources:
         limits:
           memory: 512M
+
+networks:
+  web-proxy:
+    external: true
 
 volumes:
   database_data_prod:

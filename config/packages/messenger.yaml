@@ -1,6 +1,2 @@
 framework:
-    messenger:
-        transports:
-            scheduler_scrape_matches: 'sync://'
-        routing:
-            'App\Message\ScrapeMatchesMessage': scheduler_scrape_matches
+    messenger: ~

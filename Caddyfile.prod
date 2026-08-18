@@ -5,7 +5,10 @@ mj-vaubecourt.fr {
     file_server
 
     # PHP requests via FastCGI to php-fpm
-    php_fastcgi app:9000
+    # root for php_fastcgi must match the path inside the PHP-FPM container
+    php_fastcgi app:9000 {
+        root /app/public
+    }
 
     # Compression
     encode gzip zstd
@@ -21,4 +24,18 @@ mj-vaubecourt.fr {
     # Cache static assets
     @static path /build/* /favicon.ico /robots.txt
     header @static Cache-Control "public, max-age=31536000, immutable"
+}
+
+mon-depute.eu, www.mon-depute.eu {
+    # SPA Vue + proxy /api vers Flask : tout est gere par le nginx du projet
+    # mon-depute, joignable via le reseau Docker partage "web-proxy".
+    reverse_proxy mon-depute-web:80
+
+    encode gzip zstd
+
+    header {
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
 }
