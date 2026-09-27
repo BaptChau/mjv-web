@@ -1,20 +1,4 @@
 services:
-  caddy:
-    image: caddy:2-alpine
-    container_name: mjv-web-caddy-prod
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile.prod:/etc/caddy/Caddyfile:ro
-      - app_public:/srv/public:ro
-      - caddy_data_prod:/data
-      - caddy_config_prod:/config
-    depends_on:
-      app:
-        condition: service_started
-
   app:
     build:
       context: .
@@ -35,6 +19,9 @@ services:
       - uploads_data:/app/public/uploads
     expose:
       - "9000"
+    networks:
+      - default   # database, scheduler
+      - proxy     # joignable par le reverse-proxy Caddy
     depends_on:
       database:
         condition: service_started
@@ -100,9 +87,13 @@ services:
         limits:
           memory: 512M
 
+networks:
+  proxy:
+    external: true
+
 volumes:
   database_data_prod:
-  caddy_data_prod:
-  caddy_config_prod:
+  # app_public est monté en lecture seule par la stack proxy (Caddy sert les
+  # assets statiques en direct). Nom externe attendu : mjv-web_app_public.
   app_public:
   uploads_data:
