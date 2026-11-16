@@ -3,11 +3,14 @@ name: Test & Deploy
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
 
-# Prevent overlapping deployments
+# Prevent overlapping deployments on master; on PRs, a new push cancels the
+# previous run for the same PR.
 concurrency:
-  group: production-deploy
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'push' && 'production-deploy' || format('pr-{0}', github.event.pull_request.number) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -68,6 +71,8 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: test
+    # Only deploy on pushes to master, never from pull requests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     environment: production
 
     steps:
