@@ -5,9 +5,14 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Major upgrades (e.g. Symfony 8, EasyAdmin 5) are planned by hand, not bot PRs.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       symfony:
         patterns: ["symfony/*"]
+        update-types: [minor, patch]
       composer-minor-patch:
         update-types: [minor, patch]
 
@@ -16,6 +21,10 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Major upgrades (e.g. Symfony 8, EasyAdmin 5) are planned by hand, not bot PRs.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       npm-minor-patch:
         update-types: [minor, patch]
@@ -24,3 +33,6 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
