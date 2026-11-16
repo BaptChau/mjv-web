@@ -58,6 +58,13 @@ jobs:
       - name: Install Node dependencies & build assets
         run: npm ci && npm run build
 
+      - name: Lint Twig templates & container
+        env:
+          APP_ENV: test
+        run: |
+          php bin/console lint:twig templates
+          php bin/console lint:container
+
       - name: Run PHPUnit (Unit tests)
         env:
           APP_ENV: test

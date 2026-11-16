@@ -45,10 +45,8 @@ class CreateAdminUserCommandTest extends TestCase
             ->method('flush');
 
         $tester = new CommandTester($this->command);
-        $exitCode = $tester->execute([
-            'email' => 'admin@mjv.fr',
-            'password' => 'secret123',
-        ]);
+        $tester->setInputs(['secret123']);
+        $exitCode = $tester->execute(['email' => 'admin@mjv.fr']);
 
         self::assertSame(0, $exitCode);
         self::assertStringContainsString('admin@mjv.fr', $tester->getDisplay());
@@ -61,10 +59,8 @@ class CreateAdminUserCommandTest extends TestCase
         $this->entityManager->method('flush');
 
         $tester = new CommandTester($this->command);
-        $tester->execute([
-            'email' => 'test@example.com',
-            'password' => 'password',
-        ]);
+        $tester->setInputs(['password']);
+        $tester->execute(['email' => 'test@example.com']);
 
         self::assertStringContainsString('test@example.com', $tester->getDisplay());
         self::assertStringContainsString('created successfully', $tester->getDisplay());
@@ -85,10 +81,8 @@ class CreateAdminUserCommandTest extends TestCase
         $this->entityManager->method('flush');
 
         $tester = new CommandTester($this->command);
-        $tester->execute([
-            'email' => 'admin@test.fr',
-            'password' => 'mypassword',
-        ]);
+        $tester->setInputs(['mypassword']);
+        $tester->execute(['email' => 'admin@test.fr']);
 
         self::assertNotNull($capturedUser);
         self::assertContains('ROLE_ADMIN', $capturedUser->getRoles());
@@ -109,10 +103,8 @@ class CreateAdminUserCommandTest extends TestCase
         $this->entityManager->method('flush');
 
         $tester = new CommandTester($this->command);
-        $tester->execute([
-            'email' => 'admin@test.fr',
-            'password' => 'plainpassword',
-        ]);
+        $tester->setInputs(['plainpassword']);
+        $tester->execute(['email' => 'admin@test.fr']);
 
         self::assertNotNull($persistedUser);
         self::assertSame('super_hashed_password', $persistedUser->getPassword());
@@ -130,10 +122,22 @@ class CreateAdminUserCommandTest extends TestCase
         self::assertTrue($definition->getArgument('email')->isRequired());
     }
 
-    public function testCommandRequiresPasswordArgument(): void
+    public function testPasswordIsNotAcceptedAsArgument(): void
     {
-        $definition = $this->command->getDefinition();
-        self::assertTrue($definition->hasArgument('password'));
-        self::assertTrue($definition->getArgument('password')->isRequired());
+        // The password is asked through a hidden prompt so it never ends up in shell history.
+        self::assertFalse($this->command->getDefinition()->hasArgument('password'));
+    }
+
+    public function testEmptyPasswordIsRejected(): void
+    {
+        $this->entityManager->expects(self::never())->method('persist');
+
+        $tester = new CommandTester($this->command);
+        $tester->setInputs(['   ']);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The password cannot be empty.');
+
+        $tester->execute(['email' => 'admin@test.fr']);
     }
 }
