@@ -22,3 +22,5 @@ yarn-error.log
 /.phpunit.cache/
 ###< phpunit/phpunit ###
 .claude
+.DS_Store
+/.phpunit.result.cache

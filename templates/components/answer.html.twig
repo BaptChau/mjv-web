@@ -1,4 +1,4 @@
-<li class="py-2" style="margin-left: {{ [level * 18, 72]|min }}px;">
+<li class="py-2" style="margin-left: {{ min(level * 18, 72) }}px;">
   {% set node = answer.post %}
   <article class="relative rounded-xl bg-base-100 border border-base-300 p-4 sm:p-5 space-y-2 hover:border-secondary/60 transition-colors">
     {% if level > 0 %}

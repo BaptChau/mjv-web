@@ -3,11 +3,14 @@ name: Test & Deploy
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
 
-# Prevent overlapping deployments
+# Prevent overlapping deployments on master; on PRs, a new push cancels the
+# previous run for the same PR.
 concurrency:
-  group: production-deploy
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'push' && 'production-deploy' || format('pr-{0}', github.event.pull_request.number) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -55,11 +58,27 @@ jobs:
       - name: Install Node dependencies & build assets
         run: npm ci && npm run build
 
+      - name: Lint Twig templates & container
+        env:
+          APP_ENV: test
+        run: |
+          php bin/console lint:twig templates
+          php bin/console lint:container
+
       - name: Run PHPUnit (Unit tests)
         env:
           APP_ENV: test
           DATABASE_URL: "postgresql://app:test@localhost:5432/app_test?serverVersion=16&charset=utf8"
         run: php vendor/bin/phpunit --testsuite=Unit
+
+      - name: Run Codeception (Functional tests)
+        env:
+          APP_ENV: test
+          DATABASE_URL: "postgresql://app:test@localhost:5432/app_test?serverVersion=16&charset=utf8"
+        run: |
+          php bin/console doctrine:database:create --if-not-exists --no-interaction
+          php bin/console doctrine:migrations:migrate --no-interaction
+          php vendor/bin/codecept run Functional
 
   # ---------------------------------------------------------------------------
   # Job 2: Deploy to production VPS via SSH
@@ -68,6 +87,8 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: test
+    # Only deploy on pushes to master, never from pull requests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     environment: production
 
     steps:
