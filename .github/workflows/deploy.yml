@@ -71,6 +71,15 @@ jobs:
           DATABASE_URL: "postgresql://app:test@localhost:5432/app_test?serverVersion=16&charset=utf8"
         run: php vendor/bin/phpunit --testsuite=Unit
 
+      - name: Run Codeception (Functional tests)
+        env:
+          APP_ENV: test
+          DATABASE_URL: "postgresql://app:test@localhost:5432/app_test?serverVersion=16&charset=utf8"
+        run: |
+          php bin/console doctrine:database:create --if-not-exists --no-interaction
+          php bin/console doctrine:migrations:migrate --no-interaction
+          php vendor/bin/codecept run Functional
+
   # ---------------------------------------------------------------------------
   # Job 2: Deploy to production VPS via SSH
   # ---------------------------------------------------------------------------
